@@ -74,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $texto = urlencode("¡Hola! Quiero cotizar un paseo en bote\n==================\n👤 Nombre: $nombreCompleto\n🚤 Tipo de Embarcación: $tipoEmbarcacion\n🏝️ Destino: $destino\n👥 Número de Personas: $numeroPersonas\n📅 Fecha: $fechaFormatted\n📱 WhatsApp: $whatsapp");
 
         // Enviar datos al webhook de n8n usando cURL
-        $webhookUrl = "https://ia.socialhot.co/webhook/cotizacion-bote";
+        $webhookUrl = "https://n8n.socialhot.co/webhook/cotizacion-bote";
         $data = [
             'nombreCompleto' => $nombreCompleto,
             'tipoEmbarcacion' => $tipoEmbarcacion,

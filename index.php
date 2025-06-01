@@ -111,6 +111,86 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             transform: scale(1.05); 
         }
         .iti { width: 100%; }
+
+        /* Estilos específicos para la sección del formulario */
+        .form-section * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+        .form-section {
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .form-section .header {
+            text-align: center;
+            margin-bottom: 0px;
+        }
+        .form-section .header img {
+            width: 70%;
+            max-width: 300px;
+        }
+        @media (max-width: 768px) {
+            .form-section .header {
+                margin-top: 20px;
+            }
+        }
+        .form-section .container {
+            background: #fff;
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-section h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 5px;
+            margin-top: 10px;
+        }
+        .form-section label {
+            font-weight: 600;
+            margin-top: 10px;
+            margin-bottom: 3px;
+            display: block;
+            color: #555;
+            font-size: 14px;
+        }
+        .form-section input, .form-section select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .form-section .iti {
+            width: 100% !important;
+        }
+        .form-section button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 15px;
+            background: #25D366;
+            color: white;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .form-section button:hover {
+            background: #1ebc57;
+        }
+        .form-section .error {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 3px;
+        }
     </style>
 </head>
 <body class="bg-gray-100">
@@ -178,22 +258,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </section>
 
     <!-- Form Section -->
-    <section id="formulario" class="py-16 bg-white">
-        <div class="container mx-auto px-4 text-center">
-            <img src="Logo-formulario-dc.svg" alt="Descubre Cartagena" class="mx-auto mb-6 max-w-xs fade-in">
-            <h2 class="text-3xl md:text-4xl font-bold mb-12 fade-in">Reserva tu Bote Ahora</h2>
+    <section id="formulario" class="form-section py-16">
+        <div class="header">
+            <img src="Logo-formulario-dc.svg" alt="Descubre Cartagena">
+        </div>
+        <div class="container">
+            <h2>Reserva tu Bote Ahora</h2>
             <?php if ($mostrarFormulario): ?>
-            <form action="" method="POST" id="formulario" class="max-w-lg mx-auto bg-white p-8 rounded-lg shadow-lg fade-in">
-                <div class="mb-4">
-                    <label for="nombreCompleto" class="block text-gray-700 font-semibold mb-2">Nombre y Apellidos</label>
-                    <input type="text" name="nombreCompleto" id="nombreCompleto" required value="<?php echo isset($_POST['nombreCompleto']) ? htmlspecialchars($_POST['nombreCompleto']) : ''; ?>" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+            <form action="" method="POST" id="formulario">
+                <div>
+                    <label for="nombreCompleto">Nombre y Apellidos</label>
+                    <input type="text" name="nombreCompleto" id="nombreCompleto" required value="<?php echo isset($_POST['nombreCompleto']) ? htmlspecialchars($_POST['nombreCompleto']) : ''; ?>">
                     <?php if (isset($errors['nombreCompleto'])): ?>
-                        <p class="text-red-500 text-sm mt-1"><?php echo $errors['nombreCompleto']; ?></p>
+                        <p class="error"><?php echo $errors['nombreCompleto']; ?></p>
                     <?php endif; ?>
                 </div>
-                <div class="mb-4">
-                    <label for="tipoEmbarcacion" class="block text-gray-700 font-semibold mb-2">Tipo de Embarcación</label>
-                    <select name="tipoEmbarcacion" id="tipoEmbarcacion" required class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                <div>
+                    <label for="tipoEmbarcacion">Tipo de Embarcación</label>
+                    <select name="tipoEmbarcacion" id="tipoEmbarcacion" required>
                         <option value="">Seleccione una opción</option>
                         <option value="Cualquiera" <?php echo isset($_POST['tipoEmbarcacion']) && $_POST['tipoEmbarcacion'] == 'Cualquiera' ? 'selected' : ''; ?>>Cualquiera</option>
                         <option value="Bote deportivo" <?php echo isset($_POST['tipoEmbarcacion']) && $_POST['tipoEmbarcacion'] == 'Bote deportivo' ? 'selected' : ''; ?>>Bote Deportivo</option>
@@ -202,42 +284,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <option value="Velero" <?php echo isset($_POST['tipoEmbarcacion']) && $_POST['tipoEmbarcacion'] == 'Velero' ? 'selected' : ''; ?>>Velero</option>
                     </select>
                     <?php if (isset($errors['tipoEmbarcacion'])): ?>
-                        <p class="text-red-500 text-sm mt-1"><?php echo $errors['tipoEmbarcacion']; ?></p>
+                        <p class="error"><?php echo $errors['tipoEmbarcacion']; ?></p>
                     <?php endif; ?>
                 </div>
-                <div class="mb-4">
-                    <label for="destino" class="block text-gray-700 font-semibold mb-2">Destino</label>
-                    <select name="destino" id="destino" required class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                <div>
+                    <label for="destino">Destino</label>
+                    <select name="destino" id="destino" required>
                         <option value="">Seleccione un destino</option>
                         <option value="Islas del Rosario" <?php echo isset($_POST['destino']) && $_POST['destino'] == 'Islas del Rosario' ? 'selected' : ''; ?>>Islas del Rosario</option>
                         <option value="Bahía de Cartagena" <?php echo isset($_POST['destino']) && $_POST['destino'] == 'Bahía de Cartagena' ? 'selected' : ''; ?>>Bahía de Cartagena</option>
                     </select>
                     <?php if (isset($errors['destino'])): ?>
-                        <p class="text-red-500 text-sm mt-1"><?php echo $errors['destino']; ?></p>
+                        <p class="error"><?php echo $errors['destino']; ?></p>
                     <?php endif; ?>
                 </div>
-                <div class="mb-4">
-                    <label for="numeroPersonas" class="block text-gray-700 font-semibold mb-2">Número de Personas</label>
-                    <input type="number" name="numeroPersonas" id="numeroPersonas" required value="<?php echo isset($_POST['numeroPersonas']) ? htmlspecialchars($_POST['numeroPersonas']) : '1'; ?>" min="1" max="100" step="1" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                <div>
+                    <label for="numeroPersonas">Número de Personas</label>
+                    <input type="number" name="numeroPersonas" id="numeroPersonas" required value="<?php echo isset($_POST['numeroPersonas']) ? htmlspecialchars($_POST['numeroPersonas']) : '1'; ?>" min="1" max="100" step="1">
                     <?php if (isset($errors['numeroPersonas'])): ?>
-                        <p class="text-red-500 text-sm mt-1"><?php echo $errors['numeroPersonas']; ?></p>
+                        <p class="error"><?php echo $errors['numeroPersonas']; ?></p>
                     <?php endif; ?>
                 </div>
-                <div class="mb-4">
-                    <label for="fecha" class="block text-gray-700 font-semibold mb-2">Fecha del Paseo</label>
-                    <input type="date" name="fecha" id="fecha" required value="<?php echo isset($_POST['fecha']) ? htmlspecialchars($_POST['fecha']) : ''; ?>" min="<?php echo date('Y-m-d'); ?>" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                <div>
+                    <label for="fecha">Fecha del Paseo</label>
+                    <input type="date" name="fecha" id="fecha" required value="<?php echo isset($_POST['fecha']) ? htmlspecialchars($_POST['fecha']) : ''; ?>" min="<?php echo date('Y-m-d'); ?>">
                     <?php if (isset($errors['fecha'])): ?>
-                        <p class="text-red-500 text-sm mt-1"><?php echo $errors['fecha']; ?></p>
+                        <p class="error"><?php echo $errors['fecha']; ?></p>
                     <?php endif; ?>
                 </div>
-                <div class="mb-4">
-                    <label for="whatsapp" class="block text-gray-700 font-semibold mb-2">WhatsApp</label>
-                    <input type="tel" name="whatsapp" id="whatsapp" required value="<?php echo isset($_POST['whatsapp']) ? htmlspecialchars($_POST['whatsapp']) : ''; ?>" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                <div>
+                    <label for="whatsapp">WhatsApp</label>
+                    <input type="tel" name="whatsapp" id="whatsapp" required value="<?php echo isset($_POST['whatsapp']) ? htmlspecialchars($_POST['whatsapp']) : ''; ?>">
                     <?php if (isset($errors['whatsapp'])): ?>
-                        <p class="text-red-500 text-sm mt-1"><?php echo $errors['whatsapp']; ?></p>
+                        <p class="error"><?php echo $errors['whatsapp']; ?></p>
                     <?php endif; ?>
                 </div>
-                <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:shadow-xl">Enviar Cotización</button>
+                <button type="submit">Enviar Cotización</button>
             </form>
             <?php endif; ?>
         </div>

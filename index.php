@@ -47,10 +47,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $fechaFormatted = date('d/m/y', strtotime($fecha));
 
         // Registrar solo la fecha actual en America/Bogotá (sin hora)
-        $fechaEnvio = date('d/m/Y'); // Ejemplo: "25/03/2025"
+        $fechaEnvio = date('d/m/Y'); // Ejemplo: "01/06/2025"
+
+        // Lista de destinatarios con nombre y número
+        $destinatarios = [
+            ['nombre' => 'Kathe', 'numero' => '573245534652'],
+            ['nombre' => 'Hannia', 'numero' => '573166146661'],
+        ];
+
+        // Archivo para almacenar el índice del último destinatario usado
+        $indiceFile = 'ultimo_numero.txt';
+
+        // Leer el índice actual o inicializar en 0 si no existe
+        $indiceActual = file_exists($indiceFile) ? (int)file_get_contents($indiceFile) : 0;
+
+        // Seleccionar el destinatario actual
+        $destinatario = $destinatarios[$indiceActual];
+        $numeroDestino = $destinatario['numero'];
+        $nombreDestino = $destinatario['nombre'];
+
+        // Actualizar el índice para el próximo envío
+        $indiceSiguiente = ($indiceActual + 1) % count($destinatarios);
+        file_put_contents($indiceFile, $indiceSiguiente);
 
         // Formato del mensaje de WhatsApp
-        $numeroDestino = "573166146661";
         $texto = urlencode("¡Hola! Quiero cotizar un paseo en bote\n==================\n👤 Nombre: $nombreCompleto\n🚤 Tipo de Embarcación: $tipoEmbarcacion\n🏝️ Destino: $destino\n👥 Número de Personas: $numeroPersonas\n📅 Fecha: $fechaFormatted\n📱 WhatsApp: $whatsapp");
 
         // Enviar datos al webhook de n8n usando cURL
@@ -62,7 +82,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'numeroPersonas' => $numeroPersonas,
             'fecha' => $fechaFormatted,
             'whatsapp' => $whatsapp,
-            'fechaEnvio' => $fechaEnvio
+            'fechaEnvio' => $fechaEnvio,
+            'destinatarioNombre' => $nombreDestino,
+            'destinatarioNumero' => $numeroDestino
         ];
         
         $ch = curl_init($webhookUrl);
@@ -153,7 +175,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .form-section h2 {
             text-align: center;
             color: #333;
-            font-size: 2rem; /* Título más grande */
+            font-size: 2rem;
             margin-bottom: 20px;
             margin-top: 10px;
         }

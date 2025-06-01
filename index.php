@@ -134,6 +134,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .form-section .header img {
             width: 70%;
             max-width: 300px;
+            display: block;
+            margin: 0 auto;
         }
         @media (max-width: 768px) {
             .form-section .header {
@@ -151,7 +153,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .form-section h2 {
             text-align: center;
             color: #333;
-            margin-bottom: 5px;
+            font-size: 2rem; /* Título más grande */
+            margin-bottom: 20px;
             margin-top: 10px;
         }
         .form-section label {
@@ -237,7 +240,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <p class="font-semibold">María G.</p>
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow-lg fade-in">
-                    <p class="text-gray-600 italic mb-4">"Ver el atardecer desde un yate en Cartagena оке mágico. ¡Totalmente recomendado!"</p>
+                    <p class="text-gray-600 italic mb-4">"Ver el atardecer desde un yate en Cartagena fue mágico. ¡Totalmente recomendado!"</p>
                     <p class="font-semibold">Juan P.</p>
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow-lg fade-in">
@@ -262,8 +265,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="header">
             <img src="Logo-formulario-dc.svg" alt="Descubre Cartagena">
         </div>
+        <h2>Cotizar Embarcación</h2>
         <div class="container">
-            <h2>Reserva tu Bote Ahora</h2>
             <?php if ($mostrarFormulario): ?>
             <form action="" method="POST" id="formulario">
                 <div>
@@ -319,7 +322,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <p class="error"><?php echo $errors['whatsapp']; ?></p>
                     <?php endif; ?>
                 </div>
-                <button type="submit">Enviar Cotización</button>
+                <button type="submit">Enviar por WhatsApp</button>
             </form>
             <?php endif; ?>
         </div>

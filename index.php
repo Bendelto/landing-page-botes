@@ -218,6 +218,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             font-size: 12px;
             margin-top: 3px;
         }
+        /* Estilos para el badge de reseñas ficticio */
+        .review-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #333;
+        }
+        .review-badge .stars {
+            color: #f5c518; /* Amarillo para las estrellas */
+            margin-right: 8px;
+        }
     </style>
 </head>
 <body class="bg-gray-100">
@@ -290,6 +303,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <section id="formulario" class="form-section py-16">
         <div class="header">
             <img src="Logo-formulario-dc.svg" alt="Descubre Cartagena">
+            <!-- Badge de reseñas ficticio -->
+            <div class="review-badge">
+                <span class="stars">★★★★★</span>
+                <span>4.9 (50 reseñas)</span>
+            </div>
         </div>
         <h2 class="font-bold">Cotizar Embarcación</h2>
         <div class="container">

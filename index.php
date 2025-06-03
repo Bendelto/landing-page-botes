@@ -1,5 +1,5 @@
 <?php
-// Configurar la zona horaria a America/Bogotá
+// Configurar la zona horaria a America/Bogota
 date_default_timezone_set('America/Bogota');
 
 $errors = [];
@@ -13,31 +13,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $fecha = htmlspecialchars($_POST["fecha"]);
     $whatsapp = htmlspecialchars($_POST["whatsapp"]);
 
-    // Validación de WhatsApp
+    // Validacion de WhatsApp
     if (!preg_match('/^\+\d{9,15}$/', $whatsapp)) {
-        $errors['whatsapp'] = 'El número de WhatsApp no es válido. Debe incluir el código de país (ej. +573123456789).';
+        $errors['whatsapp'] = 'El numero de WhatsApp no es valido. Debe incluir el codigo de pais (ej. +573123456789).';
     }
 
-    // Verificación de campos vacíos
+    // Verificacion de campos vacios
     if (empty($nombreCompleto)) {
         $errors['nombreCompleto'] = 'El nombre completo es obligatorio.';
     }
     if (empty($tipoEmbarcacion)) {
-        $errors['tipoEmbarcacion'] = 'El tipo de embarcación es obligatorio.';
+        $errors['tipoEmbarcacion'] = 'El tipo de embarcacion es obligatorio.';
     }
     if (empty($destino)) {
         $errors['destino'] = 'El destino es obligatorio.';
     }
     if (empty($numeroPersonas)) {
-        $errors['numeroPersonas'] = 'El número de personas es obligatorio.';
+        $errors['numeroPersonas'] = 'El numero de personas es obligatorio.';
     }
     if (empty($fecha)) {
         $errors['fecha'] = 'La fecha del paseo es obligatoria.';
     }
 
-    // Validación del número de personas
+    // Validacion del numero de personas
     if (!is_numeric($numeroPersonas) || $numeroPersonas < 1) {
-        $errors['numeroPersonas'] = 'El número de personas debe ser un valor válido mayor o igual a 1.';
+        $errors['numeroPersonas'] = 'El numero de personas debe ser un valor valido mayor o igual a 1.';
     }
 
     if (!empty($errors)) {
@@ -46,19 +46,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Convertir fecha a formato dd/mm/aa
         $fechaFormatted = date('d/m/y', strtotime($fecha));
 
-        // Registrar solo la fecha actual en America/Bogotá (sin hora)
-        $fechaEnvio = date('d/m/Y'); // Ejemplo: "01/06/2025"
+        // Registrar solo la fecha actual en America/Bogota (sin hora)
+        $fechaEnvio = date('d/m/Y'); // Ejemplo: "03/06/2025"
 
-        // Lista de destinatarios con nombre y número
+        // Lista de destinatarios con nombre y numero
         $destinatarios = [
-            ['nombre' => 'Kathe', 'numero' => '573245534652'],
+            ['nombre' => 'Kathe', 'numero' => '573245534456'],
             ['nombre' => 'Hannia', 'numero' => '573166146661'],
         ];
 
-        // Archivo para almacenar el índice del último destinatario usado
+        // Archivo para almacenar el indice del ultimo numero usado
         $indiceFile = 'ultimo_numero.txt';
 
-        // Leer el índice actual o inicializar en 0 si no existe
+        // Leer el indice actual o inicializar en 0 si no existe
         $indiceActual = file_exists($indiceFile) ? (int)file_get_contents($indiceFile) : 0;
 
         // Seleccionar el destinatario actual
@@ -66,12 +66,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $numeroDestino = $destinatario['numero'];
         $nombreDestino = $destinatario['nombre'];
 
-        // Actualizar el índice para el próximo envío
+        // Actualizar el indice para el proximo envio
         $indiceSiguiente = ($indiceActual + 1) % count($destinatarios);
         file_put_contents($indiceFile, $indiceSiguiente);
 
         // Formato del mensaje de WhatsApp
-        $texto = urlencode("¡Hola! Quiero cotizar un paseo en bote\n==================\n👤 Nombre: $nombreCompleto\n🚤 Tipo de Embarcación: $tipoEmbarcacion\n🏝️ Destino: $destino\n👥 Número de Personas: $numeroPersonas\n📅 Fecha: $fechaFormatted\n📱 WhatsApp: $whatsapp");
+        $texto = urlencode("¡Hola! Quiero cotizar un paseo en bote:\n==================\n👤 Nombre: $nombreCompleto\n🚤 Tipo de Embarcacion: $tipoEmbarcacion\n🏝️ Destino: $destino\n👥 Numero de Personas: $numeroPersonas\n📅 Fecha: $fechaFormatted\n📱 WhatsApp: $whatsapp");
 
         // Enviar datos al webhook de n8n usando cURL
         $webhookUrl = "https://n8n.socialhot.co/webhook/cotizacion-bote";
@@ -95,7 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $result = curl_exec($ch);
         curl_close($ch);
 
-        // Redirección directa a WhatsApp
+        // Redireccion directa a WhatsApp
         header("Location: https://api.whatsapp.com/send?phone=$numeroDestino&text=$texto");
         exit;
     }
@@ -107,7 +107,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Pixel de Facebook (mantener tu ID) -->
-    <!-- Inserta el código del Pixel de Facebook aquí. Obtén el código desde el Administrador de Eventos de Facebook y pégalo justo después de esta línea. -->
+    <!-- Inserta el codigo del Pixel de Facebook aqui. Obten el codigo desde el Administrador de Eventos de Facebook y pegalo justo despues de esta linea. -->
     <title>Alquila un Bote en Cartagena - Islas del Rosario y Atardeceres</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.min.css">
@@ -128,7 +128,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .fade-in.visible { opacity: 1; transform: translateY(0); }
         .floating-btn { 
             transition: transform 0.3s ease; 
-            padding: 12px 20px;
+            padding: 12px 16px;
             font-size: 18px;
         }
         .floating-btn:hover { 
@@ -136,19 +136,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         .iti { width: 100%; }
 
-        /* Estilos específicos para la sección del formulario */
-        .form-section * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Poppins', sans-serif;
-        }
+        /* Estilos especificos para la seccion del formulario */
         .form-section {
             background-color: #f8f9fa;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
+            padding: 40px 20px;
             margin-top: 20px;
         }
         .form-section .header {
@@ -161,75 +155,97 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             display: block;
             margin: 0 auto;
         }
-        @media (max-width: 768px) {
+        @media (max-width: 600px) {
             .form-section .header {
                 margin-top: 20px;
             }
+            .form-section .header img {
+                width: 90%;
+            }
         }
-        .form-section .container {
+        .form-section .form-container {
             background: #fff;
-            padding: 20px;
+            padding: 24px;
             width: 100%;
             max-width: 400px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
         .form-section h2 {
             text-align: center;
             color: #333;
             font-size: 2rem;
-            margin-bottom: 20px;
-            margin-top: 10px;
+            margin-bottom: 16px;
+            margin-top: 8px;
         }
         .form-section label {
-            font-weight: 600;
-            margin-top: 10px;
-            margin-bottom: 3px;
+            font-weight: bold;
+            margin-top: 12px;
+            margin-bottom: 4px;
             display: block;
-            color: #555;
+            color: #444;
             font-size: 14px;
         }
         .form-section input, .form-section select {
             width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 4px;
             font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+        .form-section input:focus, .form-section select:focus {
+            border-color: #28a745;
+            outline: none;
         }
         .form-section .iti {
             width: 100% !important;
         }
         .form-section button {
             width: 100%;
-            padding: 10px;
-            margin-top: 15px;
-            background: #28a745;
+            padding: 12px;
+            margin-top: 16px;
+            background-color: #28a745;
             color: white;
             border: none;
-            font-size: 16px;
+            font-size: 18px;
+            font-weight: bold;
             cursor: pointer;
-            border-radius: 5px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
         }
         .form-section button:hover {
-            background: #218838;
+            background-color: #218838;
         }
         .form-section .error {
             color: #dc3545;
             font-size: 12px;
-            margin-top: 3px;
+            margin-top: 6px;
         }
-        /* Estilos para el badge de reseñas ficticio */
+        /* Estilos para el badge de resenas */
         .review-badge {
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-top: 10px;
-            font-size: 14px;
+            margin-bottom: 16px;
+            font-size: 16px;
             color: #333;
         }
-        .review-badge .stars {
+        .badge-stars {
             color: #f5c518; /* Amarillo para las estrellas */
+            font-size: 20px;
             margin-right: 8px;
+        }
+        /* Estilos para las estrellas de testimonios */
+        .stars {
+            color: #f5c518; /* Amarillo para las estrellas */
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        /* Estilo para el texto de los testimonios */
+        .testimonial-text {
+            min-height: 80px;
+            margin-bottom: 8px;
         }
     </style>
 </head>
@@ -246,17 +262,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Why Choose Us Section -->
     <section class="py-16 bg-white">
         <div class="container mx-auto px-4 text-center">
-            <h2 class="text-3xl md:text-4xl font-bold mb-12 fade-in">¿Por qué elegirnos?</h2>
+            <h2 class="text-3xl md:text-4xl font-bold mb-12 fade-in">¿Por que elegirnos?</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="fade-in">
                     <img src="lancha.jpg" alt="Lancha Deportiva" class="mx-auto mb-4 rounded-lg shadow-md" loading="lazy">
                     <h3 class="text-xl font-semibold mb-2">Variedad de Embarcaciones</h3>
-                    <p class="text-gray-600">Desde lanchas deportivas rápidas hasta catamaranes espaciosos y yates de lujo, tenemos la opción perfecta para tu aventura.</p>
+                    <p class="text-gray-600">Desde lanchas deportivas rapidas hasta catamaranes espaciosos y yates de lujo, tenemos la opcion perfecta para tu aventura.</p>
                 </div>
                 <div class="fade-in">
                     <img src="atardecer.jpg" alt="Atardecer Privado" class="mx-auto mb-4 rounded-lg shadow-md" loading="lazy">
                     <h3 class="text-xl font-semibold mb-2">Experiencias Personalizadas</h3>
-                    <p class="text-gray-600">Tú decides: un paseo privado por las Islas del Rosario o un romántico atardecer en Cartagena, adaptado a tus deseos.</p>
+                    <p class="text-gray-600">Tu decides: un paseo privado por las Islas del Rosario o un romantico atardecer en Cartagena, adaptado a tus deseos.</p>
                 </div>
                 <div class="fade-in">
                     <img src="equipo.jpg" alt="Equipo Profesional" class="mx-auto mb-4 rounded-lg shadow-md" loading="lazy">
@@ -271,18 +287,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Testimonials Section -->
     <section class="py-16 bg-gray-100">
         <div class="container mx-auto px-4 text-center">
+            <!-- Badge de resenas ficticio -->
+            <div class="review-badge">
+                <span class="badge-stars">★★★★★</span>
+                <span>4.9 (53 reseñas)</span>
+            </div>
             <h2 class="text-3xl md:text-4xl font-bold mb-12 fade-in">Lo que dicen nuestros clientes</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="bg-white p-6 rounded-lg shadow-lg fade-in">
-                    <p class="text-gray-600 italic mb-4">"El paseo por las Islas del Rosario fue espectacular. La lancha era cómoda y el equipo súper profesional."</p>
-                    <p class="font-semibold">María G.</p>
+                    <p class="text-gray-600 italic testimonial-text">"El paseo por las Islas del Rosario fue espectacular. La lancha era comoda y el equipo super profesional."</p>
+                    <div class="stars">★★★★★</div>
+                    <p class="font-semibold">Maria G.</p>
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow-lg fade-in">
-                    <p class="text-gray-600 italic mb-4">"Ver el atardecer desde un yate en Cartagena fue mágico. ¡Totalmente recomendado!"</p>
+                    <p class="text-gray-600 italic testimonial-text">"Ver el atardecer desde un yate en Cartagena fue magico. ¡Totalmente recomendado!"</p>
+                    <div class="stars">★★★★★</div>
                     <p class="font-semibold">Juan P.</p>
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow-lg fade-in">
-                    <p class="text-gray-600 italic mb-4">"Una experiencia personalizada y de lujo. Volveremos pronto."</p>
+                    <p class="text-gray-600 italic testimonial-text">"Una experiencia personalizada y de lujo. Volveremos pronto."</p>
+                    <div class="stars">★★★★★</div>
                     <p class="font-semibold">Ana R.</p>
                 </div>
             </div>
@@ -294,7 +318,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <section class="section-bg py-16 text-white">
         <div class="container mx-auto px-4 text-center p-8 md:p-12 rounded-lg max-w-2xl fade-in">
             <h2 class="text-3xl md:text-4xl font-bold mb-4">¡El Caribe te espera!</h2>
-            <p class="text-lg md:text-xl mb-6">No dejes pasar la oportunidad de vivir una experiencia única en las cristalinas aguas de las Islas del Rosario o contemplando el mágico atardecer de Cartagena. Contáctanos ahora y reserva tu bote privado.</p>
+            <p class="text-lg md:text-xl mb-6">No dejes pasar la oportunidad de vivir una experiencia unica en las cristalinas aguas de las Islas del Rosario o contemplando el magico atardecer de Cartagena. Contactanos ahora y reserva tu bote privado.</p>
             <a href="#formulario" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:shadow-xl">Reserva tu Bote</a>
         </div>
     </section>
@@ -302,36 +326,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Form Section -->
     <section id="formulario" class="form-section py-16">
         <div class="header">
-            <img src="Logo-formulario-dc.svg" alt="Descubre Cartagena">
-            <!-- Badge de reseñas ficticio -->
-            <div class="review-badge">
-                <span class="stars">★★★★★</span>
-                <span>4.9 (50 reseñas)</span>
-            </div>
+            <img src="Logo-formulario-dc.jpg" alt="Descubre Cartagena">
         </div>
-        <h2 class="font-bold">Cotizar Embarcación</h2>
-        <div class="container">
+        <h2 class="font-bold">Cotizar Embarcacion</h2>
+        <div class="form-container">
             <?php if ($mostrarFormulario): ?>
             <form action="" method="POST" id="formulario">
                 <div>
                     <label for="nombreCompleto">Nombre y Apellidos</label>
                     <input type="text" name="nombreCompleto" id="nombreCompleto" required value="<?php echo isset($_POST['nombreCompleto']) ? htmlspecialchars($_POST['nombreCompleto']) : ''; ?>">
                     <?php if (isset($errors['nombreCompleto'])): ?>
-                        <p class="error"><?php echo $errors['nombreCompleto']; ?></p>
+                        <p class="error"><?php echo htmlspecialchars($errors['nombreCompleto']); ?></p>
                     <?php endif; ?>
                 </div>
                 <div>
-                    <label for="tipoEmbarcacion">Tipo de Embarcación</label>
+                    <label for="tipoEmbarcacion">Tipo de Embarcacion</label>
                     <select name="tipoEmbarcacion" id="tipoEmbarcacion" required>
-                        <option value="">Seleccione una opción</option>
+                        <option value="">Seleccione una opcion</option>
                         <option value="Cualquiera" <?php echo isset($_POST['tipoEmbarcacion']) && $_POST['tipoEmbarcacion'] == 'Cualquiera' ? 'selected' : ''; ?>>Cualquiera</option>
                         <option value="Bote deportivo" <?php echo isset($_POST['tipoEmbarcacion']) && $_POST['tipoEmbarcacion'] == 'Bote deportivo' ? 'selected' : ''; ?>>Bote Deportivo</option>
-                        <option value="Catamarán" <?php echo isset($_POST['tipoEmbarcacion']) && $_POST['tipoEmbarcacion'] == 'Catamarán' ? 'selected' : ''; ?>>Catamarán</option>
+                        <option value="Catamaran" <?php echo isset($_POST['tipoEmbarcacion']) && $_POST['tipoEmbarcacion'] == 'Catamaran' ? 'selected' : ''; ?>>Catamaran</option>
                         <option value="Yate" <?php echo isset($_POST['tipoEmbarcacion']) && $_POST['tipoEmbarcacion'] == 'Yate' ? 'selected' : ''; ?>>Yate</option>
                         <option value="Velero" <?php echo isset($_POST['tipoEmbarcacion']) && $_POST['tipoEmbarcacion'] == 'Velero' ? 'selected' : ''; ?>>Velero</option>
                     </select>
                     <?php if (isset($errors['tipoEmbarcacion'])): ?>
-                        <p class="error"><?php echo $errors['tipoEmbarcacion']; ?></p>
+                        <p class="error"><?php echo htmlspecialchars($errors['tipoEmbarcacion']); ?></p>
                     <?php endif; ?>
                 </div>
                 <div>
@@ -339,31 +358,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <select name="destino" id="destino" required>
                         <option value="">Seleccione un destino</option>
                         <option value="Islas del Rosario" <?php echo isset($_POST['destino']) && $_POST['destino'] == 'Islas del Rosario' ? 'selected' : ''; ?>>Islas del Rosario</option>
-                        <option value="Bahía de Cartagena" <?php echo isset($_POST['destino']) && $_POST['destino'] == 'Bahía de Cartagena' ? 'selected' : ''; ?>>Bahía de Cartagena</option>
+                        <option value="Bahia de Cartagena" <?php echo isset($_POST['destino']) && $_POST['destino'] == 'Bahia de Cartagena' ? 'selected' : ''; ?>>Bahia de Cartagena</option>
                     </select>
                     <?php if (isset($errors['destino'])): ?>
-                        <p class="error"><?php echo $errors['destino']; ?></p>
+                        <p class="error"><?php echo htmlspecialchars($errors['destino']); ?></p>
                     <?php endif; ?>
                 </div>
                 <div>
-                    <label for="numeroPersonas">Número de Personas</label>
+                    <label for="numeroPersonas">Numero de Personas</label>
                     <input type="number" name="numeroPersonas" id="numeroPersonas" required value="<?php echo isset($_POST['numeroPersonas']) ? htmlspecialchars($_POST['numeroPersonas']) : '1'; ?>" min="1" max="100" step="1">
                     <?php if (isset($errors['numeroPersonas'])): ?>
-                        <p class="error"><?php echo $errors['numeroPersonas']; ?></p>
+                        <p class="error"><?php echo htmlspecialchars($errors['numeroPersonas']); ?></p>
                     <?php endif; ?>
                 </div>
                 <div>
                     <label for="fecha">Fecha del Paseo</label>
                     <input type="date" name="fecha" id="fecha" required value="<?php echo isset($_POST['fecha']) ? htmlspecialchars($_POST['fecha']) : ''; ?>" min="<?php echo date('Y-m-d'); ?>">
                     <?php if (isset($errors['fecha'])): ?>
-                        <p class="error"><?php echo $errors['fecha']; ?></p>
+                        <p class="error"><?php echo htmlspecialchars($errors['fecha']); ?></p>
                     <?php endif; ?>
                 </div>
                 <div>
                     <label for="whatsapp">WhatsApp</label>
                     <input type="tel" name="whatsapp" id="whatsapp" required value="<?php echo isset($_POST['whatsapp']) ? htmlspecialchars($_POST['whatsapp']) : ''; ?>">
                     <?php if (isset($errors['whatsapp'])): ?>
-                        <p class="error"><?php echo $errors['whatsapp']; ?></p>
+                        <p class="error"><?php echo htmlspecialchars($errors['whatsapp']); ?></p>
                     <?php endif; ?>
                 </div>
                 <button type="submit">Cotizar Ahora por WhatsApp</button>
@@ -379,7 +398,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <footer class="bg-gray-800 text-white py-8">
         <div class="container mx-auto px-4 text-center">
             <p class="mb-4">© 2025 Agencia de Tours y Alquiler de Botes en Cartagena</p>
-            <p>Contáctanos por WhatsApp: <a href="https://wa.me/573205899997" target="_blank" class="underline">+57 320 589 9997</a></p>
+            <p>Contactanos por WhatsApp: <a href="https://wa.me/573205899987" target="_blank" class="underline">+57 320 589 9987</a></p>
         </div>
     </footer>
 

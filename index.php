@@ -89,7 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         $ch = curl_init($webhookUrl);
         curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type", "application/json", "Benko: Dc@6691400"]);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json", "Benko: Dc@6691400"]);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $result = curl_exec($ch);
@@ -156,9 +156,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             gap: 16px; /* Separación entre logos */
         }
         .form-section .logo {
-            width: 70%;
-            max-width: 120px; /* Tamaño reducido */
-            height: auto;
+            height: 60px; /* Altura fija para ambos logos */
+            width: auto; /* Ancho se ajusta según proporciones */
             object-fit: contain; /* Mantiene proporciones */
             display: block;
         }
@@ -167,8 +166,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 margin-top: 20px;
             }
             .form-section .logo {
-                width: 90%;
-                max-width: 100px; /* Ligeramente más pequeño en móviles */
+                height: 50px; /* Altura ligeramente menor en móviles */
+                width: auto;
             }
         }
         .form-section .form-container {
@@ -335,8 +334,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <section id="formulario" class="form-section py-16">
         <div class="header">
             <div class="logo-container">
-                <img src="Logo-formulario-dc.jpg" alt="Descubre Cartagena" class="logo">
-                <img src="rl.logo.webp" alt="RL Logo" class="logo">
+                <img src="Logo-formulario.svg" alt="Descubre Cartagena" class="logo">
+                <img src="rl-logo.webp" alt="RL Logo" class="logo">
             </div>
         </div>
         <h2 class="font-bold">Cotizar Embarcacion</h2>

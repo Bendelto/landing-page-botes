@@ -128,8 +128,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .fade-in.visible { opacity: 1; transform: translateY(0); }
         .floating-btn { 
             transition: transform 0.3s ease; 
-            padding: 12px 20px; /* Aumentado para mejor usabilidad en móvil */
-            font-size: 18px; /* Tamaño de fuente más grande */
+            padding: 12px 20px;
+            font-size: 18px;
         }
         .floating-btn:hover { 
             transform: scale(1.05); 
@@ -203,7 +203,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             width: 100%;
             padding: 10px;
             margin-top: 15px;
-            background: #28a745; /* Verde más vibrante */
+            background: #28a745;
             color: white;
             border: none;
             font-size: 16px;
@@ -211,7 +211,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             border-radius: 5px;
         }
         .form-section button:hover {
-            background: #218838; /* Hover más contrastado */
+            background: #218838;
         }
         .form-section .error {
             color: #dc3545;
@@ -291,7 +291,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="header">
             <img src="Logo-formulario-dc.svg" alt="Descubre Cartagena">
         </div>
-        <h2>Cotizar Embarcación</h2>
+        <h2 class="font-bold">Cotizar Embarcación</h2>
         <div class="container">
             <?php if ($mostrarFormulario): ?>
             <form action="" method="POST" id="formulario">
@@ -361,7 +361,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <footer class="bg-gray-800 text-white py-8">
         <div class="container mx-auto px-4 text-center">
             <p class="mb-4">© 2025 Agencia de Tours y Alquiler de Botes en Cartagena</p>
-            <p>Contáctanos: <a href="https://wa.me/573123456789" target="_blank" class="underline">+57 312 345 6789</a></p>
+            <p>Contáctanos por WhatsApp: <a href="https://wa.me/573205899997" target="_blank" class="underline">+57 320 589 9997</a></p>
         </div>
     </footer>
 

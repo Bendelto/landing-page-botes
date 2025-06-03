@@ -128,6 +128,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .fade-in.visible { opacity: 1; transform: translateY(0); }
         .floating-btn { 
             transition: transform 0.3s ease; 
+            padding: 12px 20px; /* Aumentado para mejor usabilidad en móvil */
+            font-size: 18px; /* Tamaño de fuente más grande */
         }
         .floating-btn:hover { 
             transform: scale(1.05); 
@@ -201,7 +203,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             width: 100%;
             padding: 10px;
             margin-top: 15px;
-            background: #25D366;
+            background: #28a745; /* Verde más vibrante */
             color: white;
             border: none;
             font-size: 16px;
@@ -209,7 +211,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             border-radius: 5px;
         }
         .form-section button:hover {
-            background: #1ebc57;
+            background: #218838; /* Hover más contrastado */
         }
         .form-section .error {
             color: #dc3545;
@@ -249,6 +251,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <p class="text-gray-600">Nuestro equipo profesional garantiza seguridad, comodidad y una experiencia inolvidable en el mar.</p>
                 </div>
             </div>
+            <a href="#formulario" class="mt-12 inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:shadow-xl fade-in">Cotizar Ahora</a>
         </div>
     </section>
 
@@ -270,6 +273,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <p class="font-semibold">Ana R.</p>
                 </div>
             </div>
+            <a href="#formulario" class="mt-12 inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:shadow-xl fade-in">Cotizar Ahora</a>
         </div>
     </section>
 
@@ -344,7 +348,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <p class="error"><?php echo $errors['whatsapp']; ?></p>
                     <?php endif; ?>
                 </div>
-                <button type="submit">Enviar por WhatsApp</button>
+                <button type="submit">Cotizar Ahora por WhatsApp</button>
             </form>
             <?php endif; ?>
         </div>

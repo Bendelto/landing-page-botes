@@ -89,7 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         $ch = curl_init($webhookUrl);
         curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json", "Benko: Dc@6691400"]);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type", "application/json", "Benko: Dc@6691400"]);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $result = curl_exec($ch);
@@ -147,20 +147,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         .form-section .header {
             text-align: center;
-            margin-bottom: 0px;
+            margin-bottom: 0;
         }
-        .form-section .header img {
+        .form-section .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px; /* Separación entre logos */
+        }
+        .form-section .logo {
             width: 70%;
-            max-width: 300px;
+            max-width: 120px; /* Tamaño reducido */
+            height: auto;
+            object-fit: contain; /* Mantiene proporciones */
             display: block;
-            margin: 0 auto;
         }
         @media (max-width: 600px) {
             .form-section .header {
                 margin-top: 20px;
             }
-            .form-section .header img {
+            .form-section .logo {
                 width: 90%;
+                max-width: 100px; /* Ligeramente más pequeño en móviles */
             }
         }
         .form-section .form-container {
@@ -326,7 +334,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Form Section -->
     <section id="formulario" class="form-section py-16">
         <div class="header">
-            <img src="Logo-formulario-dc.jpg" alt="Descubre Cartagena">
+            <div class="logo-container">
+                <img src="Logo-formulario-dc.jpg" alt="Descubre Cartagena" class="logo">
+                <img src="rl.logo.webp" alt="RL Logo" class="logo">
+            </div>
         </div>
         <h2 class="font-bold">Cotizar Embarcacion</h2>
         <div class="form-container">

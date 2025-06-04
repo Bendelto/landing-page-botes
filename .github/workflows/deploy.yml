@@ -1,0 +1,23 @@
+name: 🚀 Deploy por FTP
+
+on:
+  push:
+    branches: [ main ]   # cámbialo si tu rama principal no se llama "main"
+
+jobs:
+  ftp-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📦 Checkout
+        uses: actions/checkout@v3
+
+      - name: 🚀 FTP Deploy
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: ${{ secrets.FTP_SERVER_DIR }}   # ej. /public_html/botes/
+          protocol: ftp
+          local-dir: ./                               # sube todo el repo

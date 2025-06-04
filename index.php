@@ -373,7 +373,6 @@ src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"
                         <option value="Bote deportivo" <?php echo isset($_POST['tipoEmbarcacion']) && $_POST['tipoEmbarcacion'] == 'Bote deportivo' ? 'selected' : ''; ?>>Bote deportivo</option>
                         <option value="Catamaran" <?php echo isset($_POST['tipoEmbarcacion']) && $_POST['tipoEmbarcacion'] == 'Catamaran' ? 'selected' : ''; ?>>Catamarán</option>
                         <option value="Yate" <?php echo isset($_POST['tipoEmbarcacion']) && $_POST['tipoEmbarcacion'] == 'Yate' ? 'selected' : ''; ?>>Yate</option>
-                        <option value="Velero" <?php echo isset($_POST['tipoEmbarcacion']) && $_POST['tipoEmbarcacion'] == 'Velero' ? 'selected' : ''; ?>>Velero</option>
                     </select>
                     <?php if (isset($errors['tipoEmbarcacion'])): ?>
                         <p class="error"><?php echo htmlspecialchars($errors['tipoEmbarcacion']); ?></p>
@@ -383,8 +382,8 @@ src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"
                     <label for="destino">Destino</label>
                     <select name="destino" id="destino" required>
                         <option value="">Seleccione un destino</option>
-                        <option value="Islas del Rosario" <?php echo isset($_POST['destino']) && $_POST['destino'] == 'Islas del Rosario' ? 'selected' : ''; ?>>Islas del Rosario</option>
-                        <option value="Bahia de Cartagena" <?php echo isset($_POST['destino']) && $_POST['destino'] == 'Bahia de Cartagena' ? 'selected' : ''; ?>>Bahía de Cartagena</option>
+                        <option value="Islas del Rosario o Cholón" <?php echo isset($_POST['destino']) && $_POST['destino'] == 'Islas del Rosario o Cholón' ? 'selected' : ''; ?>>Islas del Rosario o Cholón</option>
+                        <option value="Bahía de Cartagena" <?php echo isset($_POST['destino']) && $_POST['destino'] == 'Bahía de Cartagena' ? 'selected' : ''; ?>>Bahía de Cartagena</option>
                     </select>
                     <?php if (isset($errors['destino'])): ?>
                         <p class="error"><?php echo htmlspecialchars($errors['destino']); ?></p>

@@ -253,6 +253,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             min-height: 80px;
             margin-bottom: 8px;
         }
+        /* Estilo para el texto destacado del formulario */
+        .form-section .highlight-text {
+            font-size: 1.25rem;
+            color: #1a7c2e;
+            font-weight: 600;
+            background-color: #e6f4ea;
+            padding: 12px;
+            border-radius: 6px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        @media (min-width: 768px) {
+            .form-section .highlight-text {
+                max-width: 400px;
+            }
+        }
     </style>
 	<!-- Meta Pixel Code -->
 <script>
@@ -354,7 +370,7 @@ src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"
                 <img src="rl-logo.webp" alt="RL Logo" class="logo">
             </div>
         </div>
-        <h2 class="font-bold">Cotiza tu bote ya</h2>
+        <p class="highlight-text">Déjanos tus datos y te enviamos precios y opciones por WhatsApp en menos de 15 minutos.</p>
         <div class="form-container">
             <?php if ($mostrarFormulario): ?>
             <form action="" method="POST" id="formulario">

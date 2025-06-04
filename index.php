@@ -182,7 +182,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
-        .form-section h2 {
+        .form-section h2 { /* Estilo general para h2 dentro de .form-section */
             text-align: center;
             color: #333;
             font-size: 1.5rem; /* Tamaño reducido */
@@ -289,7 +289,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             .section-btn {
                 display: none;
             }
-            .form-section button {
+            .form-section button { /* Botón submit del formulario */
                 display: block; /* Asegurar que el botón del formulario sea visible */
             }
         }
@@ -477,10 +477,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
-                const targetId = this.getAttribute('href');
-                const target = document.querySelector(targetId);
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                const targetId = this.getAttribute('href'); // Esto es "#formulario"
+                const sectionTarget = document.querySelector(targetId); // Esta es la <section id="formulario">
+
+                if (sectionTarget) {
+                    // Buscamos el elemento h2 "Cotiza tu bote ya" (que tiene la clase .font-semibold)
+                    // dentro de la sección del formulario.
+                    const scrollTargetElement = sectionTarget.querySelector('h2.font-semibold'); 
+                    
+                    if (scrollTargetElement) {
+                        // Hacemos scroll para que este h2 (Cotiza tu bote ya) quede al inicio de la vista.
+                        scrollTargetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    } else {
+                        // Si por alguna razón no se encuentra el h2, hacemos scroll a la sección completa como antes.
+                        sectionTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
                 }
             });
         });
@@ -494,11 +505,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         const updateVisibility = () => {
             if (window.innerWidth >= 768) { // Si es escritorio
                 floatingBtn.classList.add('hidden');
-                // Si tienes botones de sección que se ocultan en móvil y quieres mostrarlos en escritorio:
-                // sectionButtons.forEach(btn => btn.style.display = 'inline-block'); // O la clase que uses para mostrar
             } else { // Si es móvil
-                // sectionButtons.forEach(btn => btn.style.display = 'none'); // Ocultar botones de sección en móvil si es necesario
-
                 const formRect = formSection.getBoundingClientRect();
                 const viewportHeight = window.innerHeight;
 
@@ -520,14 +527,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         window.addEventListener('scroll', debouncedUpdateVisibility);
         window.addEventListener('resize', debouncedUpdateVisibility);
 
-        // Inicializar visibilidad al cargar la página y al cambiar el tamaño
+        // Inicializar visibilidad al cargar la página
         document.addEventListener('DOMContentLoaded', () => {
             updateVisibility(); // Establecer estado inicial al cargar
         });
-        // También es buena idea llamar a updateVisibility en resize por si se cambia de móvil a escritorio sin recargar
-        // window.addEventListener('resize', updateVisibility); // Ya está arriba con debounce
 
-        // Fade-in animation on scroll (manteniendo IntersectionObserver solo para animaciones)
+        // Fade-in animation on scroll
         const fadeIns = document.querySelectorAll('.fade-in');
         const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
         const fadeObserver = new IntersectionObserver((entries) => {
@@ -549,8 +554,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     initialCountry: "co",
                     utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
                 });
-                // Asegurarse de que el formulario existe antes de añadir el listener
-                const formElement = document.querySelector("form");
+                const formElement = document.querySelector("form"); // Asegúrate que sea el formulario correcto si hay varios
                 if (formElement) {
                     formElement.addEventListener("submit", function() {
                         input.value = iti.getNumber();

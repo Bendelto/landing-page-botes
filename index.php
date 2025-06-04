@@ -279,6 +279,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .hero-bg a {
             margin-bottom: 16px; /* Espacio debajo del botón */
         }
+        /* Ocultar botones de secciones en móvil cuando el botón flotante está visible */
+        @media (max-width: 767px) {
+            .section-btn.hide-on-mobile {
+                display: none;
+            }
+        }
     </style>
 	<!-- Meta Pixel Code -->
 <script>
@@ -304,7 +310,7 @@ src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"
         <div class="text-center p-8 md:p-12 rounded-lg max-w-2xl fade-in">
             <h1 class="text-4xl md:text-6xl font-bold mb-4">Vive la Magia de Cartagena en un Bote Privado</h1>
             <p class="text-lg md:text-2xl mb-6">Explora las Islas del Rosario o disfruta un atardecer inolvidable en Cartagena de Indias con nuestras lanchas deportivas y yates.</p>
-            <a href="#formulario" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:shadow-xl">Reserva tu Bote</a>
+            <a href="#formulario" class="section-btn bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:shadow-xl">Reserva tu Bote</a>
         </div>
     </section>
 
@@ -329,7 +335,7 @@ src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"
                     <p class="text-gray-600">Nuestra tripulación con experiencia, no solo sabe navegar, también conoce cada rincón, cada isla y cada historia de la zona.</p>
                 </div>
             </div>
-            <a href="#formulario" class="mt-12 inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:shadow-xl fade-in">Cotizar Ahora</a>
+            <a href="#formulario" class="section-btn mt-12 inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:shadow-xl fade-in">Cotizar Ahora</a>
         </div>
     </section>
 
@@ -359,7 +365,7 @@ src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"
                     <p class="font-semibold">Ana R.</p>
                 </div>
             </div>
-            <a href="#formulario" class="mt-12 inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:shadow-xl fade-in">Cotizar Ahora</a>
+            <a href="#formulario" class="section-btn mt-12 inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:shadow-xl fade-in">Cotizar Ahora</a>
         </div>
     </section>
 
@@ -368,7 +374,7 @@ src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"
         <div class="container mx-auto px-4 text-center p-8 md:p-12 rounded-lg max-w-2xl fade-in">
             <h2 class="text-3xl md:text-4xl font-bold mb-4">¡Cartagena te espera!</h2>
             <p class="text-lg md:text-xl mb-6">No dejes pasar la oportunidad de vivir una experiencia única. Contáctanos ahora y reserva tu bote privado.</p>
-            <a href="#formulario" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:shadow-xl">Reserva tu Bote</a>
+            <a href="#formulario" class="section-btn bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:shadow-xl">Reserva tu Bote</a>
         </div>
     </section>
 
@@ -399,7 +405,7 @@ src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"
                         <option value="Cualquiera" <?php echo isset($_POST['tipoEmbarcacion']) && $_POST['tipoEmbarcacion'] == 'Cualquiera' ? 'selected' : ''; ?>>Cualquiera</option>
                         <option value="Bote deportivo" <?php echo isset($_POST['tipoEmbarcacion']) && $_POST['tipoEmbarcacion'] == 'Bote deportivo' ? 'selected' : ''; ?>>Bote deportivo</option>
                         <option value="Yate" <?php echo isset($_POST['tipoEmbarcacion']) && $_POST['tipoEmbarcacion'] == 'Yate' ? 'selected' : ''; ?>>Yate</option>
-						<option value="Catamaran" <?php echo isset($_POST['tipoEmbarcacion']) && $_POST['tipoEmbarcacion'] == 'Catamaran' ? '	selected' : ''; ?>>Catamarán</option>
+						<option value="Catamaran" <?php echo isset($_POST['tipoEmbarcacion']) && $_POST['tipoEmbarcacion'] == 'Catamaran' ? 'selected' : ''; ?>>Catamarán</option>
                     </select>
                     <?php if (isset($errors['tipoEmbarcacion'])): ?>
                         <p class="error"><?php echo htmlspecialchars($errors['tipoEmbarcacion']); ?></p>
@@ -464,10 +470,11 @@ src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"
             });
         });
 
-        // Control floating button visibility based on form or footer (mobile only)
+        // Control floating button visibility and section buttons based on form or footer (mobile only)
         const floatingBtn = document.querySelector('#floating-btn');
         const formSection = document.querySelector('#formulario');
         const footer = document.querySelector('footer');
+        const sectionButtons = document.querySelectorAll('.section-btn');
         const observerOptions = { threshold: 0.1 };
         let isFormVisible = false;
         let isFooterVisible = false;
@@ -481,8 +488,17 @@ src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"
                     } else if (entry.target === footer) {
                         isFooterVisible = entry.isIntersecting;
                     }
-                    // Hide button if form or footer is visible, show otherwise
-                    floatingBtn.style.display = (isFormVisible || isFooterVisible) ? 'none' : 'block';
+                    // Controlar visibilidad del botón flotante
+                    const isFloatingBtnVisible = !(isFormVisible || isFooterVisible);
+                    floatingBtn.style.display = isFloatingBtnVisible ? 'block' : 'none';
+                    // Ocultar botones de secciones si el botón flotante está visible
+                    sectionButtons.forEach(btn => {
+                        if (isFloatingBtnVisible) {
+                            btn.classList.add('hide-on-mobile');
+                        } else {
+                            btn.classList.remove('hide-on-mobile');
+                        }
+                    });
                 });
             }
         }, observerOptions);
@@ -493,10 +509,19 @@ src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"
         // Update visibility on window resize
         window.addEventListener('resize', () => {
             if (window.innerWidth >= 768) {
-                floatingBtn.style.display = 'none'; // Ensure hidden on desktop
+                floatingBtn.style.display = 'none'; // Ensure floating button hidden on desktop
+                sectionButtons.forEach(btn => btn.classList.remove('hide-on-mobile')); // Show section buttons on desktop
             } else {
                 // Restore mobile behavior
-                floatingBtn.style.display = (isFormVisible || isFooterVisible) ? 'none' : 'block';
+                const isFloatingBtnVisible = !(isFormVisible || isFooterVisible);
+                floatingBtn.style.display = isFloatingBtnVisible ? 'block' : 'none';
+                sectionButtons.forEach(btn => {
+                    if (isFloatingBtnVisible) {
+                        btn.classList.add('hide-on-mobile');
+                    } else {
+                        btn.classList.remove('hide-on-mobile');
+                    }
+                });
             }
         });
 

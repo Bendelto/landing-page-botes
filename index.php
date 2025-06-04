@@ -294,26 +294,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     </style>
-    <!-- Meta Pixel Code -->
     <script>
     !function(f,b,e,v,n,t,s)
     {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '1733751114203823');
-    fbq('track', 'PageView');
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};  
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';  
+    n.queue=[];t=b.createElement(e);t.async=!0;  
+    t.src=v;s=b.getElementsByTagName(e)[0];  
+    s.parentNode.insertBefore(t,s)}(window, document,'script',  
+    'https://connect.facebook.net/en_US/fbevents.js');  
+    fbq('init', '1733751114203823');  
+    fbq('track', 'PageView');  
     </script>
-    <noscript><img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"
+    <noscript><img height="1" width="1" style="display:none"  
+    src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"  
     /></noscript>
-    <!-- End Meta Pixel Code -->
-</head>
+    </head>
 <body class="bg-gray-100">
-    <!-- Hero Section -->
     <section class="hero-bg h-screen flex items-center justify-center text-white">
         <div class="text-center p-8 md:p-12 rounded-lg max-w-2xl fade-in">
             <h1 class="text-4xl md:text-6xl font-bold mb-4">Vive la Magia de Cartagena en un Bote Privado</h1>
@@ -322,7 +319,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </section>
 
-    <!-- Why Choose Us Section -->
     <section class="py-16 bg-white">
         <div class="container mx-auto px-4 text-center">
             <h2 class="text-3xl md:text-4xl font-bold mb-12 fade-in">¿Por qué elegirnos?</h2>
@@ -347,10 +343,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </section>
 
-    <!-- Testimonials Section -->
     <section class="py-16 bg-gray-100">
         <div class="container mx-auto px-4 text-center">
-            <!-- Badge de reseñas ficticio -->
             <div class="review-badge">
                 <span class="badge-stars">★★★★★</span>
                 <span>4.9 (53 reseñas)</span>
@@ -377,7 +371,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </section>
 
-    <!-- Call to Action Section -->
     <section class="section-bg py-16 text-white">
         <div class="container mx-auto px-4 text-center p-8 md:p-12 rounded-lg max-w-2xl fade-in">
             <h2 class="text-3xl md:text-4xl font-bold mb-4">¡Cartagena te espera!</h2>
@@ -386,7 +379,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </section>
 
-    <!-- Form Section -->
     <section id="formulario" class="form-section py-16">
         <div class="header">
             <div class="logo-container">
@@ -398,7 +390,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h2 class="font-semibold">Cotiza tu bote ya</h2>
         <div class="form-container">
             <?php if ($mostrarFormulario): ?>
-            <form action="" method="POST" id="formulario">
+            <form action="" method="POST">
                 <div>
                     <label for="nombreCompleto">Nombre y Apellidos</label>
                     <input type="text" name="nombreCompleto" id="nombreCompleto" required value="<?php echo isset($_POST['nombreCompleto']) ? htmlspecialchars($_POST['nombreCompleto']) : ''; ?>">
@@ -457,10 +449,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </section>
 
-    <!-- Floating Button (Mobile Only) -->
     <a href="#formulario" id="floating-btn" class="md:hidden fixed bottom-4 left-0 right-0 w-11/12 mx-auto bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-full text-base text-center transition duration-300 shadow-xl hover:shadow-2xl floating-btn z-50">Reserva tu Bote</a>
 
-    <!-- Footer -->
     <footer class="bg-gray-800 text-white py-8">
         <div class="container mx-auto px-4 text-center">
             <p class="mb-4">© 2025 Agencia de Tours y Alquiler de Botes en Cartagena</p>
@@ -487,16 +477,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
+                const targetId = this.getAttribute('href');
+                const target = document.querySelector(targetId);
                 if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'start' });
-                    // Ajustar para que el formulario ocupe toda la pantalla
-                    window.scrollBy(0, -60); // Ajuste para compensar el header o cualquier espacio superior
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // La siguiente línea fue eliminada ya que probablemente causaba el problema de scroll:
+                    // const offset = 20; 
+                    // window.scrollBy(0, -offset); 
                 }
             });
         });
 
-        // Control floating button visibility (solo para escritorio y móvil con scroll)
+        // Control floating button visibility (solo para móvil con scroll)
         const floatingBtn = document.querySelector('#floating-btn');
         const formSection = document.querySelector('#formulario');
         const footer = document.querySelector('footer');

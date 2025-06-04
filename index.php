@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $fechaFormatted = date('d/m/y', strtotime($fecha));
 
         // Registrar solo la fecha actual en America/Bogota (sin hora)
-        $fechaEnvio = date('d/m/Y'); // Ejemplo: "03/06/2025"
+        $fechaEnvio = date('d/m/Y'); // Ejemplo: "04/06/2025"
 
         // Lista de destinatarios con nombre y número
         $destinatarios = [
@@ -126,9 +126,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
         .fade-in.visible { opacity: 1; transform: translateY(0); }
         .floating-btn { 
-            transition: transform 0.3s ease; 
+            transition: transform 0.3s ease, opacity 0.3s ease; 
             padding: 12px 16px;
             font-size: 18px;
+            opacity: 1;
+        }
+        .floating-btn.hidden {
+            opacity: 0;
+            pointer-events: none;
         }
         .floating-btn:hover { 
             transform: scale(1.05); 
@@ -282,7 +287,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         /* Ocultar botones de secciones en móvil cuando el botón flotante está visible */
         @media (max-width: 767px) {
             .section-btn.hide-on-mobile {
-                display: none;
+                display: none !important;
             }
         }
     </style>
@@ -462,11 +467,27 @@ src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
     <script>
+        // Función de debounce para limitar la frecuencia de ejecución
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
         // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
             });
         });
 
@@ -475,12 +496,38 @@ src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"
         const formSection = document.querySelector('#formulario');
         const footer = document.querySelector('footer');
         const sectionButtons = document.querySelectorAll('.section-btn');
-        const observerOptions = { threshold: 0.1 };
+        const observerOptions = { threshold: 0.2 }; // Aumentar umbral para evitar parpadeos
         let isFormVisible = false;
         let isFooterVisible = false;
+        let lastState = null; // Para evitar actualizaciones redundantes
+
+        const updateVisibility = () => {
+            if (window.innerWidth >= 768) {
+                // Escritorio: ocultar botón flotante, mostrar botones de sección
+                floatingBtn.classList.add('hidden');
+                sectionButtons.forEach(btn => btn.classList.remove('hide-on-mobile'));
+            } else {
+                // Móvil: controlar visibilidad según formulario y footer
+                const isFloatingBtnVisible = !(isFormVisible || isFooterVisible);
+                const newState = isFloatingBtnVisible ? 'visible' : 'hidden';
+                
+                // Solo actualizar si el estado cambió
+                if (newState !== lastState) {
+                    if (isFloatingBtnVisible) {
+                        floatingBtn.classList.remove('hidden');
+                        sectionButtons.forEach(btn => btn.classList.add('hide-on-mobile'));
+                    } else {
+                        floatingBtn.classList.add('hidden');
+                        sectionButtons.forEach(btn => btn.classList.remove('hide-on-mobile'));
+                    }
+                    lastState = newState;
+                }
+            }
+        };
+
+        const debouncedUpdateVisibility = debounce(updateVisibility, 100);
 
         const hideButtonObserver = new IntersectionObserver((entries) => {
-            // Only run on mobile (width < 768px)
             if (window.innerWidth < 768) {
                 entries.forEach(entry => {
                     if (entry.target === formSection) {
@@ -488,18 +535,8 @@ src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"
                     } else if (entry.target === footer) {
                         isFooterVisible = entry.isIntersecting;
                     }
-                    // Controlar visibilidad del botón flotante
-                    const isFloatingBtnVisible = !(isFormVisible || isFooterVisible);
-                    floatingBtn.style.display = isFloatingBtnVisible ? 'block' : 'none';
-                    // Ocultar botones de secciones si el botón flotante está visible
-                    sectionButtons.forEach(btn => {
-                        if (isFloatingBtnVisible) {
-                            btn.classList.add('hide-on-mobile');
-                        } else {
-                            btn.classList.remove('hide-on-mobile');
-                        }
-                    });
                 });
+                debouncedUpdateVisibility();
             }
         }, observerOptions);
 
@@ -507,34 +544,23 @@ src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"
         if (footer) hideButtonObserver.observe(footer);
 
         // Update visibility on window resize
-        window.addEventListener('resize', () => {
-            if (window.innerWidth >= 768) {
-                floatingBtn.style.display = 'none'; // Ensure floating button hidden on desktop
-                sectionButtons.forEach(btn => btn.classList.remove('hide-on-mobile')); // Show section buttons on desktop
-            } else {
-                // Restore mobile behavior
-                const isFloatingBtnVisible = !(isFormVisible || isFooterVisible);
-                floatingBtn.style.display = isFloatingBtnVisible ? 'block' : 'none';
-                sectionButtons.forEach(btn => {
-                    if (isFloatingBtnVisible) {
-                        btn.classList.add('hide-on-mobile');
-                    } else {
-                        btn.classList.remove('hide-on-mobile');
-                    }
-                });
-            }
+        window.addEventListener('resize', debouncedUpdateVisibility);
+
+        // Inicializar visibilidad al cargar la página
+        document.addEventListener('DOMContentLoaded', () => {
+            updateVisibility();
         });
 
         // Fade-in animation on scroll
         const fadeIns = document.querySelectorAll('.fade-in');
-        const observer = new IntersectionObserver((entries) => {
+        const fadeObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
                 }
             });
         }, observerOptions);
-        fadeIns.forEach(element => observer.observe(element));
+        fadeIns.forEach(element => fadeObserver.observe(element));
 
         // Inicializar intl-tel-input para el campo de WhatsApp
         document.addEventListener("DOMContentLoaded", function() {

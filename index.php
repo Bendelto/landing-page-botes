@@ -109,6 +109,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Pixel de Facebook (mantener tu ID) -->
     <!-- Inserta el código del Pixel de Facebook aquí. Obtén el código desde el Administrador de Eventos de Facebook y pégalo justo después de esta línea. -->
     <title>Alquila un Bote en Cartagena - Islas del Rosario y Atardeceres</title>
+	<link rel="icon" href="logo.svg" type="image/svg+xml">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.min.css">
     <link href="./output.css" rel="stylesheet">

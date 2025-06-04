@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Validación de WhatsApp
     if (!preg_match('/^\+\d{9,15}$/', $whatsapp)) {
-        $errors['whatsapp'] = 'El número de WhatsApp no es válido. Debe incluir el código de país (ej. +573123456789).';
+        $errors['whatsapp'] = 'El número de WhatsApp no es válido. Debe incluir el código de país (ej. +573205899997).';
     }
 
     // Verificación de campos vacíos

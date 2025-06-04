@@ -107,7 +107,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alquiler de Botes y yates en Cartagena</title>
-	<link rel="icon" href="logo.svg" type="image/svg+xml">
+    <link rel="icon" href="logo.svg" type="image/svg+xml">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.min.css">
     <link href="./output.css" rel="stylesheet">
@@ -291,23 +291,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     </style>
-	<!-- Meta Pixel Code -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '1733751114203823');
-fbq('track', 'PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"
-/></noscript>
-<!-- End Meta Pixel Code -->
+    <!-- Meta Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1733751114203823');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Meta Pixel Code -->
 </head>
 <body class="bg-gray-100">
     <!-- Hero Section -->
@@ -410,7 +410,7 @@ src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"
                         <option value="Cualquiera" <?php echo isset($_POST['tipoEmbarcacion']) && $_POST['tipoEmbarcacion'] == 'Cualquiera' ? 'selected' : ''; ?>>Cualquiera</option>
                         <option value="Bote deportivo" <?php echo isset($_POST['tipoEmbarcacion']) && $_POST['tipoEmbarcacion'] == 'Bote deportivo' ? 'selected' : ''; ?>>Bote deportivo</option>
                         <option value="Yate" <?php echo isset($_POST['tipoEmbarcacion']) && $_POST['tipoEmbarcacion'] == 'Yate' ? 'selected' : ''; ?>>Yate</option>
-						<option value="Catamaran" <?php echo isset($_POST['tipoEmbarcacion']) && $_POST['tipoEmbarcacion'] == 'Catamaran' ? 'selected' : ''; ?>>Catamarán</option>
+                        <option value="Catamaran" <?php echo isset($_POST['tipoEmbarcacion']) && $_POST['tipoEmbarcacion'] == 'Catamaran' ? 'selected' : ''; ?>>Catamarán</option>
                     </select>
                     <?php if (isset($errors['tipoEmbarcacion'])): ?>
                         <p class="error"><?php echo htmlspecialchars($errors['tipoEmbarcacion']); ?></p>
@@ -496,7 +496,7 @@ src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"
         const formSection = document.querySelector('#formulario');
         const footer = document.querySelector('footer');
         const sectionButtons = document.querySelectorAll('.section-btn');
-        const observerOptions = { threshold: 0.2 }; // Aumentar umbral para evitar parpadeos
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }; // Ajustar para evitar fluctuaciones
         let isFormVisible = false;
         let isFooterVisible = false;
         let lastState = null; // Para evitar actualizaciones redundantes
@@ -525,7 +525,7 @@ src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"
             }
         };
 
-        const debouncedUpdateVisibility = debounce(updateVisibility, 100);
+        const debouncedUpdateVisibility = debounce(updateVisibility, 200); // Aumentar debounce a 200ms
 
         const hideButtonObserver = new IntersectionObserver((entries) => {
             if (window.innerWidth < 768) {

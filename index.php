@@ -340,7 +340,7 @@ src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"
     <!-- Call to Action Section -->
     <section class="section-bg py-16 text-white">
         <div class="container mx-auto px-4 text-center p-8 md:p-12 rounded-lg max-w-2xl fade-in">
-            <h2 class="text-3xl md:text-4xl font-bold mb-4">¡El Caribe te espera!</h2>
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">¡Cartagena te espera!</h2>
             <p class="text-lg md:text-xl mb-6">No dejes pasar la oportunidad de vivir una experiencia única. Contáctanos ahora y reserva tu bote privado.</p>
             <a href="#formulario" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:shadow-xl">Reserva tu Bote</a>
         </div>

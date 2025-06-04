@@ -146,7 +146,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         .form-section .header {
             text-align: center;
-            margin-bottom: 0;
+            margin-bottom: 24px;
         }
         .form-section .logo-container {
             display: flex;
@@ -181,8 +181,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             text-align: center;
             color: #333;
             font-size: 2rem;
-            margin-bottom: 16px;
-            margin-top: 8px;
+            margin-bottom: 24px;
+            margin-top: 24px;
         }
         .form-section label {
             font-weight: bold;
@@ -262,12 +262,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             padding: 12px;
             border-radius: 6px;
             text-align: center;
-            margin-bottom: 16px;
+            margin-bottom: 24px;
         }
         @media (min-width: 768px) {
             .form-section .highlight-text {
                 max-width: 400px;
             }
+        }
+        /* Estilos para la hero section */
+        .hero-bg h1 {
+            margin-bottom: 24px; /* Más espacio debajo del título */
+        }
+        .hero-bg p {
+            margin-bottom: 32px; /* Más espacio debajo del subtítulo */
+        }
+        .hero-bg a {
+            margin-bottom: 16px; /* Espacio debajo del botón */
         }
     </style>
 	<!-- Meta Pixel Code -->
@@ -370,6 +380,7 @@ src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"
                 <img src="rl-logo.webp" alt="RL Logo" class="logo">
             </div>
         </div>
+        <h2 class="font-semibold">Cotiza tu bote ya</h2>
         <p class="highlight-text">Déjanos tus datos y te enviamos precios y opciones por WhatsApp en menos de 15 minutos.</p>
         <div class="form-container">
             <?php if ($mostrarFormulario): ?>
@@ -388,7 +399,7 @@ src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"
                         <option value="Cualquiera" <?php echo isset($_POST['tipoEmbarcacion']) && $_POST['tipoEmbarcacion'] == 'Cualquiera' ? 'selected' : ''; ?>>Cualquiera</option>
                         <option value="Bote deportivo" <?php echo isset($_POST['tipoEmbarcacion']) && $_POST['tipoEmbarcacion'] == 'Bote deportivo' ? 'selected' : ''; ?>>Bote deportivo</option>
                         <option value="Yate" <?php echo isset($_POST['tipoEmbarcacion']) && $_POST['tipoEmbarcacion'] == 'Yate' ? 'selected' : ''; ?>>Yate</option>
-						<option value="Catamaran" <?php echo isset($_POST['tipoEmbarcacion']) && $_POST['tipoEmbarcacion'] == 'Catamaran' ? 'selected' : ''; ?>>Catamarán</option>
+						<option value="Catamaran" <?php echo isset($_POST['tipoEmbarcacion']) && $_POST['tipoEmbarcacion'] == 'Catamaran' ? '	selected' : ''; ?>>Catamarán</option>
                     </select>
                     <?php if (isset($errors['tipoEmbarcacion'])): ?>
                         <p class="error"><?php echo htmlspecialchars($errors['tipoEmbarcacion']); ?></p>

@@ -287,7 +287,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         /* Ocultar botones de secciones en móvil cuando el botón flotante está visible */
         @media (max-width: 767px) {
             .section-btn.hide-on-mobile {
-                display: none !important;
+                visibility: hidden;
+                opacity: 0;
+                transition: opacity 0.3s ease, visibility 0.3s ease;
+            }
+            .section-btn {
+                transition: opacity 0.3s ease, visibility 0.3s ease;
             }
         }
     </style>
@@ -491,14 +496,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             });
         });
 
-        // Control floating button visibility and section buttons based on form or footer (mobile only)
+        // Control floating button visibility and section buttons based on scroll position (mobile only)
         const floatingBtn = document.querySelector('#floating-btn');
         const formSection = document.querySelector('#formulario');
         const footer = document.querySelector('footer');
         const sectionButtons = document.querySelectorAll('.section-btn');
-        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }; // Ajustar para evitar fluctuaciones
-        let isFormVisible = false;
-        let isFooterVisible = false;
         let lastState = null; // Para evitar actualizaciones redundantes
 
         const updateVisibility = () => {
@@ -506,44 +508,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Escritorio: ocultar botón flotante, mostrar botones de sección
                 floatingBtn.classList.add('hidden');
                 sectionButtons.forEach(btn => btn.classList.remove('hide-on-mobile'));
-            } else {
-                // Móvil: controlar visibilidad según formulario y footer
-                const isFloatingBtnVisible = !(isFormVisible || isFooterVisible);
-                const newState = isFloatingBtnVisible ? 'visible' : 'hidden';
-                
-                // Solo actualizar si el estado cambió
-                if (newState !== lastState) {
-                    if (isFloatingBtnVisible) {
-                        floatingBtn.classList.remove('hidden');
-                        sectionButtons.forEach(btn => btn.classList.add('hide-on-mobile'));
-                    } else {
-                        floatingBtn.classList.add('hidden');
-                        sectionButtons.forEach(btn => btn.classList.remove('hide-on-mobile'));
-                    }
-                    lastState = newState;
+                return;
+            }
+
+            // Móvil: determinar visibilidad según posición de scroll
+            const viewportHeight = window.innerHeight;
+            const scrollPosition = window.scrollY;
+            const formRect = formSection.getBoundingClientRect();
+            const footerRect = footer.getBoundingClientRect();
+
+            // Determinar si el formulario o footer están visibles en el viewport
+            const isFormVisible = formRect.top < viewportHeight && formRect.bottom > 0;
+            const isFooterVisible = footerRect.top < viewportHeight && footerRect.bottom > 0;
+            const isFloatingBtnVisible = !(isFormVisible || isFooterVisible);
+            const newState = isFloatingBtnVisible ? 'visible' : 'hidden';
+
+            // Solo actualizar si el estado cambió
+            if (newState !== lastState) {
+                if (isFloatingBtnVisible) {
+                    floatingBtn.classList.remove('hidden');
+                    sectionButtons.forEach(btn => btn.classList.add('hide-on-mobile'));
+                } else {
+                    floatingBtn.classList.add('hidden');
+                    sectionButtons.forEach(btn => btn.classList.remove('hide-on-mobile'));
                 }
+                lastState = newState;
             }
         };
 
-        const debouncedUpdateVisibility = debounce(updateVisibility, 200); // Aumentar debounce a 200ms
+        const debouncedUpdateVisibility = debounce(updateVisibility, 200);
 
-        const hideButtonObserver = new IntersectionObserver((entries) => {
-            if (window.innerWidth < 768) {
-                entries.forEach(entry => {
-                    if (entry.target === formSection) {
-                        isFormVisible = entry.isIntersecting;
-                    } else if (entry.target === footer) {
-                        isFooterVisible = entry.isIntersecting;
-                    }
-                });
-                debouncedUpdateVisibility();
-            }
-        }, observerOptions);
-
-        if (formSection) hideButtonObserver.observe(formSection);
-        if (footer) hideButtonObserver.observe(footer);
-
-        // Update visibility on window resize
+        // Actualizar visibilidad en scroll y resize
+        window.addEventListener('scroll', debouncedUpdateVisibility);
         window.addEventListener('resize', debouncedUpdateVisibility);
 
         // Inicializar visibilidad al cargar la página
@@ -551,8 +547,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             updateVisibility();
         });
 
-        // Fade-in animation on scroll
+        // Fade-in animation on scroll (manteniendo IntersectionObserver solo para animaciones)
         const fadeIns = document.querySelectorAll('.fade-in');
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
         const fadeObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {

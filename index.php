@@ -408,7 +408,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <footer class="bg-gray-800 text-white py-8">
         <div class="container mx-auto px-4 text-center">
             <p class="mb-4">© 2025 Agencia de Tours y Alquiler de Botes en Cartagena</p>
-            <p>Contáctanos por WhatsApp: <a href="https://wa.me/573205899987" target="_blank" class="underline">+57 320 589 9987</a></p>
+            <p>Contáctanos por WhatsApp: <a href="https://wa.me/573205899997" target="_blank" class="underline">+57 320 589 9997</a></p>
         </div>
     </footer>
 

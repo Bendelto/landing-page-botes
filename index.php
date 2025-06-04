@@ -277,7 +277,7 @@ src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"
     <section class="hero-bg h-screen flex items-center justify-center text-white">
         <div class="text-center p-8 md:p-12 rounded-lg max-w-2xl fade-in">
             <h1 class="text-4xl md:text-6xl font-bold mb-4">Vive la Magia del Caribe en un Bote Privado</h1>
-            <p class="text-lg md:text-2xl mb-6">Explora las Islas del Rosario o disfruta un atardecer inolvidable en Cartagena de Indias con nuestras lanchas deportivas, catamaranes y yates.</p>
+            <p class="text-lg md:text-2xl mb-6">Explora las Islas del Rosario o disfruta un atardecer inolvidable en Cartagena de Indias con nuestras lanchas deportivas y yates.</p>
             <a href="#formulario" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:shadow-xl">Reserva tu Bote</a>
         </div>
     </section>
@@ -299,8 +299,8 @@ src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"
                 </div>
                 <div class="fade-in">
                     <img src="equipo.jpg" alt="Equipo Profesional" class="mx-auto mb-4 rounded-lg shadow-md" loading="lazy">
-                    <h3 class="text-xl font-semibold mb-2">Servicio de Calidad</h3>
-                    <p class="text-gray-600">Nuestro equipo profesional garantiza seguridad, comodidad y una experiencia inolvidable en el mar.</p>
+                    <h3 class="text-xl font-semibold mb-2">Navega con Expertos Locales</h3>
+                    <p class="text-gray-600">Nuestra tripulación con experiencia, no solo sabe navegar, también conoce cada rincón, cada isla y cada historia de la zona.</p>
                 </div>
             </div>
             <a href="#formulario" class="mt-12 inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:shadow-xl fade-in">Cotizar Ahora</a>
@@ -318,17 +318,17 @@ src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"
             <h2 class="text-3xl md:text-4xl font-bold mb-12 fade-in">Lo que dicen nuestros clientes</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="bg-white p-6 rounded-lg shadow-lg fade-in">
-                    <p class="text-gray-600 italic testimonial-text">"El paseo por las Islas del Rosario fue espectacular. La lancha era cómoda y el equipo súper profesional."</p>
+                    <p class="text-gray-600 italic testimonial-text">"El paseo por las Islas del Rosario fue espectacular. La lancha era cómoda y los chicos de la tripulación muy amables."</p>
                     <div class="stars">★★★★★</div>
                     <p class="font-semibold">María G.</p>
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow-lg fade-in">
-                    <p class="text-gray-600 italic testimonial-text">"Ver el atardecer desde un yate en Cartagena fue mágico. ¡Totalmente recomendado!"</p>
+                    <p class="text-gray-600 italic testimonial-text">"Ver el atardecer de Cartagena desde un bote en la bahía es mi plan favorito. Es segunda vez que lo hago con Descubre Cartagena, los recomiendo."</p>
                     <div class="stars">★★★★★</div>
                     <p class="font-semibold">Juan P.</p>
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow-lg fade-in">
-                    <p class="text-gray-600 italic testimonial-text">"Una experiencia personalizada y de lujo. Volveremos pronto."</p>
+                    <p class="text-gray-600 italic testimonial-text">"Una experiencia inolvidable con mis amigas, bailamos, nadamos y navegamos sin problemas. Volveremos pronto."</p>
                     <div class="stars">★★★★★</div>
                     <p class="font-semibold">Ana R.</p>
                 </div>
@@ -341,7 +341,7 @@ src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"
     <section class="section-bg py-16 text-white">
         <div class="container mx-auto px-4 text-center p-8 md:p-12 rounded-lg max-w-2xl fade-in">
             <h2 class="text-3xl md:text-4xl font-bold mb-4">¡El Caribe te espera!</h2>
-            <p class="text-lg md:text-xl mb-6">No dejes pasar la oportunidad de vivir una experiencia única en las cristalinas aguas de las Islas del Rosario o contemplando el mágico atardecer de Cartagena. Contáctanos ahora y reserva tu bote privado.</p>
+            <p class="text-lg md:text-xl mb-6">No dejes pasar la oportunidad de vivir una experiencia única. Contáctanos ahora y reserva tu bote privado.</p>
             <a href="#formulario" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:shadow-xl">Reserva tu Bote</a>
         </div>
     </section>

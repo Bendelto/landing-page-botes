@@ -284,15 +284,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .hero-bg a {
             margin-bottom: 16px; /* Espacio debajo del botón */
         }
-        /* Ocultar botones de secciones en móvil cuando el botón flotante está visible */
+        /* Ocultar botones de secciones en móvil por defecto, excepto el botón del formulario */
         @media (max-width: 767px) {
-            .section-btn.hide-on-mobile {
-                visibility: hidden;
-                opacity: 0;
-                transition: opacity 0.3s ease, visibility 0.3s ease;
-            }
             .section-btn {
-                transition: opacity 0.3s ease, visibility 0.3s ease;
+                display: none;
+            }
+            .form-section button {
+                display: block; /* Asegurar que el botón del formulario sea visible */
             }
         }
     </style>
@@ -496,50 +494,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             });
         });
 
-        // Control floating button visibility and section buttons based on scroll position (mobile only)
+        // Control floating button visibility (solo para escritorio)
         const floatingBtn = document.querySelector('#floating-btn');
         const formSection = document.querySelector('#formulario');
         const footer = document.querySelector('footer');
         const sectionButtons = document.querySelectorAll('.section-btn');
-        let lastState = null; // Para evitar actualizaciones redundantes
 
         const updateVisibility = () => {
             if (window.innerWidth >= 768) {
                 // Escritorio: ocultar botón flotante, mostrar botones de sección
                 floatingBtn.classList.add('hidden');
                 sectionButtons.forEach(btn => btn.classList.remove('hide-on-mobile'));
-                return;
-            }
-
-            // Móvil: determinar visibilidad según posición de scroll
-            const viewportHeight = window.innerHeight;
-            const scrollPosition = window.scrollY;
-            const formRect = formSection.getBoundingClientRect();
-            const footerRect = footer.getBoundingClientRect();
-
-            // Determinar si el formulario o footer están visibles en el viewport
-            const isFormVisible = formRect.top < viewportHeight && formRect.bottom > 0;
-            const isFooterVisible = footerRect.top < viewportHeight && footerRect.bottom > 0;
-            const isFloatingBtnVisible = !(isFormVisible || isFooterVisible);
-            const newState = isFloatingBtnVisible ? 'visible' : 'hidden';
-
-            // Solo actualizar si el estado cambió
-            if (newState !== lastState) {
-                if (isFloatingBtnVisible) {
-                    floatingBtn.classList.remove('hidden');
-                    sectionButtons.forEach(btn => btn.classList.add('hide-on-mobile'));
-                } else {
-                    floatingBtn.classList.add('hidden');
-                    sectionButtons.forEach(btn => btn.classList.remove('hide-on-mobile'));
-                }
-                lastState = newState;
             }
         };
 
         const debouncedUpdateVisibility = debounce(updateVisibility, 200);
 
-        // Actualizar visibilidad en scroll y resize
-        window.addEventListener('scroll', debouncedUpdateVisibility);
+        // Actualizar visibilidad en resize
         window.addEventListener('resize', debouncedUpdateVisibility);
 
         // Inicializar visibilidad al cargar la página

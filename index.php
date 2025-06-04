@@ -481,9 +481,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 const target = document.querySelector(targetId);
                 if (target) {
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    // La siguiente línea fue eliminada ya que probablemente causaba el problema de scroll:
-                    // const offset = 20; 
-                    // window.scrollBy(0, -offset); 
                 }
             });
         });
@@ -491,23 +488,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Control floating button visibility (solo para móvil con scroll)
         const floatingBtn = document.querySelector('#floating-btn');
         const formSection = document.querySelector('#formulario');
-        const footer = document.querySelector('footer');
-        const sectionButtons = document.querySelectorAll('.section-btn');
+        // const footer = document.querySelector('footer'); // Definido pero no usado en esta función
+        // const sectionButtons = document.querySelectorAll('.section-btn'); // Definido pero no usado en esta función
 
         const updateVisibility = () => {
-            if (window.innerWidth >= 768) {
-                // Escritorio: ocultar botón flotante, mostrar botones de sección
+            if (window.innerWidth >= 768) { // Si es escritorio
                 floatingBtn.classList.add('hidden');
-                sectionButtons.forEach(btn => btn.classList.remove('hide-on-mobile'));
-            } else {
-                // Móvil: controlar visibilidad del botón flotante según scroll
+                // Si tienes botones de sección que se ocultan en móvil y quieres mostrarlos en escritorio:
+                // sectionButtons.forEach(btn => btn.style.display = 'inline-block'); // O la clase que uses para mostrar
+            } else { // Si es móvil
+                // sectionButtons.forEach(btn => btn.style.display = 'none'); // Ocultar botones de sección en móvil si es necesario
+
                 const formRect = formSection.getBoundingClientRect();
                 const viewportHeight = window.innerHeight;
-                const scrollPosition = window.scrollY;
 
-                // Desaparecer el botón flotante cuando el fondo del formulario está en la parte inferior del viewport
-                const shouldHide = formRect.bottom <= viewportHeight && formRect.top <= 0;
-                if (shouldHide) {
+                // Nueva lógica: Ocultar el botón flotante si CUALQUIER parte del formulario está visible.
+                // Reaparece cuando el formulario sale completamente de la vista.
+                const isFormVisible = formRect.top < viewportHeight && formRect.bottom > 0;
+                
+                if (isFormVisible) {
                     floatingBtn.classList.add('hidden');
                 } else {
                     floatingBtn.classList.remove('hidden');
@@ -521,10 +520,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         window.addEventListener('scroll', debouncedUpdateVisibility);
         window.addEventListener('resize', debouncedUpdateVisibility);
 
-        // Inicializar visibilidad al cargar la página
+        // Inicializar visibilidad al cargar la página y al cambiar el tamaño
         document.addEventListener('DOMContentLoaded', () => {
-            updateVisibility();
+            updateVisibility(); // Establecer estado inicial al cargar
         });
+        // También es buena idea llamar a updateVisibility en resize por si se cambia de móvil a escritorio sin recargar
+        // window.addEventListener('resize', updateVisibility); // Ya está arriba con debounce
 
         // Fade-in animation on scroll (manteniendo IntersectionObserver solo para animaciones)
         const fadeIns = document.querySelectorAll('.fade-in');
@@ -548,9 +549,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     initialCountry: "co",
                     utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
                 });
-                document.querySelector("form").addEventListener("submit", function() {
-                    input.value = iti.getNumber();
-                });
+                // Asegurarse de que el formulario existe antes de añadir el listener
+                const formElement = document.querySelector("form");
+                if (formElement) {
+                    formElement.addEventListener("submit", function() {
+                        input.value = iti.getNumber();
+                    });
+                }
             }
         });
     </script>

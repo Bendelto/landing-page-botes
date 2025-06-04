@@ -276,7 +276,7 @@ src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"
     <!-- Hero Section -->
     <section class="hero-bg h-screen flex items-center justify-center text-white">
         <div class="text-center p-8 md:p-12 rounded-lg max-w-2xl fade-in">
-            <h1 class="text-4xl md:text-6xl font-bold mb-4">Vive la Magia del Caribe en un Bote Privado</h1>
+            <h1 class="text-4xl md:text-6xl font-bold mb-4">Vive la Magia de Cartagena en un Bote Privado</h1>
             <p class="text-lg md:text-2xl mb-6">Explora las Islas del Rosario o disfruta un atardecer inolvidable en Cartagena de Indias con nuestras lanchas deportivas y yates.</p>
             <a href="#formulario" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:shadow-xl">Reserva tu Bote</a>
         </div>

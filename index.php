@@ -151,7 +151,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         .form-section .header {
             text-align: center;
-            margin-bottom: 24px;
+            margin-bottom: 16px; /* Reducido para acercar al borde */
         }
         .form-section .logo-container {
             display: flex;
@@ -176,7 +176,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         .form-section .form-container {
             background: #fff;
-            padding: 24px;
+            padding: 16px; /* Reducido de 24px para acercar al borde */
             width: 100%;
             max-width: 400px;
             border-radius: 8px;
@@ -185,9 +185,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .form-section h2 {
             text-align: center;
             color: #333;
-            font-size: 2rem;
-            margin-bottom: 24px;
-            margin-top: 24px;
+            font-size: 1.5rem; /* Tamaño reducido */
+            margin-bottom: 16px; /* Reducido para acercar al borde */
+            margin-top: 0; /* Sin espacio extra arriba */
         }
         .form-section label {
             font-weight: bold;
@@ -267,7 +267,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             padding: 12px;
             border-radius: 6px;
             text-align: center;
-            margin-bottom: 24px;
+            margin-bottom: 16px; /* Reducido para acercar al título */
         }
         @media (min-width: 768px) {
             .form-section .highlight-text {
@@ -394,8 +394,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <img src="rl-logo.webp" alt="RL Logo" class="logo">
             </div>
         </div>
-        <h2 class="font-semibold">Cotiza tu bote ya</h2>
         <p class="highlight-text">Déjanos tus datos y te enviamos precios y opciones por WhatsApp en menos de 15 minutos.</p>
+        <h2 class="font-semibold">Cotiza tu bote ya</h2>
         <div class="form-container">
             <?php if ($mostrarFormulario): ?>
             <form action="" method="POST" id="formulario">
@@ -489,12 +489,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'start' });
+                    // Ajustar para que el formulario ocupe toda la pantalla
+                    window.scrollBy(0, -60); // Ajuste para compensar el header o cualquier espacio superior
                 }
             });
         });
 
-        // Control floating button visibility (solo para escritorio)
+        // Control floating button visibility (solo para escritorio y móvil con scroll)
         const floatingBtn = document.querySelector('#floating-btn');
         const formSection = document.querySelector('#formulario');
         const footer = document.querySelector('footer');
@@ -505,12 +507,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Escritorio: ocultar botón flotante, mostrar botones de sección
                 floatingBtn.classList.add('hidden');
                 sectionButtons.forEach(btn => btn.classList.remove('hide-on-mobile'));
+            } else {
+                // Móvil: controlar visibilidad del botón flotante según scroll
+                const formRect = formSection.getBoundingClientRect();
+                const viewportHeight = window.innerHeight;
+                const scrollPosition = window.scrollY;
+
+                // Desaparecer el botón flotante cuando el fondo del formulario está en la parte inferior del viewport
+                const shouldHide = formRect.bottom <= viewportHeight && formRect.top <= 0;
+                if (shouldHide) {
+                    floatingBtn.classList.add('hidden');
+                } else {
+                    floatingBtn.classList.remove('hidden');
+                }
             }
         };
 
         const debouncedUpdateVisibility = debounce(updateVisibility, 200);
 
-        // Actualizar visibilidad en resize
+        // Actualizar visibilidad en scroll y resize
+        window.addEventListener('scroll', debouncedUpdateVisibility);
         window.addEventListener('resize', debouncedUpdateVisibility);
 
         // Inicializar visibilidad al cargar la página

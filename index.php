@@ -51,8 +51,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Lista de destinatarios con nombre y número
         $destinatarios = [
-            ['nombre' => 'Kathe', 'numero' => '573245534456'],
-            ['nombre' => 'Benko', 'numero' => '573245534456'],
+            ['nombre' => 'Kathe', 'numero' => '573245534652'],
+            ['nombre' => 'Benko', 'numero' => '573245534652']
         ];
 
         // Archivo para almacenar el índice del último número usado

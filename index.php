@@ -354,7 +354,7 @@ src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"
                 <img src="rl-logo.webp" alt="RL Logo" class="logo">
             </div>
         </div>
-        <h2 class="font-bold">Cotizar Embarcación</h2>
+        <h2 class="font-bold">Cotiza tu embarcación</h2>
         <div class="form-container">
             <?php if ($mostrarFormulario): ?>
             <form action="" method="POST" id="formulario">

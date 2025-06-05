@@ -309,6 +309,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <noscript><img height="1" width="1" style="display:none"  
     src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"  
     /></noscript>
+	<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17157900117">
+</script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-17157900117');
+</script>
     </head>
 <body class="bg-gray-100">
     <section class="hero-bg h-screen flex items-center justify-center text-white">

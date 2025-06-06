@@ -297,20 +297,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script>
     !function(f,b,e,v,n,t,s)
     {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};  
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';  
-    n.queue=[];t=b.createElement(e);t.async=!0;  
-    t.src=v;s=b.getElementsByTagName(e)[0];  
-    s.parentNode.insertBefore(t,s)}(window, document,'script',  
-    'https://connect.facebook.net/en_US/fbevents.js');  
-    fbq('init', '1733751114203823');  
-    fbq('track', 'PageView');  
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1733751114203823');
+    fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none"  
-    src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"  
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"
     /></noscript>
-	<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17157900117">
+	<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17157900117">
 </script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -568,6 +567,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if (formElement) {
                     formElement.addEventListener("submit", function() {
                         input.value = iti.getNumber();
+                        // fbq('track', 'SubmitApplication');
                     });
                 }
             }

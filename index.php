@@ -309,8 +309,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <noscript><img height="1" width="1" style="display:none"  
     src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"  
     /></noscript>
-	<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17157900117">
+	<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17157900117">
 </script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -400,7 +399,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h2 class="font-semibold">Cotiza tu bote ya</h2>
         <div class="form-container">
             <?php if ($mostrarFormulario): ?>
-            <form action="" method="POST">
+            <form id="cotizacionForm" action="" method="POST">
                 <div>
                     <label for="nombreCompleto">Nombre y Apellidos</label>
                     <input type="text" name="nombreCompleto" id="nombreCompleto" required value="<?php echo isset($_POST['nombreCompleto']) ? htmlspecialchars($_POST['nombreCompleto']) : ''; ?>">
@@ -572,6 +571,93 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
             }
         });
+    </script>
+    
+    <script>
+    // --- CÓDIGO DE SEGUIMIENTO DE EVENTOS DE FACEBOOK ---
+
+    // Función para generar un ID único para cada evento para la deduplicación
+    function generateEventId() {
+      return 'event_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    }
+
+    // Función para obtener el valor de una cookie por su nombre (para _fbp y _fbc)
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    // Lógica principal para el seguimiento del formulario
+    document.addEventListener('DOMContentLoaded', function() {
+      
+      const cotizacionForm = document.getElementById('cotizacionForm');
+
+      if (cotizacionForm) {
+        cotizacionForm.addEventListener('submit', async function(event) {
+          // 1. Detenemos el envío normal del formulario temporalmente
+          event.preventDefault();
+
+          console.log('Formulario enviado. Iniciando seguimiento de evento Lead...');
+
+          // 2. Generamos un ID de evento único para esta conversión
+          const eventoIdUnico = generateEventId();
+
+          // 3. Capturamos los datos que podemos enviar a Facebook
+          // IMPORTANTE: Facebook requiere que los datos personales (PII) como email, teléfono, nombre, etc.,
+          // se envíen "hasheados" (encriptados con SHA-256).
+          // Por simplicidad, este ejemplo no incluye el código de hashing, pero en una
+          // implementación final, deberías hashear 'telefonoValue' y 'nombreCompletoValue'
+          // antes de incluirlos en el payload de la API de Conversiones.
+          const telefonoValue = document.getElementById('whatsapp').value;
+          const nombreCompletoValue = document.getElementById('nombreCompleto').value;
+
+          // --- Envío del Evento del Navegador (Píxel) ---
+          if (typeof fbq !== 'undefined') {
+            fbq('track', 'Lead', 
+              { /* Parámetros opcionales para el Píxel */ }, 
+              { eventID: eventoIdUnico } // ID para deduplicación
+            );
+            console.log(`Evento de Navegador 'Lead' enviado con ID: ${eventoIdUnico}`);
+          }
+
+          // --- Envío del Evento del Servidor (API de Conversiones) ---
+          const payloadCAPI = {
+            event_name: "Lead",
+            event_id: eventoIdUnico, // Usamos el mismo ID único
+            action_source: "website",
+            event_source_url: window.location.href,
+            user_data: {
+              // Aquí irían los datos hasheados. Por ahora enviamos los que no requieren hashing.
+              // "ph": "HASH_SHA256_DEL_TELEFONO",
+              // "fn": "HASH_SHA256_DEL_NOMBRE",
+              "fbp": getCookie('_fbp') || null,
+              "fbc": getCookie('_fbc') || null
+            }
+            // Si estás probando, añade tu test_event_code aquí
+            // "test_event_code": "TEST12345"
+          };
+          
+          try {
+            // Hacemos la llamada a nuestra API y esperamos la respuesta
+            const response = await fetch('https://api.descubrecartagena.com/send-event', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payloadCAPI),
+            });
+            const data = await response.json();
+            console.log(`Evento de Servidor 'Lead' enviado con éxito. ID: ${eventoIdUnico}`, data);
+          } catch (error) {
+            console.error('Error al enviar el evento de servidor:', error);
+          } finally {
+            // 4. Reanudamos el envío normal del formulario para que el PHP se ejecute
+            console.log('Seguimiento completado. Reanudando envío del formulario al servidor PHP.');
+            cotizacionForm.submit();
+          }
+        });
+      }
+    });
+
     </script>
 </body>
 </html>

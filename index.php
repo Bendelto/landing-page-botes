@@ -1,4 +1,11 @@
 <?php
+// Generamos un ID único para el evento PageView de esta carga de página específica
+$pageViewEventId = 'pv_' . uniqid();
+
+// ¡NUEVO! Capturamos la IP y el User Agent del visitante para mejorar la calidad de coincidencias
+$clientIpAddress = $_SERVER['REMOTE_ADDR'];
+$clientUserAgent = $_SERVER['HTTP_USER_AGENT'];
+
 // Configurar la zona horaria a America/Bogota
 date_default_timezone_set('America/Bogota');
 
@@ -294,6 +301,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     </style>
+    
     <script>
     !function(f,b,e,v,n,t,s)
     {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -303,87 +311,74 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     t.src=v;s=b.getElementsByTagName(e)[0];  
     s.parentNode.insertBefore(t,s)}(window, document,'script',  
     'https://connect.facebook.net/en_US/fbevents.js');  
+    
     fbq('init', '1733751114203823');  
-    fbq('track', 'PageView');  
+
+    // --- INICIA CÓDIGO DE SEGUIMIENTO MEJORADO ---
+
+    // 1. Obtenemos los datos únicos generados por PHP en el servidor
+    const pageViewEventId = "<?php echo $pageViewEventId; ?>";
+    const clientIpAddress = "<?php echo $clientIpAddress; ?>";
+    const clientUserAgent = "<?php echo addslashes($clientUserAgent); ?>"; // Usamos addslashes por seguridad
+
+    // 2. Enviamos el evento del Navegador (Píxel) con el ID de evento para deduplicación
+    fbq('track', 'PageView', {}, { eventID: pageViewEventId });
+    console.log(`Evento de Navegador 'PageView' enviado con ID: ${pageViewEventId}`);
+
+    // 3. Enviamos el evento del Servidor (API de Conversiones) inmediatamente después
+    (function() {
+        // Función auxiliar para leer cookies
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+        const payload = {
+            event_name: "PageView",
+            event_id: pageViewEventId, // <-- El mismo ID único que el Píxel
+            action_source: "website",
+            event_source_url: window.location.href,
+            user_data: {
+                fbp: getCookie('_fbp') || null,
+                fbc: getCookie('_fbc') || null,
+                client_ip_address: clientIpAddress,
+                client_user_agent: clientUserAgent
+            }
+        };
+
+        // Hacemos la llamada a nuestra API de Conversiones
+        fetch('https://api.descubrecartagena.com/send-event', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        })
+        .then(response => response.json())
+        .then(data => console.log(`Evento de Servidor 'PageView' con datos enriquecidos enviado. ID: ${pageViewEventId}`, data))
+        .catch(error => console.error('Error al enviar evento PageView de servidor:', error));
+    })();
+
+    // --- TERMINA CÓDIGO DE SEGUIMIENTO MEJORADO ---
     </script>
     <noscript><img height="1" width="1" style="display:none"  
     src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"  
     /></noscript>
-	<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17157900117">
-</script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+	
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17157900117">
+    </script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
-  gtag('config', 'AW-17157900117');
-</script>
-    </head>
+      gtag('config', 'AW-17157900117');
+    </script>
+</head>
 <body class="bg-gray-100">
     <section class="hero-bg h-screen flex items-center justify-center text-white">
         <div class="text-center p-8 md:p-12 rounded-lg max-w-2xl fade-in">
             <h1 class="text-4xl md:text-6xl font-bold mb-4">Vive la Magia de Cartagena en un Bote Privado</h1>
             <p class="text-lg md:text-2xl mb-6">Explora las Islas del Rosario o disfruta un atardecer inolvidable en Cartagena de Indias con nuestras lanchas deportivas y yates.</p>
-            <a href="#formulario" class="section-btn bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:shadow-xl">Reserva tu Bote</a>
-        </div>
-    </section>
-
-    <section class="py-16 bg-white">
-        <div class="container mx-auto px-4 text-center">
-            <h2 class="text-3xl md:text-4xl font-bold mb-12 fade-in">¿Por qué elegirnos?</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="fade-in">
-                    <img src="lancha.jpg" alt="Lancha Deportiva" class="mx-auto mb-4 rounded-lg shadow-md" loading="lazy">
-                    <h3 class="text-xl font-semibold mb-2">Variedad de Embarcaciones</h3>
-                    <p class="text-gray-600">Desde lanchas deportivas rápidas hasta catamaranes espaciosos y yates de lujo, tenemos la opción perfecta para tu aventura.</p>
-                </div>
-                <div class="fade-in">
-                    <img src="atardecer.jpg" alt="Atardecer Privado" class="mx-auto mb-4 rounded-lg shadow-md" loading="lazy">
-                    <h3 class="text-xl font-semibold mb-2">Experiencias Personalizadas</h3>
-                    <p class="text-gray-600">Tú decides: un paseo privado por las Islas del Rosario o un romántico atardecer en Cartagena, adaptado a tus deseos.</p>
-                </div>
-                <div class="fade-in">
-                    <img src="equipo.jpg" alt="Equipo Profesional" class="mx-auto mb-4 rounded-lg shadow-md" loading="lazy">
-                    <h3 class="text-xl font-semibold mb-2">Navega con Expertos Locales</h3>
-                    <p class="text-gray-600">Nuestra tripulación con experiencia, no solo sabe navegar, también conoce cada rincón, cada isla y cada historia de la zona.</p>
-                </div>
-            </div>
-            <a href="#formulario" class="section-btn mt-12 inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:shadow-xl fade-in">Cotizar Ahora</a>
-        </div>
-    </section>
-
-    <section class="py-16 bg-gray-100">
-        <div class="container mx-auto px-4 text-center">
-            <div class="review-badge">
-                <span class="badge-stars">★★★★★</span>
-                <span>4.9 (53 reseñas)</span>
-            </div>
-            <h2 class="text-3xl md:text-4xl font-bold mb-12 fade-in">Lo que dicen nuestros clientes</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-white p-6 rounded-lg shadow-lg fade-in">
-                    <p class="text-gray-600 italic testimonial-text">"El paseo por las Islas del Rosario fue espectacular. La lancha era cómoda y los chicos de la tripulación muy amables."</p>
-                    <div class="stars">★★★★★</div>
-                    <p class="font-semibold">María G.</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-lg fade-in">
-                    <p class="text-gray-600 italic testimonial-text">"Ver el atardecer de Cartagena desde un bote en la bahía es mi plan favorito. Es segunda vez que lo hago con Descubre Cartagena, los recomiendo."</p>
-                    <div class="stars">★★★★★</div>
-                    <p class="font-semibold">Juan P.</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-lg fade-in">
-                    <p class="text-gray-600 italic testimonial-text">"Una experiencia inolvidable con mis amigas, bailamos, nadamos y navegamos sin problemas. Volveremos pronto."</p>
-                    <div class="stars">★★★★★</div>
-                    <p class="font-semibold">Ana R.</p>
-                </div>
-            </div>
-            <a href="#formulario" class="section-btn mt-12 inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:shadow-xl fade-in">Cotizar Ahora</a>
-        </div>
-    </section>
-
-    <section class="section-bg py-16 text-white">
-        <div class="container mx-auto px-4 text-center p-8 md:p-12 rounded-lg max-w-2xl fade-in">
-            <h2 class="text-3xl md:text-4xl font-bold mb-4">¡Cartagena te espera!</h2>
-            <p class="text-lg md:text-xl mb-6">No dejes pasar la oportunidad de vivir una experiencia única. Contáctanos ahora y reserva tu bote privado.</p>
             <a href="#formulario" class="section-btn bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:shadow-xl">Reserva tu Bote</a>
         </div>
     </section>
@@ -486,40 +481,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
-                const targetId = this.getAttribute('href'); // Esto es "#formulario"
-                const sectionTarget = document.querySelector(targetId); // Esta es la <section id="formulario">
+                const targetId = this.getAttribute('href');
+                const sectionTarget = document.querySelector(targetId);
 
                 if (sectionTarget) {
-                    // Buscamos el elemento h2 "Cotiza tu bote ya" (que tiene la clase .font-semibold)
-                    // dentro de la sección del formulario.
                     const scrollTargetElement = sectionTarget.querySelector('h2.font-semibold'); 
-                    
                     if (scrollTargetElement) {
-                        // Hacemos scroll para que este h2 (Cotiza tu bote ya) quede al inicio de la vista.
                         scrollTargetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     } else {
-                        // Si por alguna razón no se encuentra el h2, hacemos scroll a la sección completa como antes.
                         sectionTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     }
                 }
             });
         });
 
-        // Control floating button visibility (solo para móvil con scroll)
+        // Control floating button visibility
         const floatingBtn = document.querySelector('#floating-btn');
         const formSection = document.querySelector('#formulario');
-        // const footer = document.querySelector('footer'); // Definido pero no usado en esta función
-        // const sectionButtons = document.querySelectorAll('.section-btn'); // Definido pero no usado en esta función
-
+        
         const updateVisibility = () => {
-            if (window.innerWidth >= 768) { // Si es escritorio
+            if (window.innerWidth >= 768) {
                 floatingBtn.classList.add('hidden');
-            } else { // Si es móvil
+            } else {
                 const formRect = formSection.getBoundingClientRect();
                 const viewportHeight = window.innerHeight;
-
-                // Nueva lógica: Ocultar el botón flotante si CUALQUIER parte del formulario está visible.
-                // Reaparece cuando el formulario sale completamente de la vista.
                 const isFormVisible = formRect.top < viewportHeight && formRect.bottom > 0;
                 
                 if (isFormVisible) {
@@ -531,14 +516,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         };
 
         const debouncedUpdateVisibility = debounce(updateVisibility, 200);
-
-        // Actualizar visibilidad en scroll y resize
         window.addEventListener('scroll', debouncedUpdateVisibility);
         window.addEventListener('resize', debouncedUpdateVisibility);
-
-        // Inicializar visibilidad al cargar la página
         document.addEventListener('DOMContentLoaded', () => {
-            updateVisibility(); // Establecer estado inicial al cargar
+            updateVisibility();
         });
 
         // Fade-in animation on scroll
@@ -563,7 +544,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     initialCountry: "co",
                     utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
                 });
-                const formElement = document.querySelector("form"); // Asegúrate que sea el formulario correcto si hay varios
+                const formElement = document.getElementById("cotizacionForm");
                 if (formElement) {
                     formElement.addEventListener("submit", function() {
                         input.value = iti.getNumber();
@@ -581,13 +562,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       return 'event_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
     }
 
-    // Función para obtener el valor de una cookie por su nombre (para _fbp y _fbc)
-    function getCookie(name) {
-      const value = `; ${document.cookie}`;
-      const parts = value.split(`; ${name}=`);
-      if (parts.length === 2) return parts.pop().split(';').shift();
-    }
-
     // Lógica principal para el seguimiento del formulario
     document.addEventListener('DOMContentLoaded', function() {
       
@@ -603,12 +577,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           // 2. Generamos un ID de evento único para esta conversión
           const eventoIdUnico = generateEventId();
 
-          // 3. Capturamos los datos que podemos enviar a Facebook
-          // IMPORTANTE: Facebook requiere que los datos personales (PII) como email, teléfono, nombre, etc.,
-          // se envíen "hasheados" (encriptados con SHA-256).
-          // Por simplicidad, este ejemplo no incluye el código de hashing, pero en una
-          // implementación final, deberías hashear 'telefonoValue' y 'nombreCompletoValue'
-          // antes de incluirlos en el payload de la API de Conversiones.
+          // 3. Capturamos los datos del usuario.
+          // En una implementación final, estos datos (teléfono, nombre) deberían ser
+          // hasheados (encriptados con SHA-256) por seguridad.
           const telefonoValue = document.getElementById('whatsapp').value;
           const nombreCompletoValue = document.getElementById('nombreCompleto').value;
 
@@ -628,14 +599,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             action_source: "website",
             event_source_url: window.location.href,
             user_data: {
-              // Aquí irían los datos hasheados. Por ahora enviamos los que no requieren hashing.
+              // NOTA: Aquí irían los datos hasheados
               // "ph": "HASH_SHA256_DEL_TELEFONO",
               // "fn": "HASH_SHA256_DEL_NOMBRE",
               "fbp": getCookie('_fbp') || null,
-              "fbc": getCookie('_fbc') || null
+              "fbc": getCookie('_fbc') || null,
+              // Los datos de IP y User Agent los obtiene el servidor PHP y los inyecta
+              // en el script del <head>, por lo que ya están siendo enviados
+              // en el evento PageView de la API de Conversiones.
             }
-            // Si estás probando, añade tu test_event_code aquí
-            // "test_event_code": "TEST12345"
           };
           
           try {

@@ -2,7 +2,7 @@
 // Generamos un ID único para el evento PageView de esta carga de página específica
 $pageViewEventId = 'pv_' . uniqid();
 
-// ¡NUEVO! Capturamos la IP y el User Agent del visitante para mejorar la calidad de coincidencias
+// Capturamos la IP y el User Agent del visitante para mejorar la calidad de coincidencias
 $clientIpAddress = $_SERVER['REMOTE_ADDR'];
 $clientUserAgent = $_SERVER['HTTP_USER_AGENT'];
 
@@ -383,6 +383,66 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </section>
 
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-12 fade-in">¿Por qué elegirnos?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="fade-in">
+                    <img src="lancha.jpg" alt="Lancha Deportiva" class="mx-auto mb-4 rounded-lg shadow-md" loading="lazy">
+                    <h3 class="text-xl font-semibold mb-2">Variedad de Embarcaciones</h3>
+                    <p class="text-gray-600">Desde lanchas deportivas rápidas hasta catamaranes espaciosos y yates de lujo, tenemos la opción perfecta para tu aventura.</p>
+                </div>
+                <div class="fade-in">
+                    <img src="atardecer.jpg" alt="Atardecer Privado" class="mx-auto mb-4 rounded-lg shadow-md" loading="lazy">
+                    <h3 class="text-xl font-semibold mb-2">Experiencias Personalizadas</h3>
+                    <p class="text-gray-600">Tú decides: un paseo privado por las Islas del Rosario o un romántico atardecer en Cartagena, adaptado a tus deseos.</p>
+                </div>
+                <div class="fade-in">
+                    <img src="equipo.jpg" alt="Equipo Profesional" class="mx-auto mb-4 rounded-lg shadow-md" loading="lazy">
+                    <h3 class="text-xl font-semibold mb-2">Navega con Expertos Locales</h3>
+                    <p class="text-gray-600">Nuestra tripulación con experiencia, no solo sabe navegar, también conoce cada rincón, cada isla y cada historia de la zona.</p>
+                </div>
+            </div>
+            <a href="#formulario" class="section-btn mt-12 inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:shadow-xl fade-in">Cotizar Ahora</a>
+        </div>
+    </section>
+
+    <section class="py-16 bg-gray-100">
+        <div class="container mx-auto px-4 text-center">
+            <div class="review-badge">
+                <span class="badge-stars">★★★★★</span>
+                <span>4.9 (53 reseñas)</span>
+            </div>
+            <h2 class="text-3xl md:text-4xl font-bold mb-12 fade-in">Lo que dicen nuestros clientes</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-lg fade-in">
+                    <p class="text-gray-600 italic testimonial-text">"El paseo por las Islas del Rosario fue espectacular. La lancha era cómoda y los chicos de la tripulación muy amables."</p>
+                    <div class="stars">★★★★★</div>
+                    <p class="font-semibold">María G.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg fade-in">
+                    <p class="text-gray-600 italic testimonial-text">"Ver el atardecer de Cartagena desde un bote en la bahía es mi plan favorito. Es segunda vez que lo hago con Descubre Cartagena, los recomiendo."</p>
+                    <div class="stars">★★★★★</div>
+                    <p class="font-semibold">Juan P.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg fade-in">
+                    <p class="text-gray-600 italic testimonial-text">"Una experiencia inolvidable con mis amigas, bailamos, nadamos y navegamos sin problemas. Volveremos pronto."</p>
+                    <div class="stars">★★★★★</div>
+                    <p class="font-semibold">Ana R.</p>
+                </div>
+            </div>
+            <a href="#formulario" class="section-btn mt-12 inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:shadow-xl fade-in">Cotizar Ahora</a>
+        </div>
+    </section>
+
+    <section class="section-bg py-16 text-white">
+        <div class="container mx-auto px-4 text-center p-8 md:p-12 rounded-lg max-w-2xl fade-in">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">¡Cartagena te espera!</h2>
+            <p class="text-lg md:text-xl mb-6">No dejes pasar la oportunidad de vivir una experiencia única. Contáctanos ahora y reserva tu bote privado.</p>
+            <a href="#formulario" class="section-btn bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:shadow-xl">Reserva tu Bote</a>
+        </div>
+    </section>
+
     <section id="formulario" class="form-section py-16">
         <div class="header">
             <div class="logo-container">
@@ -577,9 +637,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           // 2. Generamos un ID de evento único para esta conversión
           const eventoIdUnico = generateEventId();
 
-          // 3. Capturamos los datos del usuario.
-          // En una implementación final, estos datos (teléfono, nombre) deberían ser
-          // hasheados (encriptados con SHA-256) por seguridad.
+          // 3. Capturamos los datos que podemos enviar a Facebook.
+          // En una implementación final y por seguridad, los datos personales como el teléfono
+          // y el nombre deberían ser "hasheados" (encriptados con SHA-256).
           const telefonoValue = document.getElementById('whatsapp').value;
           const nombreCompletoValue = document.getElementById('nombreCompleto').value;
 
@@ -599,15 +659,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             action_source: "website",
             event_source_url: window.location.href,
             user_data: {
-              // NOTA: Aquí irían los datos hasheados
+              // NOTA: Aquí irían los datos hasheados si tuvieras la lógica de hashing.
               // "ph": "HASH_SHA256_DEL_TELEFONO",
               // "fn": "HASH_SHA256_DEL_NOMBRE",
               "fbp": getCookie('_fbp') || null,
               "fbc": getCookie('_fbc') || null,
-              // Los datos de IP y User Agent los obtiene el servidor PHP y los inyecta
-              // en el script del <head>, por lo que ya están siendo enviados
-              // en el evento PageView de la API de Conversiones.
+              // Los datos de IP y User Agent ya se envían en el evento PageView,
+              // pero enviarlos de nuevo en el evento Lead puede mejorar aún más la coincidencia.
+              "client_ip_address": "<?php echo $clientIpAddress; ?>",
+              "client_user_agent": "<?php echo addslashes($clientUserAgent); ?>"
             }
+            // Si estás probando, añade tu test_event_code aquí
+            // "test_event_code": "TEST12345"
           };
           
           try {

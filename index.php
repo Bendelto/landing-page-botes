@@ -379,7 +379,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="text-center p-8 md:p-12 rounded-lg max-w-2xl fade-in">
             <h1 class="text-4xl md:text-6xl font-bold mb-4">Vive la Magia de Cartagena en un Bote Privado</h1>
             <p class="text-lg md:text-2xl mb-6">Explora las Islas del Rosario o disfruta un atardecer inolvidable en Cartagena de Indias con nuestras lanchas deportivas y yates.</p>
-            <a href="#formulario" class="section-btn bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:shadow-xl">Reserva tu Bote</a>
+            <a href="#formulario" class="section-btn bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:shadow-xl">Cotizar Ahora</a>
         </div>
     </section>
 
@@ -403,7 +403,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <p class="text-gray-600">Nuestra tripulación con experiencia, no solo sabe navegar, también conoce cada rincón, cada isla y cada historia de la zona.</p>
                 </div>
             </div>
-            <a href="#formulario" class="section-btn mt-12 inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:shadow-xl fade-in">Cotizar Ahora</a>
+            <a href="#formulario" class="section-btn mt-12 inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:shadow-xl fade-in">Recibir Precios y Opciones</a>
         </div>
     </section>
 
@@ -411,7 +411,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="container mx-auto px-4 text-center">
             <div class="review-badge">
                 <span class="badge-stars">★★★★★</span>
-                <span>4.9 (53 reseñas)</span>
+                <span>4.8 / 5.0 (53 reseñas)</span>
             </div>
             <h2 class="text-3xl md:text-4xl font-bold mb-12 fade-in">Lo que dicen nuestros clientes</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -431,7 +431,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <p class="font-semibold">Ana R.</p>
                 </div>
             </div>
-            <a href="#formulario" class="section-btn mt-12 inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:shadow-xl fade-in">Cotizar Ahora</a>
+            <a href="#formulario" class="section-btn mt-12 inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:shadow-xl fade-in">Cotizar por WhatsApp</a>
         </div>
     </section>
 

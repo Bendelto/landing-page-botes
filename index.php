@@ -142,7 +142,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 client_user_agent: clientUserAgent
             }
         };
-        fetch('https://api.descubrecartagena.com/send-event', {
+        fetch('https://api.descubrecartagena.com/event', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)

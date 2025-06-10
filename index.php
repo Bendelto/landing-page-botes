@@ -131,7 +131,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (parts.length === 2) return parts.pop().split(';').shift();
         }
         const payload = {
-            pixel_identifier: "descubrecartagena",
             event_name: "PageView",
             event_id: pageViewEventId,
             action_source: "website",
@@ -437,7 +436,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
           // --- Envío del Evento del Servidor (API de Conversiones) ---
           const payloadCAPI = {
-            pixel_identifier: "descubrecartagena",
             event_name: "Lead",
             event_id: eventoIdUnico,
             action_source: "website",

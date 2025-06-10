@@ -389,6 +389,13 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
+    // Verificamos las variables inyectadas desde PHP
+    console.log('Variables PHP:', {
+        pageViewEventId: "<?php echo $pageViewEventId; ?>",
+        clientIpAddress: "<?php echo $clientIpAddress; ?>",
+        clientUserAgent: "<?php echo addslashes($clientUserAgent); ?>"
+    });
+
     // Aseguramos que el píxel esté inicializado antes de enviar PageView
     if (typeof fbq !== 'undefined') {
         fbq('track', 'PageView', {}, { eventID: pageViewEventId });
@@ -415,12 +422,13 @@ document.addEventListener("DOMContentLoaded", function() {
                 user_data: {
                     fbp: getCookie('_fbp') || null,
                     fbc: getCookie('_fbc') || null,
-                    client_ip_address: clientIpAddress,
-                    client_user_agent: clientUserAgent
+                    client_ip_address: "<?php echo $clientIpAddress; ?>" || null,
+                    client_user_agent: "<?php echo addslashes($clientUserAgent); ?>" || null
                 }
             }]
         };
 
+        console.log('Payload enviado a /event:', payload); // Depuración
         sendEventToServer(payload, 'PageView', pageViewEventId);
     }
 
@@ -520,12 +528,13 @@ document.addEventListener('DOMContentLoaded', function() {
                         fn: hashedNombre || null,
                         fbp: getCookie('_fbp') || null,
                         fbc: getCookie('_fbc') || null,
-                        client_ip_address: clientIpAddress,
-                        client_user_agent: clientUserAgent
+                        client_ip_address: "<?php echo $clientIpAddress; ?>" || null,
+                        client_user_agent: "<?php echo addslashes($clientUserAgent); ?>" || null
                     }
                 }]
             };
 
+            console.log('Payload enviado a /event para Lead:', payloadCAPI); // Depuración
             await sendEventToServer(payloadCAPI, 'Lead', eventoIdUnico);
 
             // Actualizamos el campo WhatsApp y continuamos con el envío del formulario

@@ -375,45 +375,149 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </script>
     
     <script>
-    // --- CÓDIGO DE SEGUIMIENTO DE EVENTOS DE FACEBOOK (VERSIÓN OPTIMIZADA) ---
-    var iti; // Hacemos la instancia de intl-tel-input accesible
+// --- CÓDIGO DE SEGUIMIENTO DE EVENTOS DE FACEBOOK (VERSIÓN OPTIMIZADA) ---
+var iti; // Hacemos la instancia de intl-tel-input accesible
 
-    document.addEventListener("DOMContentLoaded", function() {
-        var input = document.querySelector("#whatsapp");
-        if (input) {
-            iti = window.intlTelInput(input, {
-                preferredCountries: ["co", "br", "us", "mx", "cr", "pa"],
-                separateDialCode: true,
-                initialCountry: "co",
-                utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
-            });
+document.addEventListener("DOMContentLoaded", function() {
+    var input = document.querySelector("#whatsapp");
+    if (input) {
+        iti = window.intlTelInput(input, {
+            preferredCountries: ["co", "br", "us", "mx", "cr", "pa"],
+            separateDialCode: true,
+            initialCountry: "co",
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+        });
+    }
+
+    // Aseguramos que el píxel esté inicializado antes de enviar PageView
+    if (typeof fbq !== 'undefined') {
+        fbq('track', 'PageView', {}, { eventID: pageViewEventId });
+        console.log(`Evento de Navegador 'PageView' enviado con ID: ${pageViewEventId}`);
+    } else {
+        console.warn('Píxel de Facebook no inicializado para PageView');
+    }
+
+    // Enviamos el evento del Servidor (API de Conversiones) para PageView
+    function sendPageViewEvent() {
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
         }
 
-        // Aseguramos que el píxel esté inicializado antes de enviar PageView
-        if (typeof fbq !== 'undefined') {
-            // Enviamos el evento del Navegador (Píxel) con el ID para deduplicación
-            fbq('track', 'PageView', {}, { eventID: pageViewEventId });
-            console.log(`Evento de Navegador_${pageViewEventId}`);
+        const payload = {
+            data: [{
+                event_name: "PageView",
+                event_id: pageViewEventId,
+                action_source: "website",
+                event_time: Math.floor(Date.now() / 1000),
+                event_source_url: window.location.href,
+                user_data: {
+                    fbp: getCookie('_fbp') || null,
+                    fbc: getCookie('_fbc') || null,
+                    client_ip_address: clientIpAddress,
+                    client_user_agent: clientUserAgent
+                }
+            }]
+        };
+
+        sendEventToServer(payload, 'PageView', pageViewEventId);
+    }
+
+    sendPageViewEvent();
+});
+
+// --- Funciones auxiliares de seguimiento ---
+async function hashSHA256(string) {
+    if (!string) return null;
+    const utf8 = new TextEncoder().encode(string.trim().toLowerCase());
+    const hashBuffer = await crypto.subtle.digest('SHA-256', utf8);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function generateEventId() {
+    return 'event_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+}
+
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+// Función para enviar eventos al servidor con reintentos
+async function sendEventToServer(payload, eventName, eventId, retries = 2) {
+    try {
+        const response = await fetch('https://api.descubrecartagena.com/event', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        const data = await response.json();
+        if (response.ok) {
+            console.log(`Evento de Servidor '${eventName}' enviado con éxito. ID: ${eventId}`, data);
         } else {
-            console.warn('Píxel de Facebook no inicializado para PageView');
+            throw new Error(`Respuesta no OK: ${JSON.stringify(data)}`);
         }
+    } catch (error) {
+        console.error(`Error al enviar evento '${eventName}' (ID: ${eventId}):`, error);
+        if (retries > 0) {
+            console.log(`Reintentando (${retries} intentos restantes)...`);
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            return sendEventToServer(payload, eventName, eventId, retries - 1);
+        }
+        console.error(`No se pudo enviar evento '${eventName}' tras reintentos`);
+    }
+}
 
-        // Enviamos el evento del Servidor (API de Conversiones) para PageView
-        (function sendPageViewEvent() {
-            function getCookie(name) {
-                const value = `; ${document.cookie}`;
-                const parts = value.split(`; ${name}=`);
-                if (parts.length === 2) return parts.pop().split(';').shift();
+// --- Lógica principal para el seguimiento del formulario ---
+document.addEventListener('DOMContentLoaded', function() {
+    const cotizacionForm = document.getElementById('cotizacionForm');
+
+    if (cotizacionForm) {
+        cotizacionForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            console.log('Formulario enviado. Iniciando seguimiento de evento Lead...');
+
+            const eventoIdUnico = generateEventId();
+            const telefonoCompleto = iti.getNumber();
+            const nombreCompletoValue = document.getElementById('nombreCompleto').value;
+
+            // Validamos el número de teléfono
+            if (!iti.isValidNumber()) {
+                console.warn('Número de WhatsApp inválido:', telefonoCompleto);
+                document.getElementById('whatsapp').value = telefonoCompleto;
+                cotizacionForm.submit();
+                return;
             }
 
-            const payload = {
+            // Enviamos el Evento del Navegador (Píxel)
+            if (typeof fbq !== 'undefined') {
+                fbq('track', 'Lead', {}, { eventID: eventoIdUnico });
+                console.log(`Evento de Navegador 'Lead' enviado con ID: ${eventoIdUnico}`);
+            } else {
+                console.warn('Píxel de Facebook no inicializado para Lead');
+            }
+
+            // Hasheamos los datos personales
+            const hashedTelefono = await hashSHA256(telefonoCompleto);
+            const hashedNombre = await hashSHA256(nombreCompletoValue);
+
+            console.log(`Teléfono: ${telefonoCompleto}, Hash: ${hashedTelefono}`);
+            console.log(`Nombre: ${nombreCompletoValue}, Hash: ${hashedNombre}`);
+
+            // Enviamos el Evento del Servidor (API de Conversiones)
+            const payloadCAPI = {
                 data: [{
-                    event_name: "PageView",
-                    event_id: pageViewEventId,
-                    action_source: 'website',
+                    event_name: "Lead",
+                    event_id: eventoIdUnico,
+                    action_source: "website",
                     event_time: Math.floor(Date.now() / 1000),
                     event_source_url: window.location.href,
                     user_data: {
+                        ph: hashedTelefono || null,
+                        fn: hashedNombre || null,
                         fbp: getCookie('_fbp') || null,
                         fbc: getCookie('_fbc') || null,
                         client_ip_address: clientIpAddress,
@@ -422,118 +526,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }]
             };
 
-            sendEventToServer(payload, 'PageView', pageViewEventId);
-        })();
-    });
+            await sendEventToServer(payloadCAPI, 'Lead', eventoIdUnico);
 
-    // --- Funciones auxiliares de seguimiento ---
-    async function hashSHA256(string) {
-        if (!string) return null;
-        const utf8 = new TextEncoder().encode(string.trim().toLowerCase());
-        const hashBuffer = await crypto.subtle.digest('SHA-256', utf8);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            // Actualizamos el campo WhatsApp y continuamos con el envío del formulario
+            document.getElementById('whatsapp').value = telefonoCompleto;
+            console.log('Seguimiento completado. Reanudando envío del formulario al servidor PHP.');
+            cotizacionForm.submit();
+        });
     }
-
-    function generateEventId() {
-        return 'event_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-    }
-
-    function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-    }
-
-    // Función para enviar eventos al servidor con reintentos
-    async function sendEventToServer(payload, eventName, eventId, retries = 2) {
-        try {
-            const response = await fetch('https://api.descubrecartagena.com/event', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            const data = await response.json();
-            if (response.ok) {
-                console.log(`Evento de Servidor '${eventName}' enviado con éxito. ID: ${eventId}`, data);
-            } else {
-                throw new Error(`Respuesta no OK: ${JSON.stringify(data)}`);
-            }
-        } catch (error) {
-            console.error(`Error al enviar evento '${eventName}' (ID: ${eventId}):`, error);
-            if (retries > 0) {
-                console.log(`Reintentando (${retries} intentos restantes)...`);
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                return sendEventToServer(payload, eventName, eventId, retries - 1);
-            }
-            console.error(`No se pudo enviar evento '${eventName}' después de reintentos`);
-        }
-    }
-
-    // --- Lógica principal para el seguimiento del formulario ---
-    document.addEventListener('DOMContentLoaded', function() {
-        const cotizacionForm = document.getElementById('cotizacionForm');
-
-        if (cotizacionForm) {
-            cotizaForm.addEventListener('submit', async function(event) {
-                event.preventDefault();
-                console.log('Formulario enviado. Iniciando seguimiento de evento Lead...');
-
-                const eventoIdUnico = generateEventId();
-                const telefonoCompleto = iti.getNumber();
-                const nombreCompletoValue = document.getElementById('nombreCompleto').value;
-
-                // Validamos el número de teléfono
-                if (!iti.isValidNumber()) {
-                    console.warn('Número de teléfono inválido:', telefonoCompleto);
-                    document.getElementById('whatsapp').value = telefonoCompleto;
-                    cotizaForm.submit();
-                    return;
-                }
-
-                // Enviamos el Evento del Navegador (Píxel)
-                if (typeof fbq !== 'undefined') {
-                    fbq('track', 'Lead', {}, { eventID: eventoIdUnico });
-                    console.log(`Evento de Navegador_${eventoIdUnico}`);
-                } else {
-                    console.warn('Píxel de Facebook no definido para el evento Lead');
-                }
-
-                // Hasheamos los datos personales
-                const hashedTelefono = await hashSHA256(telefonoCompleto);
-                const hashedNombre = await hashSHA256(nombreCompletoValue);
-
-                console.log(`Teléfono: ${telefonoCompleto}, Hash: ${hashedTelefono}`);
-                console.log(`Nombre: ${nombreCompletoValue}, Hash: ${hashedNombre}`);
-
-                // Enviamos el Evento del Servidor (API de Conversiones)
-                const payloadCAPI = {
-                    data: [{
-                        event_name: 'Lead',
-                        event_id: eventoIdUnico,
-                        action_source: 'website',
-                        event_time: Math.floor(Date.now() / 1000),
-                        event_source_url: window.location.href,
-                        user_data: {
-                            ph: hashedTelefono || null,
-                            fn: hashedNombre || null,
-                            fbp: getCookie('_fbp') || null,
-                            fbc: getCookie('_fbc') || null,
-                            client_ip_address: clientIpAddress,
-                            client_user_agent: clientUserAgent
-                        }
-                    }]
-                };
-
-                await sendEventToServer(payloadCAPI, 'Lead', eventoIdUnico);
-
-                // Actualizamos el campo WhatsApp y continuamos con el envío del formulario
-                document.getElementById('whatsapp').value = telefonoCompleto;
-                console.log('Seguimiento completado. Reanudando envío del formulario al servidor PHP.');
-                cotizaForm.submit();
-            });
-        }
-    });
+});
 </script>
 </body>
 </html>

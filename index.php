@@ -319,7 +319,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <p class="error"><?php echo htmlspecialchars($errors['whatsapp']); ?></p>
                     <?php endif; ?>
                 </div>
-                <button type="submit">Cotizar Ahora por WhatsApp</button>
+                <button type="submit">Cotizar por WhatsApp</button>
             </form>
             <?php endif; ?>
         </div>

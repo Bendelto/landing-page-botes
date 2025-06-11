@@ -66,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.min.css">
     <link href="./output.css" rel="stylesheet">
     <style>
-        /* Tu CSS original va aquí, con las modificaciones solicitadas */
+        /* Tu CSS original va aquí, no se necesita cambiar */
         body { font-family: 'Poppins', sans-serif; }
         .hero-bg { background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('panoramico.jpg'); background-size: cover; background-position: center; }
         .section-bg { background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('catamaran.jpg'); background-size: cover; background-position: center; }
@@ -100,22 +100,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .hero-bg p { margin-bottom: 32px; }
         .hero-bg a { margin-bottom: 16px; }
         @media (max-width: 767px) { .section-btn { display: none; } .form-section button { display: block; } }
-        .franja-btn {
-            background-color: #fff;
-            box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1);
-            transition: opacity 0.3s ease;
-            /* Forzando la visibilidad para depuración */
-            z-index: 9999 !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-        }
-        .franja-btn.hidden { opacity: 0; pointer-events: none; }
     </style>
     
     <script>
     !function(f,b,e,v,n,t,s)
     {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments);  
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};  
     if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';  
     n.queue=[];t=b.createElement(e);t.async=!0;  
     t.src=v;s=b.getElementsByTagName(e)[0];  
@@ -137,7 +127,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     (function() {
         function getCookie(name) {
             const value = `; ${document.cookie}`;
-            const(parts = value.split(`; ${name}=`);
+            const parts = value.split(`; ${name}=`);
             if (parts.length === 2) return parts.pop().split(';').shift();
         }
         const payload = {
@@ -165,7 +155,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <noscript><img height="1" width="1" style="display:none"  
     src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"  
     /></noscript>
-    
+	
     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17157900117"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -314,6 +304,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </section>
 
+    <a href="#formulario" id="floating-btn" class="md:hidden fixed bottom-4 left-0 right-0 w-11/12 mx-auto bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-full text-base text-center transition duration-300 shadow-xl hover:shadow-2xl floating-btn z-50">Cotizar Ahora</a>
+
     <footer class="bg-gray-800 text-white py-8">
         <div class="container mx-auto px-4 text-center">
             <p class="mb-4">© 2025 Agencia de Tours y Alquiler de Botes en Cartagena</p>
@@ -321,13 +313,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </footer>
 
-    <div class="franja-btn fixed inset-x-0 bottom-0 flex justify-center z-50 bg-white p-4 md:hidden">
-        <a href="#formulario" id="floating-btn" class="w-11/12 mx-auto bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-full text-base text-center transition duration-300 shadow-xl hover:shadow-2xl floating-btn">Cotizar Ahora</a>
-    </div>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
     <script>
-        // Tus scripts de UI, con la lógica modificada para el wrapper
+        // Tus scripts de UI (debounce, smooth scroll, etc.) van aquí, sin cambios
         function debounce(func, wait) {
             let timeout;
             return function executedFunction(...args) {
@@ -354,19 +342,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
             });
         });
-        const floatingBtnWrapper = document.querySelector('.franja-btn');
+        const floatingBtn = document.querySelector('#floating-btn');
         const formSection = document.querySelector('#formulario');
         const updateVisibility = () => {
             if (window.innerWidth >= 768) {
-                floatingBtnWrapper.classList.add('hidden');
+                floatingBtn.classList.add('hidden');
             } else {
                 const formRect = formSection.getBoundingClientRect();
                 const viewportHeight = window.innerHeight;
                 const isFormVisible = formRect.top < viewportHeight && formRect.bottom > 0;
                 if (isFormVisible) {
-                    floatingBtnWrapper.classList.add('hidden');
+                    floatingBtn.classList.add('hidden');
                 } else {
-                    floatingBtnWrapper.classList.remove('hidden');
+                    floatingBtn.classList.remove('hidden');
                 }
             }
         };
@@ -387,51 +375,157 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </script>
     
     <script>
-    // --- CÓDIGO DE SEGUIMIENTO DE EVENTOS DE FACEBOOK (VERSIÓN OPTIMIZADA) ---
-    var iti; // Hacemos la instancia de intl-tel-input accesible
+// --- CÓDIGO DE SEGUIMIENTO DE EVENTOS DE FACEBOOK (VERSIÓN OPTIMIZADA) ---
+var iti; // Hacemos la instancia de intl-tel-input accesible
 
-    document.addEventListener("DOMContentLoaded", function() {
-        var input = document.querySelector("#whatsapp");
-        if (input) {
-            iti = window.intlTelInput(input, {
-                preferredCountries: ["co", "br", "us", "mx", "cr", "pa"],
-                separateDialCode: true,
-                initialCountry: "co",
-                utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
-            });
-        }
-
-        // Verificamos las variables inyectadas desde PHP
-        console.log('Variables PHP:', {
-            pageViewEventId: "<?php echo $pageViewEventId; ?>",
-            clientIpAddress: "<?php echo $clientIpAddress; ?>",
-            clientUserAgent: "<?php echo addslashes($clientUserAgent); ?>"
+document.addEventListener("DOMContentLoaded", function() {
+    var input = document.querySelector("#whatsapp");
+    if (input) {
+        iti = window.intlTelInput(input, {
+            preferredCountries: ["co", "br", "us", "mx", "cr", "pa"],
+            separateDialCode: true,
+            initialCountry: "co",
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
         });
+    }
 
-        // Aseguramos que el píxel esté inicializado antes de enviar PageView
-        if (typeof fbq !== 'undefined') {
-            fbq('track', 'PageView', {}, { eventID: pageViewEventId });
-            console.log(`Evento de Navegador 'PageView' enviado con ID: ${pageViewEventId}`);
-        } else {
-            console.warn('Píxel de Facebook no inicializado para PageView');
+    // Verificamos las variables inyectadas desde PHP
+    console.log('Variables PHP:', {
+        pageViewEventId: "<?php echo $pageViewEventId; ?>",
+        clientIpAddress: "<?php echo $clientIpAddress; ?>",
+        clientUserAgent: "<?php echo addslashes($clientUserAgent); ?>"
+    });
+
+    // Aseguramos que el píxel esté inicializado antes de enviar PageView
+    if (typeof fbq !== 'undefined') {
+        fbq('track', 'PageView', {}, { eventID: pageViewEventId });
+        console.log(`Evento de Navegador 'PageView' enviado con ID: ${pageViewEventId}`);
+    } else {
+        console.warn('Píxel de Facebook no inicializado para PageView');
+    }
+
+    // Enviamos el evento del Servidor (API de Conversiones) para PageView
+    function sendPageViewEvent() {
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
         }
 
-        // Enviamos el evento del Servidor (API de Conversiones) para PageView
-        function sendPageViewEvent() {
-            function getCookie(name) {
-                const value = `; ${document.cookie}`;
-                const parts = value.split(`; ${name}=`);
-                if (parts.length === 2) return parts.pop().split(';').shift();
+        const payload = {
+            data: [{
+                event_name: "PageView",
+                event_id: pageViewEventId,
+                action_source: "website",
+                event_time: Math.floor(Date.now() / 1000),
+                event_source_url: window.location.href,
+                user_data: {
+                    fbp: getCookie('_fbp') || null,
+                    fbc: getCookie('_fbc') || null,
+                    client_ip_address: "<?php echo $clientIpAddress; ?>" || null,
+                    client_user_agent: "<?php echo addslashes($clientUserAgent); ?>" || null
+                }
+            }]
+        };
+
+        console.log('Payload enviado a /event:', payload); // Depuración
+        sendEventToServer(payload, 'PageView', pageViewEventId);
+    }
+
+    sendPageViewEvent();
+});
+
+// --- Funciones auxiliares de seguimiento ---
+async function hashSHA256(string) {
+    if (!string) return null;
+    const utf8 = new TextEncoder().encode(string.trim().toLowerCase());
+    const hashBuffer = await crypto.subtle.digest('SHA-256', utf8);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function generateEventId() {
+    return 'event_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+}
+
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+// Función para enviar eventos al servidor con reintentos
+async function sendEventToServer(payload, eventName, eventId, retries = 2) {
+    try {
+        const response = await fetch('https://api.descubrecartagena.com/event', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        const data = await response.json();
+        if (response.ok) {
+            console.log(`Evento de Servidor '${eventName}' enviado con éxito. ID: ${eventId}`, data);
+        } else {
+            throw new Error(`Respuesta no OK: ${JSON.stringify(data)}`);
+        }
+    } catch (error) {
+        console.error(`Error al enviar evento '${eventName}' (ID: ${eventId}):`, error);
+        if (retries > 0) {
+            console.log(`Reintentando (${retries} intentos restantes)...`);
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            return sendEventToServer(payload, eventName, eventId, retries - 1);
+        }
+        console.error(`No se pudo enviar evento '${eventName}' tras reintentos`);
+    }
+}
+
+// --- Lógica principal para el seguimiento del formulario ---
+document.addEventListener('DOMContentLoaded', function() {
+    const cotizacionForm = document.getElementById('cotizacionForm');
+
+    if (cotizacionForm) {
+        cotizacionForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            console.log('Formulario enviado. Iniciando seguimiento de evento Lead...');
+
+            const eventoIdUnico = generateEventId();
+            const telefonoCompleto = iti.getNumber();
+            const nombreCompletoValue = document.getElementById('nombreCompleto').value;
+
+            // Validamos el número de teléfono
+            if (!iti.isValidNumber()) {
+                console.warn('Número de WhatsApp inválido:', telefonoCompleto);
+                document.getElementById('whatsapp').value = telefonoCompleto;
+                cotizacionForm.submit();
+                return;
             }
 
-            const payload = {
+            // Enviamos el Evento del Navegador (Píxel)
+            if (typeof fbq !== 'undefined') {
+                fbq('track', 'Lead', {}, { eventID: eventoIdUnico });
+                console.log(`Evento de Navegador 'Lead' enviado con ID: ${eventoIdUnico}`);
+            } else {
+                console.warn('Píxel de Facebook no inicializado para Lead');
+            }
+
+            // Hasheamos los datos personales
+            const hashedTelefono = await hashSHA256(telefonoCompleto);
+            const hashedNombre = await hashSHA256(nombreCompletoValue);
+
+            console.log(`Teléfono: ${telefonoCompleto}, Hash: ${hashedTelefono}`);
+            console.log(`Nombre: ${nombreCompletoValue}, Hash: ${hashedNombre}`);
+
+            // Enviamos el Evento del Servidor (API de Conversiones)
+            const payloadCAPI = {
                 data: [{
-                    event_name: "PageView",
-                    event_id: pageViewEventId,
+                    event_name: "Lead",
+                    event_id: eventoIdUnico,
                     action_source: "website",
                     event_time: Math.floor(Date.now() / 1000),
                     event_source_url: window.location.href,
                     user_data: {
+                        ph: hashedTelefono || null,
+                        fn: hashedNombre || null,
                         fbp: getCookie('_fbp') || null,
                         fbc: getCookie('_fbc') || null,
                         client_ip_address: "<?php echo $clientIpAddress; ?>" || null,
@@ -440,122 +534,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }]
             };
 
-            console.log('Payload enviado a /event:', payload); // Depuración
-            sendEventToServer(payload, 'PageView', pageViewEventId);
-        }
+            console.log('Payload enviado a /event para Lead:', payloadCAPI); // Depuración
+            await sendEventToServer(payloadCAPI, 'Lead', eventoIdUnico);
 
-        sendPageViewEvent();
-    });
-
-    // --- Funciones auxiliares de seguimiento ---
-    async function hashSHA256(string) {
-        if (!string) return null;
-        const utf8 = new TextEncoder().encode(string.trim().toLowerCase());
-        const hashBuffer = await crypto.subtle.digest('SHA-256', utf8);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            // Actualizamos el campo WhatsApp y continuamos con el envío del formulario
+            document.getElementById('whatsapp').value = telefonoCompleto;
+            console.log('Seguimiento completado. Reanudando envío del formulario al servidor PHP.');
+            cotizacionForm.submit();
+        });
     }
-
-    function generateEventId() {
-        return 'event_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-    }
-
-    function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-    }
-
-    // Función para enviar eventos al servidor con reintentos
-    async function sendEventToServer(payload, eventName, eventId, retries = 2) {
-        try {
-            const response = await fetch('https://api.descubrecartagena.com/event', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            const data = await response.json();
-            if (response.ok) {
-                console.log(`Evento de Servidor '${eventName}' enviado con éxito. ID: ${eventId}`, data);
-            } else {
-                throw new Error(`Respuesta no OK: ${JSON.stringify(data)}`);
-            }
-        } catch (error) {
-            console.error(`Error al enviar evento '${eventName}' (ID: ${eventId}):`, error);
-            if (retries > 0) {
-                console.log(`Reintentando (${retries} intentos restantes)...`);
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                return sendEventToServer(payload, eventName, eventId, retries - 1);
-            }
-            console.error(`No se pudo enviar evento '${eventName}' tras reintentos`);
-        }
-    }
-
-    // --- Lógica principal para el seguimiento del formulario ---
-    document.addEventListener('DOMContentLoaded', function() {
-        const cotizacionForm = document.getElementById('cotizacionForm');
-
-        if (cotizacionForm) {
-            cotizacionForm.addEventListener('submit', async function(event) {
-                event.preventDefault();
-                console.log('Formulario enviado. Iniciando seguimiento de evento Lead...');
-
-                const eventoIdUnico = generateEventId();
-                const telefonoCompleto = iti.getNumber();
-                const nombreCompletoValue = document.getElementById('nombreCompleto').value;
-
-                // Validamos el número de teléfono
-                if (!iti.isValidNumber()) {
-                    console.warn('Número de WhatsApp inválido:', telefonoCompleto);
-                    document.getElementById('whatsapp').value = telefonoCompleto;
-                    cotizacionForm.submit();
-                    return;
-                }
-
-                // Enviamos el Evento del Navegador (Píxel)
-                if (typeof fbq !== 'undefined') {
-                    fbq('track', 'Lead', {}, { eventID: eventoIdUnico });
-                    console.log(`Evento de Navegador 'Lead' enviado con ID: ${eventoIdUnico}`);
-                } else {
-                    console.warn('Píxel de Facebook no inicializado para Lead');
-                }
-
-                // Hasheamos los datos personales
-                const hashedTelefono = await hashSHA256(telefonoCompleto);
-                const hashedNombre = await hashSHA256(nombreCompletoValue);
-
-                console.log(`Teléfono: ${telefonoCompleto}, Hash: ${hashedTelefono}`);
-                console.log(`Nombre: ${nombreCompletoValue}, Hash: ${hashedNombre}`);
-
-                // Enviamos el Evento del Servidor (API de Conversiones)
-                const payloadCAPI = {
-                    data: [{
-                        event_name: "Lead",
-                        event_id: eventoIdUnico,
-                        action_source: "website",
-                        event_time: Math.floor(Date.now() / 1000),
-                        event_source_url: window.location.href,
-                        user_data: {
-                            ph: hashedTelefono || null,
-                            fn: hashedNombre || null,
-                            fbp: getCookie('_fbp') || null,
-                            fbc: getCookie('_fbc') || null,
-                            client_ip_address: "<?php echo $clientIpAddress; ?>" || null,
-                            client_user_agent: "<?php echo addslashes($clientUserAgent); ?>" || null
-                        }
-                    }]
-                };
-
-                console.log('Payload enviado a /event para Lead:', payloadCAPI); // Depuración
-                await sendEventToServer(payloadCAPI, 'Lead', eventoIdUnico);
-
-                // Actualizamos el campo WhatsApp y continuamos con el envío del formulario
-                document.getElementById('whatsapp').value = telefonoCompleto;
-                console.log('Seguimiento completado. Reanudando envío del formulario al servidor PHP.');
-                cotizacionForm.submit();
-            });
-        }
-    });
-    </script>
+});
+</script>
 </body>
 </html>

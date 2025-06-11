@@ -1,6 +1,26 @@
 {
   "dependencies": {
-    "@tailwindcss/cli": "^4.1.8",
-    "tailwindcss": "^4.1.8"
-  }
+    "@tailwindcss/cli": "^4.1.8"
+  },
+  "name": "landing-page-botes",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {
+    "tailwindcss": "^4.1.10"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bendelto/landing-page-botes.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Bendelto/landing-page-botes/issues"
+  },
+  "homepage": "https://github.com/Bendelto/landing-page-botes#readme",
+  "description": ""
 }

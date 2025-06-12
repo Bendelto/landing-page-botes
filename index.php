@@ -454,66 +454,65 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // --- Lógica principal para el seguimiento del formulario ---
         const cotizacionForm = document.getElementById('cotizacionForm');
 
-        if (cotizacionForm) {
-            cotizacionForm.addEventListener('submit', async function(event) {
-                event.preventDefault();
-                console.log('Formulario enviado. Iniciando seguimiento de evento Lead...');
+if (cotizacionForm) {
+    cotizacionForm.addEventListener('submit', async function(event) {
+        event.preventDefault(); // Siempre prevenir el envío inicial
+        console.log('Formulario enviado. Iniciando seguimiento de evento Lead...');
 
-                const eventoIdUnico = generateEventId();
-                const telefonoCompleto = iti.getNumber();
-                const nombreCompletoValue = document.getElementById('nombreCompleto').value;
+        const eventoIdUnico = generateEventId();
+        const telefonoCompleto = iti.getNumber();
+        const nombreCompletoValue = document.getElementById('nombreCompleto').value;
 
-                // Validamos el número de teléfono
-                if (!iti.isValidNumber()) {
-                    console.warn('Número de WhatsApp inválido:', telefonoCompleto);
-                    document.getElementById('whatsapp').value = telefonoCompleto;
-                    cotizacionForm.submit();
-                    return;
-                }
-
-                // Enviamos el evento Lead al píxel si está disponible
-                if (typeof fbq !== 'undefined') {
-                    fbq('track', 'Lead', {}, { eventID: eventoIdUnico });
-                    console.log(`Evento de Navegador 'Lead' enviado con ID: ${eventoIdUnico}`);
-                } else {
-                    console.warn('Píxel de Facebook no inicializado para Lead');
-                }
-
-                // Hasheamos los datos personales
-                const hashedTelefono = await hashSHA256(telefonoCompleto);
-                const hashedNombre = await hashSHA256(nombreCompletoValue);
-
-                console.log(`Teléfono: ${telefonoCompleto}, Hash: ${hashedTelefono}`);
-                console.log(`Nombre: ${nombreCompletoValue}, Hash: ${hashedNombre}`);
-
-                // Enviamos el Evento del Servidor (API de Conversiones)
-                const payloadCAPI = {
-                    data: [{
-                        event_name: "Lead",
-                        event_id: eventoIdUnico,
-                        action_source: "website",
-                        event_time: Math.floor(Date.now() / 1000),
-                        event_source_url: window.location.href,
-                        user_data: {
-                            ph: hashedTelefono || null,
-                            fn: hashedNombre || null,
-                            fbp: getCookie('_fbp') || null,
-                            fbc: getCookie('_fbc') || null,
-                            client_ip_address: clientIpAddress || null,
-                            client_user_agent: clientUserAgent || null
-                        }
-                    }]
-                };
-
-                console.log('Payload enviado a /event para Lead:', payloadCAPI); // Depuración
-                await sendEventToServer(payloadCAPI, 'Lead', eventoIdUnico);
-
-                // Actualizamos el campo WhatsApp y continuamos con el envío del formulario
-                document.getElementById('whatsapp').value = telefonoCompleto;
-                console.log('Seguimiento completado. Reanudando envío del formulario al servidor PHP.');
-                cotizacionForm.submit();
-            });
+        // Validar el número de WhatsApp antes de continuar
+        if (!iti.isValidNumber()) {
+            console.warn('Número de WhatsApp inválido:', telefonoCompleto);
+            document.getElementById('whatsapp').value = telefonoCompleto; // Actualizar el campo
+            return; // Detener la ejecución si no es válido
         }
+
+        // Enviamos el evento Lead al píxel si está disponible
+        if (typeof fbq !== 'undefined') {
+            fbq('track', 'Lead', {}, { eventID: eventoIdUnico });
+            console.log(`Evento de Navegador 'Lead' enviado con ID: ${eventoIdUnico}`);
+        } else {
+            console.warn('Píxel de Facebook no inicializado para Lead');
+        }
+
+        // Hasheamos los datos personales
+        const hashedTelefono = await hashSHA256(telefonoCompleto);
+        const hashedNombre = await hashSHA256(nombreCompletoValue);
+
+        console.log(`Teléfono: ${telefonoCompleto}, Hash: ${hashedTelefono}`);
+        console.log(`Nombre: ${nombreCompletoValue}, Hash: ${hashedNombre}`);
+
+        // Enviamos el Evento del Servidor (API de Conversiones)
+        const payloadCAPI = {
+            data: [{
+                event_name: "Lead",
+                event_id: eventoIdUnico,
+                action_source: "website",
+                event_time: Math.floor(Date.now() / 1000),
+                event_source_url: window.location.href,
+                user_data: {
+                    ph: hashedTelefono || null,
+                    fn: hashedNombre || null,
+                    fbp: getCookie('_fbp') || null,
+                    fbc: getCookie('_fbc') || getParameterFromURL('fbclid') || null,
+                    client_ip_address: "<?php echo $clientIpAddress; ?>" || null,
+                    client_user_agent: "<?php echo addslashes($clientUserAgent); ?>" || null
+                }
+            }]
+        };
+
+        console.log('Payload enviado a /event para Lead:', payloadCAPI); // Depuración
+        await sendEventToServer(payloadCAPI, 'Lead', eventoIdUnico);
+
+        // Actualizamos el campo WhatsApp y enviamos el formulario solo si todo es válido
+        document.getElementById('whatsapp').value = telefonoCompleto;
+        console.log('Seguimiento completado. Reanudando envío del formulario al servidor PHP.');
+        cotizacionForm.submit(); // Reenviar solo si la validación pasa
+    });
+}
     });
 
     // --- Funciones auxiliares de seguimiento ---

@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $fechaFormatted = date('d/m/y', strtotime($fecha));
         $fechaEnvio = date('d/m/Y');
-        $destinatarios = [['nombre' => 'Kathe', 'numero' => '573245534652'], ['nombre' => 'Kathe', 'numero' => '573245534652']];
+        $destinatarios = [['nombre' => 'Kathe', 'numero' => '573245534652'], ['nombre' => 'Benko', 'numero' => '573245534652']];
         $indiceFile = 'ultimo_numero.txt';
         $indiceActual = file_exists($indiceFile) ? (int)file_get_contents($indiceFile) : 0;
         $destinatario = $destinatarios[$indiceActual];
@@ -391,19 +391,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             };
         }
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        const targetId = this.getAttribute('href');
-        const sectionTarget = document.querySelector(targetId);
-        if (sectionTarget) {
-            const scrollTargetElement = sectionTarget.querySelector('h2.font-semibold'); 
-            const target = scrollTargetElement || sectionTarget; // Usa el h2 o el section como objetivo
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            // Ajuste de desplazamiento de 10px hacia arriba
-            window.scrollBy(0, -10);
-        }
-    });
-});
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const sectionTarget = document.querySelector(targetId);
+                if (sectionTarget) {
+                    const scrollTargetElement = sectionTarget.querySelector('h2.font-semibold'); 
+                    if (scrollTargetElement) {
+                        scrollTargetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    } else {
+                        sectionTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+        });
 
         // Apuntamos al nuevo botón
         const floatingBtn = document.querySelector('.floating-action-btn');

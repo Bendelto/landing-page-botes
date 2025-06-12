@@ -403,39 +403,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Verificamos las variables inyectadas desde PHP
-        console.log('Variables PHP:', {
-            pageViewEventId: pageViewEventId,
-            clientIpAddress: clientIpAddress,
-            clientUserAgent: clientUserAgent
-        });
-
-        // Enviamos solo el evento del Servidor (API de Conversiones) para PageView
         function sendPageViewEvent() {
-            function getCookie(name) {
-                const value = `; ${document.cookie}`;
-                const parts = value.split(`; ${name}=`);
-                if (parts.length === 2) return parts.pop().split(';').shift();
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    // Intentar obtener _fbc de la URL (si viene de un anuncio)
+    function getParameterFromURL(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name) || null;
+    }
+
+    const fbcFromURL = getParameterFromURL('fbclid'); // Facebook Click ID en la URL
+    const fbc = getCookie('_fbc') || fbcFromURL || null;
+
+    const payload = {
+        data: [{
+            event_name: "PageView",
+            event_id: "<?php echo $pageViewEventId; ?>",
+            action_source: "website",
+            event_time: Math.floor(Date.now() / 1000),
+            event_source_url: window.location.href,
+            user_data: {
+                fbp: getCookie('_fbp') || null,
+                fbc: fbc, // Ahora incluye _fbc de la URL si existe
+                client_ip_address: "<?php echo $clientIpAddress; ?>" || null,
+                client_user_agent: "<?php echo addslashes($clientUserAgent); ?>" || null
             }
+        }]
+    };
 
-            const payload = {
-                data: [{
-                    event_name: "PageView",
-                    event_id: pageViewEventId,
-                    action_source: "website",
-                    event_time: Math.floor(Date.now() / 1000),
-                    event_source_url: window.location.href,
-                    user_data: {
-                        fbp: getCookie('_fbp') || null,
-                        fbc: getCookie('_fbc') || null,
-                        client_ip_address: clientIpAddress || null,
-                        client_user_agent: clientUserAgent || null
-                    }
-                }]
-            };
-
-            console.log('Payload enviado a /event:', payload); // Depuración
-            sendEventToServer(payload, 'PageView', pageViewEventId);
-        }
+    console.log('Payload enviado a /event:', payload); // Depuración
+    sendEventToServer(payload, 'PageView', '<?php echo $pageViewEventId; ?>');
+}
 
         sendPageViewEvent();
 

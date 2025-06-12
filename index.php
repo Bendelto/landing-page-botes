@@ -77,8 +77,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="./output.css" rel="stylesheet">
     <style>
         body { font-family: 'Poppins', sans-serif; }
-        .hero-bg { background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('panoramico.jpg'); background-size: cover; background-position: center; }
-        .section-bg { background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('catamaran.jpg'); background-size: cover; background-position: center; }
+        .hero-bg { background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('panoramico.jpg'); background-size: cover; background-position: center; }
+        .section-bg { background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url('catamaran.jpg'); background-size: cover; background-position: center; }
         .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
         .fade-in.visible { opacity: 1; transform: translateY(0); }
         .iti { width: 100%; }
@@ -218,11 +218,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </section>
 
-    <section class="section-bg py-16 text-white">
+    <section class="section-bg flex items-center h-screen py-16 text-white">
         <div class="container mx-auto px-4 text-center p-8 md:p-12 rounded-lg max-w-2xl fade-in">
             <h2 class="text-3xl md:text-4xl font-bold mb-4">¡Cartagena te espera!</h2>
             <p class="text-lg md:text-xl mb-6">No dejes pasar la oportunidad de vivir una experiencia única. Contáctanos ahora y reserva tu bote privado.</p>
-            <a href="#formulario" class="section-btn mt-4 inline-block bg-transparent border-2 border-white text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 hover:bg-white hover:text-gray-800 md:bg-green-500 md:border-transparent md:hover:bg-green-600">Cotiza tu Bote Ya</a>
+            <a href="#formulario" class="section-btn mt-4 inline-block bg-transparent border-2 border-white text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 md:bg-green-500 md:border-transparent md:hover:bg-green-600">Cotiza tu Bote Ya</a>
         </div>
     </section>
     

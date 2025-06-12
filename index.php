@@ -121,6 +121,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             transform: translateY(20px);
         }
     </style>
+    <script defer>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments);  
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';  
+    n.queue=[];t=b.createElement(e);t.async=!0;  
+    t.src=v;s=b.getElementsByTagName(e)[0];  
+    s.parentNode.insertBefore(t,s)}(window, document,'script',  
+    'https://connect.facebook.net/en_US/fbevents.js');  
+    
+    fbq('init', '1733751114203823');  
+    </script>
+    <noscript><img height="1" width="1" style="display:none"  
+    src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"  
+    /></noscript>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17157900117"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'AW-17157900117');
+    </script>
 </head>
 <body class="bg-gray-100">
 
@@ -363,6 +385,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     var iti; // Hacemos la instancia de intl-tel-input accesible
 
     document.addEventListener("DOMContentLoaded", function() {
+        // Obtenemos los datos únicos generados por PHP
+        const pageViewEventId = "<?php echo $pageViewEventId; ?>";
+        const clientIpAddress = "<?php echo $clientIpAddress; ?>";
+        const clientUserAgent = "<?php echo addslashes($clientUserAgent); ?>";
+
         var input = document.querySelector("#whatsapp");
         if (input) {
             iti = window.intlTelInput(input, {
@@ -375,9 +402,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Verificamos las variables inyectadas desde PHP
         console.log('Variables PHP:', {
-            pageViewEventId: "<?php echo $pageViewEventId; ?>",
-            clientIpAddress: "<?php echo $clientIpAddress; ?>",
-            clientUserAgent: "<?php echo addslashes($clientUserAgent); ?>"
+            pageViewEventId: pageViewEventId,
+            clientIpAddress: clientIpAddress,
+            clientUserAgent: clientUserAgent
         });
 
         // Aseguramos que el píxel esté inicializado antes de enviar PageView
@@ -406,8 +433,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     user_data: {
                         fbp: getCookie('_fbp') || null,
                         fbc: getCookie('_fbc') || null,
-                        client_ip_address: "<?php echo $clientIpAddress; ?>" || null,
-                        client_user_agent: "<?php echo addslashes($clientUserAgent); ?>" || null
+                        client_ip_address: clientIpAddress || null,
+                        client_user_agent: clientUserAgent || null
                     }
                 }]
             };
@@ -466,8 +493,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             fn: hashedNombre || null,
                             fbp: getCookie('_fbp') || null,
                             fbc: getCookie('_fbc') || null,
-                            client_ip_address: "<?php echo $clientIpAddress; ?>" || null,
-                            client_user_agent: "<?php echo addslashes($clientUserAgent); ?>" || null
+                            client_ip_address: clientIpAddress || null,
+                            client_user_agent: clientUserAgent || null
                         }
                     }]
                 };
@@ -526,17 +553,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             console.error(`No se pudo enviar evento '${eventName}' tras reintentos`);
         }
     }
-    </script>
-    <noscript><img height="1" width="1" style="display:none"  
-    src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"  
-    /></noscript>
-    
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17157900117"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'AW-17157900117');
     </script>
 </body>
 </html>

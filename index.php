@@ -363,11 +363,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </section>
 
-    <footer class="bg-gray-800 text-white py-8">
-        <div class="container mx-auto px-4 text-center">
-            <p class="mb-4">© 2025 Agencia de Tours y Alquiler de Botes en Cartagena</p>
-        </div>
-    </footer>
+    <footer class="bg-gray-800 text-white py-6 flex items-center">
+    <div class="container mx-auto px-4 text-center">
+        <p class="mb-4">© 2025 Descubre Cartagena RNT 87246 </p>
+    </div>
+</footer>
 
     <a href="#formulario" class="floating-action-btn md:hidden fixed z-50 bottom-6 left-1/2 -translate-x-1/2 inline-flex items-center justify-center gap-2 bg-green-500 text-white font-bold py-3 px-5 rounded-full shadow-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-whatsapp" viewBox="0 0 16 16">

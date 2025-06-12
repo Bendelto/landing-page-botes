@@ -408,12 +408,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         });
 
         // Aseguramos que el píxel esté inicializado antes de enviar PageView
-        if (typeof fbq !== 'undefined') {
-            fbq('track', 'PageView', {}, { eventID: pageViewEventId });
-            console.log(`Evento de Navegador 'PageView' enviado con ID: ${pageViewEventId}`);
-        } else {
-            console.warn('Píxel de Facebook no inicializado para PageView');
+        function checkPixelAndSendPageView() {
+            if (typeof fbq !== 'undefined') {
+                fbq('track', 'PageView', {}, { eventID: pageViewEventId });
+                console.log(`Evento de Navegador 'PageView' enviado con ID: ${pageViewEventId}`);
+            } else {
+                console.warn('Píxel de Facebook no inicializado para PageView. Reintentando en 1 segundo...');
+                setTimeout(checkPixelAndSendPageView, 1000); // Reintenta después de 1 segundo
+            }
         }
+        checkPixelAndSendPageView();
 
         // Enviamos el evento del Servidor (API de Conversiones) para PageView
         function sendPageViewEvent() {

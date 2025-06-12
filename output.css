@@ -256,6 +256,12 @@
   .mb-12 {
     margin-bottom: calc(var(--spacing) * 12);
   }
+  .ml-\[3px\] {
+    margin-left: 3px;
+  }
+  .ml-\[4px\] {
+    margin-left: 4px;
+  }
   .block {
     display: block;
   }
@@ -285,6 +291,9 @@
   }
   .w-11\/12 {
     width: calc(11/12 * 100%);
+  }
+  .w-full {
+    width: 100%;
   }
   .max-w-2xl {
     max-width: var(--container-2xl);

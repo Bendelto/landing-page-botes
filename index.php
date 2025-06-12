@@ -286,6 +286,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div>
                     <label for="whatsapp">WhatsApp</label>
                     <input type="tel" name="whatsapp" id="whatsapp" required value="<?php echo isset($_POST['whatsapp']) ? htmlspecialchars($_POST['whatsapp']) : ''; ?>">
+                    <p class="error" id="whatsappError"></p> <!-- Nuevo elemento para el mensaje de error -->
                     <?php if (isset($errors['whatsapp'])): ?>
                         <p class="error"><?php echo htmlspecialchars($errors['whatsapp']); ?></p>
                     <?php endif; ?>
@@ -413,106 +414,117 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Verificamos las variables inyectadas desde PHP
+        console.log('Variables PHP:', {
+            pageViewEventId: pageViewEventId,
+            clientIpAddress: clientIpAddress,
+            clientUserAgent: clientUserAgent
+        });
+
         function sendPageViewEvent() {
-    function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-    }
-
-    // Intentar obtener _fbc de la URL (si viene de un anuncio)
-    function getParameterFromURL(name) {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get(name) || null;
-    }
-
-    const fbcFromURL = getParameterFromURL('fbclid'); // Facebook Click ID en la URL
-    const fbc = getCookie('_fbc') || fbcFromURL || null;
-
-    const payload = {
-        data: [{
-            event_name: "PageView",
-            event_id: "<?php echo $pageViewEventId; ?>",
-            action_source: "website",
-            event_time: Math.floor(Date.now() / 1000),
-            event_source_url: window.location.href,
-            user_data: {
-                fbp: getCookie('_fbp') || null,
-                fbc: fbc, // Ahora incluye _fbc de la URL si existe
-                client_ip_address: "<?php echo $clientIpAddress; ?>" || null,
-                client_user_agent: "<?php echo addslashes($clientUserAgent); ?>" || null
+            function getCookie(name) {
+                const value = `; ${document.cookie}`;
+                const parts = value.split(`; ${name}=`);
+                if (parts.length === 2) return parts.pop().split(';').shift();
             }
-        }]
-    };
 
-    console.log('Payload enviado a /event:', payload); // Depuración
-    sendEventToServer(payload, 'PageView', '<?php echo $pageViewEventId; ?>');
-}
+            // Intentar obtener _fbc de la URL (si viene de un anuncio)
+            function getParameterFromURL(name) {
+                const urlParams = new URLSearchParams(window.location.search);
+                return urlParams.get(name) || null;
+            }
+
+            const fbcFromURL = getParameterFromURL('fbclid'); // Facebook Click ID en la URL
+            const fbc = getCookie('_fbc') || fbcFromURL || null;
+
+            const payload = {
+                data: [{
+                    event_name: "PageView",
+                    event_id: "<?php echo $pageViewEventId; ?>",
+                    action_source: "website",
+                    event_time: Math.floor(Date.now() / 1000),
+                    event_source_url: window.location.href,
+                    user_data: {
+                        fbp: getCookie('_fbp') || null,
+                        fbc: fbc, // Ahora incluye _fbc de la URL si existe
+                        client_ip_address: "<?php echo $clientIpAddress; ?>" || null,
+                        client_user_agent: "<?php echo addslashes($clientUserAgent); ?>" || null
+                    }
+                }]
+            };
+
+            console.log('Payload enviado a /event:', payload); // Depuración
+            sendEventToServer(payload, 'PageView', '<?php echo $pageViewEventId; ?>');
+        }
 
         sendPageViewEvent();
 
         // --- Lógica principal para el seguimiento del formulario ---
         const cotizacionForm = document.getElementById('cotizacionForm');
+        const whatsappError = document.getElementById('whatsappError'); // Referencia al elemento de error
 
-if (cotizacionForm) {
-    cotizacionForm.addEventListener('submit', async function(event) {
-        event.preventDefault(); // Siempre prevenir el envío inicial
-        console.log('Formulario enviado. Iniciando seguimiento de evento Lead...');
+        if (cotizacionForm) {
+            cotizacionForm.addEventListener('submit', async function(event) {
+                event.preventDefault(); // Siempre prevenir el envío inicial
+                console.log('Formulario enviado. Iniciando seguimiento de evento Lead...');
 
-        const eventoIdUnico = generateEventId();
-        const telefonoCompleto = iti.getNumber();
-        const nombreCompletoValue = document.getElementById('nombreCompleto').value;
+                const eventoIdUnico = generateEventId();
+                const telefonoCompleto = iti.getNumber();
+                const nombreCompletoValue = document.getElementById('nombreCompleto').value;
 
-        // Validar el número de WhatsApp antes de continuar
-        if (!iti.isValidNumber()) {
-            console.warn('Número de WhatsApp inválido:', telefonoCompleto);
-            document.getElementById('whatsapp').value = telefonoCompleto; // Actualizar el campo
-            return; // Detener la ejecución si no es válido
-        }
+                // Limpiar mensaje de error previo
+                whatsappError.textContent = '';
 
-        // Enviamos el evento Lead al píxel si está disponible
-        if (typeof fbq !== 'undefined') {
-            fbq('track', 'Lead', {}, { eventID: eventoIdUnico });
-            console.log(`Evento de Navegador 'Lead' enviado con ID: ${eventoIdUnico}`);
-        } else {
-            console.warn('Píxel de Facebook no inicializado para Lead');
-        }
-
-        // Hasheamos los datos personales
-        const hashedTelefono = await hashSHA256(telefonoCompleto);
-        const hashedNombre = await hashSHA256(nombreCompletoValue);
-
-        console.log(`Teléfono: ${telefonoCompleto}, Hash: ${hashedTelefono}`);
-        console.log(`Nombre: ${nombreCompletoValue}, Hash: ${hashedNombre}`);
-
-        // Enviamos el Evento del Servidor (API de Conversiones)
-        const payloadCAPI = {
-            data: [{
-                event_name: "Lead",
-                event_id: eventoIdUnico,
-                action_source: "website",
-                event_time: Math.floor(Date.now() / 1000),
-                event_source_url: window.location.href,
-                user_data: {
-                    ph: hashedTelefono || null,
-                    fn: hashedNombre || null,
-                    fbp: getCookie('_fbp') || null,
-                    fbc: getCookie('_fbc') || getParameterFromURL('fbclid') || null,
-                    client_ip_address: "<?php echo $clientIpAddress; ?>" || null,
-                    client_user_agent: "<?php echo addslashes($clientUserAgent); ?>" || null
+                // Validar el número de WhatsApp antes de continuar
+                if (!iti.isValidNumber()) {
+                    console.warn('Número de WhatsApp inválido:', telefonoCompleto);
+                    whatsappError.textContent = 'El número de WhatsApp no es válido. Debe incluir el código de país (ej. +573205899997).';
+                    document.getElementById('whatsapp').value = telefonoCompleto; // Actualizar el campo
+                    return; // Detener la ejecución si no es válido
                 }
-            }]
-        };
 
-        console.log('Payload enviado a /event para Lead:', payloadCAPI); // Depuración
-        await sendEventToServer(payloadCAPI, 'Lead', eventoIdUnico);
+                // Enviamos el evento Lead al píxel si está disponible
+                if (typeof fbq !== 'undefined') {
+                    fbq('track', 'Lead', {}, { eventID: eventoIdUnico });
+                    console.log(`Evento de Navegador 'Lead' enviado con ID: ${eventoIdUnico}`);
+                } else {
+                    console.warn('Píxel de Facebook no inicializado para Lead');
+                }
 
-        // Actualizamos el campo WhatsApp y enviamos el formulario solo si todo es válido
-        document.getElementById('whatsapp').value = telefonoCompleto;
-        console.log('Seguimiento completado. Reanudando envío del formulario al servidor PHP.');
-        cotizacionForm.submit(); // Reenviar solo si la validación pasa
-    });
-}
+                // Hasheamos los datos personales
+                const hashedTelefono = await hashSHA256(telefonoCompleto);
+                const hashedNombre = await hashSHA256(nombreCompletoValue);
+
+                console.log(`Teléfono: ${telefonoCompleto}, Hash: ${hashedTelefono}`);
+                console.log(`Nombre: ${nombreCompletoValue}, Hash: ${hashedNombre}`);
+
+                // Enviamos el Evento del Servidor (API de Conversiones)
+                const payloadCAPI = {
+                    data: [{
+                        event_name: "Lead",
+                        event_id: eventoIdUnico,
+                        action_source: "website",
+                        event_time: Math.floor(Date.now() / 1000),
+                        event_source_url: window.location.href,
+                        user_data: {
+                            ph: hashedTelefono || null,
+                            fn: hashedNombre || null,
+                            fbp: getCookie('_fbp') || null,
+                            fbc: getCookie('_fbc') || getParameterFromURL('fbclid') || null,
+                            client_ip_address: "<?php echo $clientIpAddress; ?>" || null,
+                            client_user_agent: "<?php echo addslashes($clientUserAgent); ?>" || null
+                        }
+                    }]
+                };
+
+                console.log('Payload enviado a /event para Lead:', payloadCAPI); // Depuración
+                await sendEventToServer(payloadCAPI, 'Lead', eventoIdUnico);
+
+                // Actualizamos el campo WhatsApp y enviamos el formulario solo si todo es válido
+                document.getElementById('whatsapp').value = telefonoCompleto;
+                console.log('Seguimiento completado. Reanudando envío del formulario al servidor PHP.');
+                cotizacionForm.submit(); // Reenviar solo si la validación pasa
+            });
+        }
     });
 
     // --- Funciones auxiliares de seguimiento ---

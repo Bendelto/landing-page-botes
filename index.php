@@ -497,3 +497,56 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 await sendEventToServer(payloadCAPI, 'Lead', eventoIdUnico);
 
                 // Actualizamos el campo WhatsApp y continuamos con el envío del formulario
+                document.getElementById('whatsapp').value = telefonoCompleto;
+                console.log('Seguimiento completado. Reanudando envío del formulario al servidor PHP.');
+                cotizacionForm.submit();
+            });
+        }
+    });
+
+    // --- Funciones auxiliares de seguimiento ---
+    async function hashSHA256(string) {
+        if (!string) return null;
+        const utf8 = new TextEncoder().encode(string.trim().toLowerCase());
+        const hashBuffer = await crypto.subtle.digest('SHA-256', utf8);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function generateEventId() {
+        return 'event_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    }
+
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    // Función para enviar eventos al servidor con reintentos
+    async function sendEventToServer(payload, eventName, eventId, retries = 2) {
+        try {
+            const response = await fetch('https://api.descubrecartagena.com/event', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const data = await response.json();
+            if (response.ok) {
+                console.log(`Evento de Servidor '${eventName}' enviado con éxito. ID: ${eventId}`, data);
+            } else {
+                throw new Error(`Respuesta no OK: ${JSON.stringify(data)}`);
+            }
+        } catch (error) {
+            console.error(`Error al enviar evento '${eventName}' (ID: ${eventId}):`, error);
+            if (retries > 0) {
+                console.log(`Reintentando (${retries} intentos restantes)...`);
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                return sendEventToServer(payload, eventName, eventId, retries - 1);
+            }
+            console.error(`No se pudo enviar evento '${eventName}' tras reintentos`);
+        }
+    }
+    </script>
+</body>
+</html>

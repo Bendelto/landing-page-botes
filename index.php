@@ -1,7 +1,17 @@
 <?php
 // 1. Generamos datos únicos y capturamos info del visitante en CADA carga de página
 $pageViewEventId = 'pv_' . uniqid();
+
+// Intentar obtener IPv6, cayendo a IPv4 si no está disponible
 $clientIpAddress = $_SERVER['REMOTE_ADDR'];
+if (filter_var($clientIpAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+    // IPv6 ya está presente, no se necesita cambio
+} elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && filter_var($_SERVER['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+    $clientIpAddress = $_SERVER['HTTP_X_FORWARDED_FOR']; // Usar IPv6 de proxy si existe
+} else {
+    // Si no hay IPv6, mantener IPv4 (Meta lo acepta pero prefiere IPv6)
+}
+
 $clientUserAgent = $_SERVER['HTTP_USER_AGENT'];
 
 // Configurar la zona horaria a America/Bogota

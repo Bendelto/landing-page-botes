@@ -121,21 +121,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             transform: translateY(20px);
         }
     </style>
-    <script defer>
+    <!-- Meta Pixel Code -->
+    <script>
     !function(f,b,e,v,n,t,s)
     {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments);  
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';  
-    n.queue=[];t=b.createElement(e);t.async=!0;  
-    t.src=v;s=b.getElementsByTagName(e)[0];  
-    s.parentNode.insertBefore(t,s)}(window, document,'script',  
-    'https://connect.facebook.net/en_US/fbevents.js');  
-    
-    fbq('init', '1733751114203823');  
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1733751114203823');
+    fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none"  
-    src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"  
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"
     /></noscript>
+    <!-- End Meta Pixel Code -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17157900117"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -381,14 +383,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </script>
     
     <script>
-    // --- CÓDIGO DE SEGUIMIENTO DE EVENTOS DE FACEBOOK (VERSIÓN OPTIMIZADA) ---
+    // --- CÓDIGO DE SEGUIMIENTO DE EVENTOS DE FACEBOOK (INTEGRADO CON CÓDIGO BASE) ---
     var iti; // Hacemos la instancia de intl-tel-input accesible
 
     document.addEventListener("DOMContentLoaded", function() {
         // Obtenemos los datos únicos generados por PHP
         const pageViewEventId = "<?php echo $pageViewEventId; ?>";
-        const clientIpAddress = <?php echo json_encode($clientIpAddress); ?>;
-        const clientUserAgent = <?php echo json_encode($clientUserAgent); ?>;
+        const clientIpAddress = "<?php echo $clientIpAddress; ?>";
+        const clientUserAgent = "<?php echo addslashes($clientUserAgent); ?>";
 
         var input = document.querySelector("#whatsapp");
         if (input) {
@@ -407,25 +409,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             clientUserAgent: clientUserAgent
         });
 
-        // Aseguramos que el píxel esté inicializado antes de enviar PageView con reintentos limitados
-        let retryCount = 0;
-        const maxRetries = 5;
-        function checkPixelAndSendPageView() {
-            if (typeof fbq !== 'undefined') {
-                fbq('track', 'PageView', {}, { eventID: pageViewEventId });
-                console.log(`Evento de Navegador 'PageView' enviado con ID: ${pageViewEventId}`);
-            } else if (retryCount < maxRetries) {
-                retryCount++;
-                const delay = retryCount * 1000; // Incrementa el retraso (1s, 2s, 3s, etc.)
-                console.warn(`Píxel de Facebook no inicializado para PageView. Reintentando en ${delay/1000} segundos... (Intento ${retryCount}/${maxRetries})`);
-                setTimeout(checkPixelAndSendPageView, delay);
-            } else {
-                console.error('Píxel de Facebook no se inicializó después de 5 intentos. Abandonando reintentos.');
-            }
-        }
-        checkPixelAndSendPageView();
-
-        // Enviamos el evento del Servidor (API de Conversiones) para PageView
+        // Enviamos solo el evento del Servidor (API de Conversiones) para PageView
         function sendPageViewEvent() {
             function getCookie(name) {
                 const value = `; ${document.cookie}`;
@@ -475,7 +459,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     return;
                 }
 
-                // Enviamos el Evento del Navegador (Píxel)
+                // Enviamos el evento Lead al píxel si está disponible
                 if (typeof fbq !== 'undefined') {
                     fbq('track', 'Lead', {}, { eventID: eventoIdUnico });
                     console.log(`Evento de Navegador 'Lead' enviado con ID: ${eventoIdUnico}`);
@@ -513,56 +497,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 await sendEventToServer(payloadCAPI, 'Lead', eventoIdUnico);
 
                 // Actualizamos el campo WhatsApp y continuamos con el envío del formulario
-                document.getElementById('whatsapp').value = telefonoCompleto;
-                console.log('Seguimiento completado. Reanudando envío del formulario al servidor PHP.');
-                cotizacionForm.submit();
-            });
-        }
-    });
-
-    // --- Funciones auxiliares de seguimiento ---
-    async function hashSHA256(string) {
-        if (!string) return null;
-        const utf8 = new TextEncoder().encode(string.trim().toLowerCase());
-        const hashBuffer = await crypto.subtle.digest('SHA-256', utf8);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    }
-
-    function generateEventId() {
-        return 'event_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-    }
-
-    function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-    }
-
-    // Función para enviar eventos al servidor con reintentos
-    async function sendEventToServer(payload, eventName, eventId, retries = 2) {
-        try {
-            const response = await fetch('https://api.descubrecartagena.com/event', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            const data = await response.json();
-            if (response.ok) {
-                console.log(`Evento de Servidor '${eventName}' enviado con éxito. ID: ${eventId}`, data);
-            } else {
-                throw new Error(`Respuesta no OK: ${JSON.stringify(data)}`);
-            }
-        } catch (error) {
-            console.error(`Error al enviar evento '${eventName}' (ID: ${eventId}):`, error);
-            if (retries > 0) {
-                console.log(`Reintentando (${retries} intentos restantes)...`);
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                return sendEventToServer(payload, eventName, eventId, retries - 1);
-            }
-            console.error(`No se pudo enviar evento '${eventName}' tras reintentos`);
-        }
-    }
-    </script>
-</body>
-</html>

@@ -121,68 +121,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             transform: translateY(20px);
         }
     </style>
-    
-    <script>
-    !function(f,b,e,v,n,t,s)
-    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments);  
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';  
-    n.queue=[];t=b.createElement(e);t.async=!0;  
-    t.src=v;s=b.getElementsByTagName(e)[0];  
-    s.parentNode.insertBefore(t,s)}(window, document,'script',  
-    'https://connect.facebook.net/en_US/fbevents.js');  
-    
-    fbq('init', '1733751114203823');  
-
-    // Obtenemos los datos únicos generados por PHP
-    const pageViewEventId = "<?php echo $pageViewEventId; ?>";
-    const clientIpAddress = "<?php echo $clientIpAddress; ?>";
-    const clientUserAgent = "<?php echo addslashes($clientUserAgent); ?>";
-
-    // Enviamos el evento del Navegador (Píxel) con el ID para deduplicación
-    fbq('track', 'PageView', {}, { eventID: pageViewEventId });
-    console.log(`Evento de Navegador 'PageView' enviado con ID: ${pageViewEventId}`);
-
-    // Enviamos el evento del Servidor (API de Conversiones) con datos enriquecidos
-    (function() {
-        function getCookie(name) {
-            const value = `; ${document.cookie}`;
-            const parts = value.split(`; ${name}=`);
-            if (parts.length === 2) return parts.pop().split(';').shift();
-        }
-        const payload = {
-            event_name: "PageView",
-            event_id: pageViewEventId,
-            action_source: "website",
-            event_source_url: window.location.href,
-            user_data: {
-                fbp: getCookie('_fbp') || null,
-                fbc: getCookie('_fbc') || null,
-                client_ip_address: clientIpAddress,
-                client_user_agent: clientUserAgent
-            }
-        };
-        fetch('https://api.descubrecartagena.com/event', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        })
-        .then(response => response.json())
-        .then(data => console.log(`Evento de Servidor 'PageView' enviado. ID: ${pageViewEventId}`, data))
-        .catch(error => console.error('Error al enviar evento PageView de servidor:', error));
-    })();
-    </script>
-    <noscript><img height="1" width="1" style="display:none"  
-    src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"  
-    /></noscript>
-    
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17157900117"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'AW-17157900117');
-    </script>
 </head>
 <body class="bg-gray-100">
 
@@ -479,54 +417,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         sendPageViewEvent();
-    });
 
-    // --- Funciones auxiliares de seguimiento ---
-    async function hashSHA256(string) {
-        if (!string) return null;
-        const utf8 = new TextEncoder().encode(string.trim().toLowerCase());
-        const hashBuffer = await crypto.subtle.digest('SHA-256', utf8);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    }
-
-    function generateEventId() {
-        return 'event_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-    }
-
-    function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-    }
-
-    // Función para enviar eventos al servidor con reintentos
-    async function sendEventToServer(payload, eventName, eventId, retries = 2) {
-        try {
-            const response = await fetch('https://api.descubrecartagena.com/event', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            const data = await response.json();
-            if (response.ok) {
-                console.log(`Evento de Servidor '${eventName}' enviado con éxito. ID: ${eventId}`, data);
-            } else {
-                throw new Error(`Respuesta no OK: ${JSON.stringify(data)}`);
-            }
-        } catch (error) {
-            console.error(`Error al enviar evento '${eventName}' (ID: ${eventId}):`, error);
-            if (retries > 0) {
-                console.log(`Reintentando (${retries} intentos restantes)...`);
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                return sendEventToServer(payload, eventName, eventId, retries - 1);
-            }
-            console.error(`No se pudo enviar evento '${eventName}' tras reintentos`);
-        }
-    }
-
-    // --- Lógica principal para el seguimiento del formulario ---
-    document.addEventListener('DOMContentLoaded', function() {
+        // --- Lógica principal para el seguimiento del formulario ---
         const cotizacionForm = document.getElementById('cotizacionForm');
 
         if (cotizacionForm) {
@@ -590,6 +482,61 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             });
         }
     });
+
+    // --- Funciones auxiliares de seguimiento ---
+    async function hashSHA256(string) {
+        if (!string) return null;
+        const utf8 = new TextEncoder().encode(string.trim().toLowerCase());
+        const hashBuffer = await crypto.subtle.digest('SHA-256', utf8);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function generateEventId() {
+        return 'event_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    }
+
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    // Función para enviar eventos al servidor con reintentos
+    async function sendEventToServer(payload, eventName, eventId, retries = 2) {
+        try {
+            const response = await fetch('https://api.descubrecartagena.com/event', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const data = await response.json();
+            if (response.ok) {
+                console.log(`Evento de Servidor '${eventName}' enviado con éxito. ID: ${eventId}`, data);
+            } else {
+                throw new Error(`Respuesta no OK: ${JSON.stringify(data)}`);
+            }
+        } catch (error) {
+            console.error(`Error al enviar evento '${eventName}' (ID: ${eventId}):`, error);
+            if (retries > 0) {
+                console.log(`Reintentando (${retries} intentos restantes)...`);
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                return sendEventToServer(payload, eventName, eventId, retries - 1);
+            }
+            console.error(`No se pudo enviar evento '${eventName}' tras reintentos`);
+        }
+    }
+    </script>
+    <noscript><img height="1" width="1" style="display:none"  
+    src="https://www.facebook.com/tr?id=1733751114203823&ev=PageView&noscript=1"  
+    /></noscript>
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17157900117"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'AW-17157900117');
     </script>
 </body>
 </html>

@@ -387,8 +387,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     document.addEventListener("DOMContentLoaded", function() {
         // Obtenemos los datos únicos generados por PHP
         const pageViewEventId = "<?php echo $pageViewEventId; ?>";
-        const clientIpAddress = "<?php echo $clientIpAddress; ?>";
-        const clientUserAgent = "<?php echo addslashes($clientUserAgent); ?>";
+        const clientIpAddress = <?php echo json_encode($clientIpAddress); ?>;
+        const clientUserAgent = <?php echo json_encode($clientUserAgent); ?>;
 
         var input = document.querySelector("#whatsapp");
         if (input) {

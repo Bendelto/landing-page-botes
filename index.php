@@ -83,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .form-section input, .form-section select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; transition: border-color 0.3s ease; }
         .form-section input:focus, .form-section select:focus { border-color: #28a745; outline: none; }
         .form-section .iti { width: 100% !important; }
-        .form-section button { width: 100%; padding: 13px; margin-top: 16px; background-color: #28a745; color: white; border: none; font-size: 18px; font-weight: bold; cursor: pointer; border-radius: 4px; transition: background-color 0.3s ease; }
+        .form-section button { width: 100%; padding: 12px; background-color: #28a745; color: white; border: none; font-size: 18px; font-weight: bold; cursor: pointer; border-radius: 4px; transition: background-color 0.3s ease; }
         .form-section button:hover { background-color: #218838; }
         .form-section .error { color: #dc3545; font-size: 12px; margin-top: 6px; }
         .review-badge { display: flex; align-items: center; justify-content: center; margin-bottom: 16px; font-size: 16px; color: #333; }
@@ -95,9 +95,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .hero-bg h1 { margin-bottom: 24px; }
         .hero-bg p { margin-bottom: 32px; }
         .hero-bg a { margin-bottom: 16px; }
-        @media (max-width: 767px) { .section-btn { display: none; } .form-section button { display: block; } }
 
-        /* --- ESTILOS PARA EL NUEVO BOTÓN FLOTANTE --- */
+        /* --- ESTILOS PARA EL BOTÓN FLOTANTE --- */
         @keyframes pulse {
             0% {
                 transform: scale(1);
@@ -121,39 +120,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             pointer-events: none;
             transform: translateY(20px);
         }
-
-        /* Estilos para el botón de WhatsApp */
-.whatsapp-button {
-    display: flex;
-    align-items: center; /* Alinea verticalmente el ícono y el texto */
-    justify-content: center; /* Centra horizontalmente */
-    gap: 8px; /* Espacio entre el ícono y el texto */
-    width: 100%;
-    padding: 10px 13px; /* Ajuste de padding para eliminar espacio superior */
-    background-color: #28a745;
-    color: white;
-    font-weight: bold;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin: 0; /* Elimina márgenes implícitos */
-    line-height: 1; /* Asegura alineación vertical precisa */
-    font-size: 16px; /* Tamaño de fuente consistente */
-    text-align: center; /* Asegura que el texto esté centrado */
-}
-
-.whatsapp-button:hover {
-    background-color: #218838;
-}
-
-.whatsapp-icon {
-    display: inline-block;
-    vertical-align: middle; /* Alinea el SVG con el texto */
-    width: 20px; /* Define un ancho explícito */
-    height: 20px; /* Define una altura explícita */
-    margin-top: -1px; /* Ajuste fino para alinear con la línea base del texto */
-}
     </style>
     
     <script>
@@ -224,7 +190,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="text-center p-8 md:p-12 rounded-lg max-w-2xl fade-in">
             <h1 class="text-4xl md:text-6xl font-bold mb-4">Vive la Magia de Cartagena en un Bote Privado</h1>
             <p class="text-lg md:text-2xl mb-6">Explora las Islas del Rosario o disfruta un atardecer inolvidable en Cartagena de Indias con nuestras lanchas deportivas y yates.</p>
-            <a href="#formulario" class="section-btn bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:shadow-xl">Cotizar Ahora</a>
+            <a href="#formulario" class="section-btn hidden md:inline-block mt-4 bg-green-500 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:bg-green-600 hover:shadow-xl">Cotizar Ahora</a>
         </div>
     </section>
 
@@ -248,7 +214,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <p class="text-gray-600">Nuestra tripulación con experiencia, no solo sabe navegar, también conoce cada rincón, cada isla y cada historia de la zona.</p>
                 </div>
             </div>
-            <a href="#formulario" class="section-btn mt-12 inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:shadow-xl fade-in">Recibir Precios y Opciones</a>
+            <a href="#formulario" class="section-btn mt-12 inline-block bg-transparent border border-green-500 text-green-500 font-bold py-3 px-8 rounded-full text-lg transition duration-300 hover:bg-green-500 hover:text-white md:bg-green-500 md:text-white md:border-transparent md:hover:bg-green-600 fade-in">Recibir Precios y Opciones</a>
         </div>
     </section>
 
@@ -276,7 +242,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <p class="font-semibold">Ana R.</p>
                 </div>
             </div>
-            <a href="#formulario" class="section-btn mt-12 inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:shadow-xl fade-in">Cotizar por WhatsApp</a>
+             <a href="#formulario" class="section-btn mt-12 inline-block bg-transparent border border-green-500 text-green-500 font-bold py-3 px-8 rounded-full text-lg transition duration-300 hover:bg-green-500 hover:text-white md:bg-green-500 md:text-white md:border-transparent md:hover:bg-green-600 fade-in">Cotizar por WhatsApp</a>
         </div>
     </section>
 
@@ -284,7 +250,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="container mx-auto px-4 text-center p-8 md:p-12 rounded-lg max-w-2xl fade-in">
             <h2 class="text-3xl md:text-4xl font-bold mb-4">¡Cartagena te espera!</h2>
             <p class="text-lg md:text-xl mb-6">No dejes pasar la oportunidad de vivir una experiencia única. Contáctanos ahora y reserva tu bote privado.</p>
-            <a href="#formulario" class="section-btn bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:shadow-xl">Cotiza tu Bote Ya</a>
+            <a href="#formulario" class="section-btn mt-4 inline-block bg-transparent border-2 border-white text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 hover:bg-white hover:text-gray-800 md:bg-green-500 md:border-transparent md:hover:bg-green-600">Cotiza tu Bote Ya</a>
         </div>
     </section>
     
@@ -352,8 +318,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <p class="error"><?php echo htmlspecialchars($errors['whatsapp']); ?></p>
                     <?php endif; ?>
                 </div>
-                <button type="submit" class="whatsapp-button">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="whatsapp-icon" viewBox="0 0 16 16">
+                <button type="submit" class="mt-2 flex items-center justify-center gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-whatsapp" viewBox="0 0 16 16">
                         <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
                     </svg>
                     <span>Enviar por WhatsApp</span>
@@ -363,17 +329,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </section>
 
-    <footer class="bg-gray-800 text-white py-6 flex items-center">
-    <div class="container mx-auto px-4 text-center">
-        <p class="mb-4">© 2025 Descubre Cartagena RNT 87246 </p>
-    </div>
-</footer>
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p class="mb-4">© 2025 Agencia de Tours y Alquiler de Botes en Cartagena</p>
+            <p>Contáctanos por WhatsApp: <a href="https://wa.me/573205899997" target="_blank" class="underline">+57 320 589 9997</a></p>
+        </div>
+    </footer>
 
     <a href="#formulario" class="floating-action-btn md:hidden fixed z-50 bottom-6 left-1/2 -translate-x-1/2 inline-flex items-center justify-center gap-2 bg-green-500 text-white font-bold py-3 px-5 rounded-full shadow-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-whatsapp" viewBox="0 0 16 16">
             <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
         </svg>
-        <span class="ml-[4px]">Cotizar Ahora</span>
+        <span>Cotizar Ahora</span>
     </a>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>

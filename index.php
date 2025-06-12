@@ -67,36 +67,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="./output.css" rel="stylesheet">
     <style>
         body { font-family: 'Poppins', sans-serif; }
+        
+        /* Estilos que son más prácticos mantener en CSS */
         .hero-bg { background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('panoramico.jpg'); background-size: cover; background-position: center; }
         .section-bg { background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('catamaran.jpg'); background-size: cover; background-position: center; }
+        
+        /* Animación de aparición para JS */
         .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
         .fade-in.visible { opacity: 1; transform: translateY(0); }
+        
+        /* Estilos para la librería del input telefónico */
         .iti { width: 100%; }
-        .form-section { background-color: #f8f9fa; display: flex; flex-direction: column; align-items: center; padding: 40px 20px; margin-top: 20px; }
-        .form-section .header { text-align: center; margin-bottom: 16px; }
-        .form-section .logo-container { display: flex; justify-content: center; align-items: center; gap: 16px; }
-        .form-section .logo { height: 60px; width: auto; object-fit: contain; display: block; }
-        @media (max-width: 600px) { .form-section .header { margin-top: 20px; } .form-section .logo { height: 50px; width: auto; } }
-        .form-section .form-container { background: #fff; padding: 16px; width: 100%; max-width: 400px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-        .form-section h2 { text-align: center; color: #333; font-size: 1.5rem; margin-bottom: 16px; margin-top: 0; }
-        .form-section label { font-weight: bold; margin-top: 12px; margin-bottom: 4px; display: block; color: #444; font-size: 14px; }
-        .form-section input, .form-section select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; transition: border-color 0.3s ease; }
-        .form-section input:focus, .form-section select:focus { border-color: #28a745; outline: none; }
-        .form-section .iti { width: 100% !important; }
-        .form-section button { width: 100%; background-color: #28a745; color: white; border: none; font-size: 18px; font-weight: bold; cursor: pointer; border-radius: 4px; transition: background-color 0.3s ease; }
-        .form-section button:hover { background-color: #218838; }
-        .form-section .error { color: #dc3545; font-size: 12px; margin-top: 6px; }
-        .review-badge { display: flex; align-items: center; justify-content: center; margin-bottom: 16px; font-size: 16px; color: #333; }
-        .badge-stars { color: #f5c518; font-size: 20px; margin-right: 8px; }
-        .stars { color: #f5c518; font-size: 16px; margin-bottom: 8px; }
-        .testimonial-text { min-height: 80px; margin-bottom: 8px; }
-        .form-section .highlight-text { font-size: 1.25rem; color: #1a7c2e; font-weight: 600; background-color: #e6f4ea; padding: 12px; border-radius: 6px; text-align: center; margin-bottom: 16px; }
-        @media (min-width: 768px) { .form-section .highlight-text { max-width: 400px; } }
-        .hero-bg h1 { margin-bottom: 24px; }
-        .hero-bg p { margin-bottom: 32px; }
-        .hero-bg a { margin-bottom: 16px; }
 
-        /* --- ESTILOS PARA EL BOTÓN FLOTANTE --- */
+        /* Animación de pulso para el botón flotante */
         @keyframes pulse {
             0% {
                 transform: scale(1);
@@ -184,13 +167,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       gtag('config', 'AW-17157900117');
     </script>
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-100 font-poppins">
 
     <section class="hero-bg h-screen flex items-center justify-center text-white">
-        <div class="text-center p-8 md:p-12 rounded-lg max-w-2xl fade-in">
-            <h1 class="text-4xl md:text-6xl font-bold mb-4">Vive la Magia de Cartagena en un Bote Privado</h1>
-            <p class="text-lg md:text-2xl mb-6">Explora las Islas del Rosario o disfruta un atardecer inolvidable en Cartagena de Indias con nuestras lanchas deportivas y yates.</p>
-            <a href="#formulario" class="section-btn hidden md:inline-block mt-4 bg-green-500 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:bg-green-600 hover:shadow-xl">Cotizar Ahora</a>
+        <div class="text-center p-8 md:p-12 max-w-2xl fade-in">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6">Vive la Magia de Cartagena en un Bote Privado</h1>
+            <p class="text-lg md:text-2xl mb-8">Explora las Islas del Rosario o disfruta un atardecer inolvidable en Cartagena de Indias con nuestras lanchas deportivas y yates.</p>
+            <a href="#formulario" class="hidden md:inline-block mt-4 bg-green-500 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:bg-green-600 hover:shadow-xl">Cotizar Ahora</a>
         </div>
     </section>
 
@@ -214,68 +197,68 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <p class="text-gray-600">Nuestra tripulación con experiencia, no solo sabe navegar, también conoce cada rincón, cada isla y cada historia de la zona.</p>
                 </div>
             </div>
-            <a href="#formulario" class="section-btn mt-12 inline-block bg-transparent border border-green-500 text-green-500 font-bold py-3 px-8 rounded-full text-lg transition duration-300 hover:bg-green-500 hover:text-white md:bg-green-500 md:text-white md:border-transparent md:hover:bg-green-600 fade-in">Recibir Precios y Opciones</a>
+            <a href="#formulario" class="mt-12 inline-block bg-transparent border border-green-500 text-green-500 font-bold py-3 px-8 rounded-full text-lg transition duration-300 hover:bg-green-500 hover:text-white md:bg-green-500 md:text-white md:border-transparent md:hover:bg-green-600 fade-in">Recibir Precios y Opciones</a>
         </div>
     </section>
 
     <section class="py-16 bg-gray-100">
         <div class="container mx-auto px-4 text-center">
-            <div class="review-badge">
-                <span class="badge-stars">★★★★★</span>
+            <div class="flex items-center justify-center mb-4 text-base text-gray-800">
+                <span class="text-yellow-500 text-xl mr-2">★★★★★</span>
                 <span>4.8 / 5.0 (53 reseñas)</span>
             </div>
             <h2 class="text-3xl md:text-4xl font-bold mb-12 fade-in">Lo que dicen nuestros clientes</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="bg-white p-6 rounded-lg shadow-lg fade-in">
-                    <p class="text-gray-600 italic testimonial-text">"El paseo por las Islas del Rosario fue espectacular. La lancha era cómoda y los chicos de la tripulación muy amables."</p>
-                    <div class="stars">★★★★★</div>
+                    <p class="text-gray-600 italic min-h-[80px] mb-2">"El paseo por las Islas del Rosario fue espectacular. La lancha era cómoda y los chicos de la tripulación muy amables."</p>
+                    <div class="text-yellow-500 text-base mb-2">★★★★★</div>
                     <p class="font-semibold">María G.</p>
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow-lg fade-in">
-                    <p class="text-gray-600 italic testimonial-text">"Ver el atardecer de Cartagena desde un bote en la bahía es mi plan favorito. Es segunda vez que lo hago con Descubre Cartagena, los recomiendo."</p>
-                    <div class="stars">★★★★★</div>
+                    <p class="text-gray-600 italic min-h-[80px] mb-2">"Ver el atardecer de Cartagena desde un bote en la bahía es mi plan favorito. Es segunda vez que lo hago con Descubre Cartagena, los recomiendo."</p>
+                    <div class="text-yellow-500 text-base mb-2">★★★★★</div>
                     <p class="font-semibold">Juan P.</p>
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow-lg fade-in">
-                    <p class="text-gray-600 italic testimonial-text">"Una experiencia inolvidable con mis amigas, bailamos, nadamos y navegamos sin problemas. Volveremos pronto."</p>
-                    <div class="stars">★★★★★</div>
+                    <p class="text-gray-600 italic min-h-[80px] mb-2">"Una experiencia inolvidable con mis amigas, bailamos, nadamos y navegamos sin problemas. Volveremos pronto."</p>
+                    <div class="text-yellow-500 text-base mb-2">★★★★★</div>
                     <p class="font-semibold">Ana R.</p>
                 </div>
             </div>
-             <a href="#formulario" class="section-btn mt-12 inline-block bg-transparent border border-green-500 text-green-500 font-bold py-3 px-8 rounded-full text-lg transition duration-300 hover:bg-green-500 hover:text-white md:bg-green-500 md:text-white md:border-transparent md:hover:bg-green-600 fade-in">Cotizar por WhatsApp</a>
+             <a href="#formulario" class="mt-12 inline-block bg-transparent border border-green-500 text-green-500 font-bold py-3 px-8 rounded-full text-lg transition duration-300 hover:bg-green-500 hover:text-white md:bg-green-500 md:text-white md:border-transparent md:hover:bg-green-600 fade-in">Cotizar por WhatsApp</a>
         </div>
     </section>
 
     <section class="section-bg py-16 text-white">
-        <div class="container mx-auto px-4 text-center p-8 md:p-12 rounded-lg max-w-2xl fade-in">
+        <div class="container mx-auto px-4 text-center p-8 md:p-12 max-w-2xl fade-in">
             <h2 class="text-3xl md:text-4xl font-bold mb-4">¡Cartagena te espera!</h2>
             <p class="text-lg md:text-xl mb-6">No dejes pasar la oportunidad de vivir una experiencia única. Contáctanos ahora y reserva tu bote privado.</p>
-            <a href="#formulario" class="section-btn mt-4 inline-block bg-transparent border-2 border-white text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 hover:bg-white hover:text-gray-800 md:bg-green-500 md:border-transparent md:hover:bg-green-600">Cotiza tu Bote Ya</a>
+            <a href="#formulario" class="mt-4 inline-block bg-transparent border-2 border-white text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 hover:bg-white hover:text-gray-800 md:bg-green-500 md:border-transparent md:hover:bg-green-600">Cotiza tu Bote Ya</a>
         </div>
     </section>
     
-    <section id="formulario" class="form-section py-16">
-        <div class="header">
-            <div class="logo-container">
-                <img src="logo-formulario-dc.svg" alt="Descubre Cartagena" class="logo">
-                <img src="rl-logo.webp" alt="RL Logo" class="logo">
+    <section id="formulario" class="flex flex-col items-center bg-gray-50 py-16 px-5 mt-5">
+        <div class="text-center mb-4">
+            <div class="flex justify-center items-center gap-4">
+                <img src="logo-formulario-dc.svg" alt="Descubre Cartagena" class="h-14 sm:h-16">
+                <img src="rl-logo.webp" alt="RL Logo" class="h-14 sm:h-16">
             </div>
         </div>
-        <p class="highlight-text">Déjanos tus datos y te enviamos precios y opciones por WhatsApp en menos de 15 minutos.</p>
-        <h2 class="font-semibold">Cotiza tu bote ya</h2>
-        <div class="form-container">
+        <p class="text-xl text-green-700 font-semibold bg-green-100 p-3 rounded-md text-center mb-4 max-w-sm">Déjanos tus datos y te enviamos precios y opciones por WhatsApp en menos de 15 minutos.</p>
+        <div class="bg-white p-4 w-full max-w-sm rounded-lg shadow-lg">
+            <h2 class="text-center text-gray-800 text-2xl font-semibold mb-4">Cotiza tu bote ya</h2>
             <?php if ($mostrarFormulario): ?>
             <form id="cotizacionForm" action="" method="POST">
                 <div>
-                    <label for="nombreCompleto">Nombre y Apellidos</label>
-                    <input type="text" name="nombreCompleto" id="nombreCompleto" required value="<?php echo isset($_POST['nombreCompleto']) ? htmlspecialchars($_POST['nombreCompleto']) : ''; ?>">
+                    <label for="nombreCompleto" class="font-bold mt-3 mb-1 block text-gray-700 text-sm">Nombre y Apellidos</label>
+                    <input type="text" name="nombreCompleto" id="nombreCompleto" required value="<?php echo isset($_POST['nombreCompleto']) ? htmlspecialchars($_POST['nombreCompleto']) : ''; ?>" class="w-full p-2.5 border border-gray-300 rounded-md text-sm transition focus:border-green-500 focus:ring-0">
                     <?php if (isset($errors['nombreCompleto'])): ?>
-                        <p class="error"><?php echo htmlspecialchars($errors['nombreCompleto']); ?></p>
+                        <p class="text-red-600 text-xs mt-1.5"><?php echo htmlspecialchars($errors['nombreCompleto']); ?></p>
                     <?php endif; ?>
                 </div>
                 <div>
-                    <label for="tipoEmbarcacion">Tipo de Embarcación</label>
-                    <select name="tipoEmbarcacion" id="tipoEmbarcacion" required>
+                    <label for="tipoEmbarcacion" class="font-bold mt-3 mb-1 block text-gray-700 text-sm">Tipo de Embarcación</label>
+                    <select name="tipoEmbarcacion" id="tipoEmbarcacion" required class="w-full p-2.5 border border-gray-300 rounded-md text-sm transition focus:border-green-500 focus:ring-0">
                         <option value="">Seleccione una opción</option>
                         <option value="Cualquiera" <?php echo isset($_POST['tipoEmbarcacion']) && $_POST['tipoEmbarcacion'] == 'Cualquiera' ? 'selected' : ''; ?>>Cualquiera</option>
                         <option value="Bote deportivo" <?php echo isset($_POST['tipoEmbarcacion']) && $_POST['tipoEmbarcacion'] == 'Bote deportivo' ? 'selected' : ''; ?>>Bote deportivo</option>
@@ -283,42 +266,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <option value="Catamaran" <?php echo isset($_POST['tipoEmbarcacion']) && $_POST['tipoEmbarcacion'] == 'Catamaran' ? 'selected' : ''; ?>>Catamarán</option>
                     </select>
                     <?php if (isset($errors['tipoEmbarcacion'])): ?>
-                        <p class="error"><?php echo htmlspecialchars($errors['tipoEmbarcacion']); ?></p>
+                        <p class="text-red-600 text-xs mt-1.5"><?php echo htmlspecialchars($errors['tipoEmbarcacion']); ?></p>
                     <?php endif; ?>
                 </div>
                 <div>
-                    <label for="destino">Destino</label>
-                    <select name="destino" id="destino" required>
+                    <label for="destino" class="font-bold mt-3 mb-1 block text-gray-700 text-sm">Destino</label>
+                    <select name="destino" id="destino" required class="w-full p-2.5 border border-gray-300 rounded-md text-sm transition focus:border-green-500 focus:ring-0">
                         <option value="">Seleccione un destino</option>
                         <option value="Islas del Rosario o Cholón" <?php echo isset($_POST['destino']) && $_POST['destino'] == 'Islas del Rosario o Cholón' ? 'selected' : ''; ?>>Islas del Rosario o Cholón</option>
                         <option value="Bahía de Cartagena" <?php echo isset($_POST['destino']) && $_POST['destino'] == 'Bahía de Cartagena' ? 'selected' : ''; ?>>Bahía de Cartagena</option>
                     </select>
                     <?php if (isset($errors['destino'])): ?>
-                        <p class="error"><?php echo htmlspecialchars($errors['destino']); ?></p>
+                        <p class="text-red-600 text-xs mt-1.5"><?php echo htmlspecialchars($errors['destino']); ?></p>
                     <?php endif; ?>
                 </div>
                 <div>
-                    <label for="numeroPersonas">Número de Personas</label>
-                    <input type="number" name="numeroPersonas" id="numeroPersonas" required value="<?php echo isset($_POST['numeroPersonas']) ? htmlspecialchars($_POST['numeroPersonas']) : '1'; ?>" min="1" max="100" step="1">
+                    <label for="numeroPersonas" class="font-bold mt-3 mb-1 block text-gray-700 text-sm">Número de Personas</label>
+                    <input type="number" name="numeroPersonas" id="numeroPersonas" required value="<?php echo isset($_POST['numeroPersonas']) ? htmlspecialchars($_POST['numeroPersonas']) : '1'; ?>" min="1" max="100" step="1" class="w-full p-2.5 border border-gray-300 rounded-md text-sm transition focus:border-green-500 focus:ring-0">
                     <?php if (isset($errors['numeroPersonas'])): ?>
-                        <p class="error"><?php echo htmlspecialchars($errors['numeroPersonas']); ?></p>
+                        <p class="text-red-600 text-xs mt-1.5"><?php echo htmlspecialchars($errors['numeroPersonas']); ?></p>
                     <?php endif; ?>
                 </div>
                 <div>
-                    <label for="fecha">Fecha del Paseo</label>
-                    <input type="date" name="fecha" id="fecha" required value="<?php echo isset($_POST['fecha']) ? htmlspecialchars($_POST['fecha']) : ''; ?>" min="<?php echo date('Y-m-d'); ?>">
+                    <label for="fecha" class="font-bold mt-3 mb-1 block text-gray-700 text-sm">Fecha del Paseo</label>
+                    <input type="date" name="fecha" id="fecha" required value="<?php echo isset($_POST['fecha']) ? htmlspecialchars($_POST['fecha']) : ''; ?>" min="<?php echo date('Y-m-d'); ?>" class="w-full p-2.5 border border-gray-300 rounded-md text-sm transition focus:border-green-500 focus:ring-0">
                     <?php if (isset($errors['fecha'])): ?>
-                        <p class="error"><?php echo htmlspecialchars($errors['fecha']); ?></p>
+                        <p class="text-red-600 text-xs mt-1.5"><?php echo htmlspecialchars($errors['fecha']); ?></p>
                     <?php endif; ?>
                 </div>
                 <div>
-                    <label for="whatsapp">WhatsApp</label>
-                    <input type="tel" name="whatsapp" id="whatsapp" required value="<?php echo isset($_POST['whatsapp']) ? htmlspecialchars($_POST['whatsapp']) : ''; ?>">
+                    <label for="whatsapp" class="font-bold mt-3 mb-1 block text-gray-700 text-sm">WhatsApp</label>
+                    <input type="tel" name="whatsapp" id="whatsapp" required value="<?php echo isset($_POST['whatsapp']) ? htmlspecialchars($_POST['whatsapp']) : ''; ?>" class="w-full p-2.5 border border-gray-300 rounded-md text-sm transition focus:border-green-500 focus:ring-0">
                     <?php if (isset($errors['whatsapp'])): ?>
-                        <p class="error"><?php echo htmlspecialchars($errors['whatsapp']); ?></p>
+                        <p class="text-red-600 text-xs mt-1.5"><?php echo htmlspecialchars($errors['whatsapp']); ?></p>
                     <?php endif; ?>
                 </div>
-                <button type="submit" class="mt-4 py-3 flex items-center justify-center gap-3">
+                <button type="submit" class="w-full mt-4 py-3 bg-green-500 text-white border-none text-lg font-bold cursor-pointer rounded-md transition hover:bg-green-600 flex items-center justify-center gap-3">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-whatsapp" viewBox="0 0 16 16">
                         <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
                     </svg>

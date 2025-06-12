@@ -407,14 +407,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             clientUserAgent: clientUserAgent
         });
 
-        // Aseguramos que el píxel esté inicializado antes de enviar PageView
+        // Aseguramos que el píxel esté inicializado antes de enviar PageView con reintentos limitados
+        let retryCount = 0;
+        const maxRetries = 5;
         function checkPixelAndSendPageView() {
             if (typeof fbq !== 'undefined') {
                 fbq('track', 'PageView', {}, { eventID: pageViewEventId });
                 console.log(`Evento de Navegador 'PageView' enviado con ID: ${pageViewEventId}`);
+            } else if (retryCount < maxRetries) {
+                retryCount++;
+                const delay = retryCount * 1000; // Incrementa el retraso (1s, 2s, 3s, etc.)
+                console.warn(`Píxel de Facebook no inicializado para PageView. Reintentando en ${delay/1000} segundos... (Intento ${retryCount}/${maxRetries})`);
+                setTimeout(checkPixelAndSendPageView, delay);
             } else {
-                console.warn('Píxel de Facebook no inicializado para PageView. Reintentando en 1 segundo...');
-                setTimeout(checkPixelAndSendPageView, 1000); // Reintenta después de 1 segundo
+                console.error('Píxel de Facebook no se inicializó después de 5 intentos. Abandonando reintentos.');
             }
         }
         checkPixelAndSendPageView();

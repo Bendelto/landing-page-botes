@@ -490,6 +490,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     console.warn('Píxel de Facebook no inicializado para Lead');
                 }
 
+                // Llamamos a la función de conversión de Google Ads
+                if (typeof gtag_report_conversion === 'function') {
+                   gtag_report_conversion();
+                   console.log("Evento de conversión de Google Ads enviado.");
+                }
+
                 // Hasheamos los datos personales
                 const hashedTelefono = await hashSHA256(telefonoCompleto);
                 const hashedNombre = await hashSHA256(nombreCompletoValue);

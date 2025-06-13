@@ -155,6 +155,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       gtag('js', new Date());
       gtag('config', 'AW-17157900117');
     </script>
+    <!-- Event snippet for Formulario de WhatsApp conversion page
+In your html page, add the snippet and call gtag_report_conversion when someone clicks on the chosen link or button. -->
+<script>
+function gtag_report_conversion(url) {
+  var callback = function () {
+    if (typeof(url) != 'undefined') {
+      window.location = url;
+    }
+  };
+  gtag('event', 'conversion', {
+      'send_to': 'AW-17157900117/5nG3CJOe09kaENWOw_U_',
+      'event_callback': callback
+  });
+  return false;
+}
+</script>
+
 </head>
 <body class="bg-gray-100">
 
